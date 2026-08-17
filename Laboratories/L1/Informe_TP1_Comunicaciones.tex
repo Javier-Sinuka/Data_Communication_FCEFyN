@@ -461,6 +461,131 @@ presentar mejores prestaciones de BER que ASK y FSK en un canal ideal con ruido
 blanco gaussiano}. La elección real depende también del canal, el ancho de banda,
 la complejidad del receptor y la potencia disponible.
 
+\section{Simulacion en Packet Tracer}
+
+Siguiendo los pasos del enunciado, se construyó un escenario de red en Packet Tracer como se muestra en la siguiente figura antes de realizar la conexión con la notebook de forma wireless al router.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.8\textwidth]{./img/setup.png}
+  \caption{Red en Packet Tracer}
+  \label{fig:red-packet-tracer}
+\end{figure}
+
+A continuacion se ha configurado el router como se indica en el enunciado. 
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.95\textwidth]{./img/router-pass.png}
+  \caption{Configuración del router}
+  \label{fig:router-config}
+\end{figure}
+
+El siguiente punto nos plantea una serie de preguntas las cuales se contesta a continuacion:
+
+\textbf{¿En qué frecuencia opera?} La frecuencia de operación del router es de 2.412 GHz.
+
+\textbf{¿A qué región del espectro electromagnético corresponde?} La frecuencia de 2.412 GHz corresponde a la región de microondas, específicamente a la banda ISM (Industrial, Scientific and Medical).
+
+\textbf{¿En qué banda opera?} Opera en la banda Frecuencia ultraalta (Ultra High Frequency) (UHF) que va desde los 300 MHz hasta los 3000 MHz.
+
+A continuación se ha configurado la notebook para conectarse al router de forma wireless. se ha retirado la placa que viene por defecto y se ha agregado la placa \textbf{WPC300N} la cual es compatible con el router. Se muestra en las imagenes el momento antes de conectarse al router, el momento de poner la contraseña y el momento de la conexión exitosa.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.8\textwidth]{./img/before-connecting.png}
+  \caption{Momento previo a la conexión de la notebook al router}
+  \label{fig:before-connecting}
+\end{figure}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.8\textwidth]{./img/connecting.png}
+  \caption{Introduciendo la contraseña}
+  \label{fig:connecting}
+\end{figure}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.8\textwidth]{./img/after-connecting.png}
+  \caption{Conexión existosa}
+  \label{fig:after-connecting}
+\end{figure}
+
+El resultado visual en la red de Packet Tracer, es el mismo que se observa en el enunciado. No se incluye para evitar redundancia.
+
+A continuación se ha realizado una serie de pings entre la notebook y la pc para verificar la conectividad, en primera instancia se deben de identificar las direcciones IPv4 de cada dispositivo, para ello se ha entrado en la configuracion que nos ofrece Packet Tracer, en el caso de la pc esta se encontraba en "Config > Interface > FastEthernet0", en el caso de la notebook se encuentra en "Config > Interface > Wireless0". Se muestran las imagenes de cada dispositivo con su respectiva dirección IPv4.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.8\textwidth]{./img/pc-ip.png}
+  \caption{Dirección IPv4 de la PC}
+  \label{fig:pc-ip}
+\end{figure}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.8\textwidth]{./img/ip-laptop.png}
+  \caption{Dirección IPv4 de la notebook}
+  \label{fig:notebook-ip}
+\end{figure}
+
+Se procede a hacer ping y route desde la notebook a la pc, y viceversa, para verificar la conectividad. Se muestran las imagenes de la salida de la terminal de cada dispositivo.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.8\textwidth]{./img/ping-laptop0-to-pc0.png}
+  \caption{Salida de ping de la terminal de la notebook}
+  \label{fig:ping-laptop}
+\end{figure}
+
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.8\textwidth]{./img/route-laptop0-to-pc0.png}
+  \caption{Salida de route de la terminal de la notebook}
+  \label{fig:route-laptop}
+\end{figure}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.8\textwidth]{./img/ping-pc0-to-laptop0.png}
+  \caption{Salida de ping de la terminal de la PC}
+  \label{fig:ping-pc}
+\end{figure}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.8\textwidth]{./img/route-pc0-to-laptop0.png}
+  \caption{Salida de route de la terminal de la PC}
+  \label{fig:route-pc}
+\end{figure}
+
+Finalmente, se ha realizado agregado otra notebook como se determina en el enunciado, se ha conectado al router como se habia hecho con la primera notebook, y se ha realizado un ping entre ambas notebooks y con la pc para verificar la conectividad.
+
+En la primera ubicacion se ha intentado colocal la notebook en el limite del alcance del router, con objetivo de observar un incremento en la latencia de la red para visualizar de cierta forma el fenomeno de atenuación.
+
+Se puede apreciar que el average de la segunda notebook con respecto a la primera notebook es de 98 ms y con la pc es de 57ms. Si lo comparamos con lo resultados obtenidos entre la primera notebook y la pc, que fueron de 32ms, se observa claramente un incremento en la latencia de la red, lo cual es un indicio de atenuación.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.8\textwidth]{./img/laptop1-1st-position.png}
+  \caption{Salida de ping de la terminal de la segunda notebook en la primera ubicación}
+  \label{fig:ping-laptop1-to-all}
+\end{figure}
+
+Luego se ha movido la notebook a una segunda ubicación, más alla del alcance del router, y se ha realizado nuevamente un ping entre ambas notebooks y con la pc para verificar la falla en la conectividad.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.8\textwidth]{./img/laptop1-2nd-position.png}
+  \caption{Salida de ping de la termina de la segunda notebook en la segunda ubicación}
+  \label{fig:route-laptop1-to-all}
+\end{figure}
+
+Se aprecia que no hay conectividad entre la segunda notebook y los otros dispositivos, lo cual es un indicio de que la señal se ha atenuado demasiado y no puede ser recibida correctamente.
+
+
 \section{Conclusiones}
 
 Los tres primeros puntos del trabajo relacionan los fundamentos físicos de las
