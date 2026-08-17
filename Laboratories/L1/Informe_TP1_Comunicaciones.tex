@@ -41,7 +41,7 @@
 \vfill
 \begin{tabular}{@{}ll@{}}
 \textbf{Asignatura:} & Redes de Computadoras \\
-\textbf{Grupo:} &  \\
+\textbf{Grupo:} & MiLANesas \\
 \textbf{Alumnos:} &
   \begin{tabular}[t]{@{}ll@{}}
   Tomas Brigido & Kevin Cufre \\
@@ -215,7 +215,7 @@ pérdidas en empalmes y conectores. Aunque sus pérdidas son menores que las de
 muchos medios eléctricos, la atenuación continúa siendo un parámetro central en
 el diseño del enlace.
 
-\section{Transmisión digital y comunicación tipo UART}
+\section{Transmisión digital serial}
 
 \subsection{Tipo y modo de transmisión representados}
 
@@ -245,14 +245,14 @@ diafonía y las pérdidas del medio.
 
 \subsection{Señal correspondiente a la cuarta letra del nombre del grupo}
 
-Se adopta como nombre del grupo \textbf{Datosfera}; su cuarta letra es
-\textbf{o}. El código ASCII correspondiente es
+Se adopta como nombre del grupo \textbf{MiLANesas}; su cuarta letra es
+\textbf{A}. El código ASCII correspondiente es
 
 \[
-111_{10}=\mathtt{6F}_{16}=01101111_2.
+65_{10}=\mathtt{41}_{16}=01000001_2.
 \]
 
-Por lo tanto, el byte que debe representarse es $\mathbf{01101111}$. Siguiendo
+Por lo tanto, el byte que debe representarse es $\mathbf{01000001}$. Siguiendo
 el criterio del gráfico del enunciado, un nivel alto representa un uno y un
 nivel bajo representa un cero. La señal ideal se muestra en la
 Figura~\ref{fig:uart}.
@@ -271,13 +271,13 @@ Figura~\ref{fig:uart}.
     \node[below] at (\x,-0.10) {$T_{\x}$};
   }
   \draw[very thick,blue!70!black]
-    (0,0) -- (1,0) -- (1,1) -- (3,1) -- (3,0) --
-    (4,0) -- (4,1) -- (8,1);
-  \foreach \x/\b in {0/0,1/1,2/1,3/0,4/1,5/1,6/1,7/1}{
+    (0,0) -- (1,0) -- (1,1) -- (2,1) -- (2,0) --
+    (7,0) -- (7,1) -- (8,1);
+  \foreach \x/\b in {0/0,1/1,2/0,3/0,4/0,5/0,6/0,7/1}{
     \node[font=\bfseries] at (\x+0.5,1.48) {\b};
   }
 \end{tikzpicture}
-\caption{Representación ideal del byte $01101111$.}
+\caption{Representación ideal del byte $01000001$.}
 \label{fig:uart}
 \end{figure}
 
@@ -291,21 +291,21 @@ Intervalo & Bit & Nivel ideal \\
 \midrule
 $T_0$ a $T_1$ & 0 & Bajo \\
 $T_1$ a $T_2$ & 1 & Alto \\
-$T_2$ a $T_3$ & 1 & Alto \\
+$T_2$ a $T_3$ & 0 & Bajo \\
 $T_3$ a $T_4$ & 0 & Bajo \\
-$T_4$ a $T_5$ & 1 & Alto \\
-$T_5$ a $T_6$ & 1 & Alto \\
-$T_6$ a $T_7$ & 1 & Alto \\
+$T_4$ a $T_5$ & 0 & Bajo \\
+$T_5$ a $T_6$ & 0 & Bajo \\
+$T_6$ a $T_7$ & 0 & Bajo \\
 $T_7$ a $T_8$ & 1 & Alto \\
 \bottomrule
 \end{tabular}
 \end{table}
 
-En una UART real suele existir un bit de inicio, bits de datos, un posible bit
-de paridad y uno o más bits de parada. Muchas implementaciones también envían
-primero el bit menos significativo. No obstante, para mantener la coherencia
-con el gráfico del enunciado, aquí se representa directamente el byte en el
-orden indicado.
+En una transmisión digital serial real pueden intervenir bits de inicio, datos,
+un posible bit de paridad y uno o más bits de parada, según el protocolo
+empleado. En esta representación se muestra directamente el byte en el orden
+indicado por el gráfico del enunciado para destacar la correspondencia entre
+los intervalos temporales y los niveles lógicos.
 
 \subsection{Marcas temporales adecuadas para medir la señal}
 
