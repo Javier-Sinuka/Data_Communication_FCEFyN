@@ -61,59 +61,6 @@
 
 \section{Fundamentos esenciales y análisis de una onda electromagnética}
 
-\subsection{Fundamentos básicos}
-
-\subsubsection{Ondas electromagnéticas}
-
-Una onda electromagnética es una perturbación formada por campos eléctricos y
-magnéticos variables que se propaga transportando energía. En el vacío, estas
-ondas se desplazan a la velocidad de la luz, cuyo valor exacto es
-
-\[
-c=299\,792\,458\ \mathrm{m/s}.
-\]
-
-En comunicaciones, las ondas electromagnéticas permiten transportar
-información tanto por medios guiados, como cables y fibra óptica, como por
-medios no guiados, como el aire o el espacio libre. Sus parámetros principales
-son la frecuencia, la longitud de onda, la amplitud, la fase y la velocidad de
-propagación. La relación fundamental entre ellos es
-
-\[
-c=\lambda f,
-\]
-
-donde $c$ es la velocidad de propagación, $\lambda$ la longitud de onda y $f$
-la frecuencia.
-
-\subsubsection{Modulación y demodulación}
-
-La \textbf{modulación} es el proceso por el cual una señal de información
-modifica alguna característica de una señal portadora, generalmente senoidal,
-para que pueda transmitirse eficientemente por un medio físico. Las
-características modificadas suelen ser la amplitud, la frecuencia o la fase.
-
-La \textbf{demodulación} es el proceso inverso: permite recuperar la
-información original a partir de la señal modulada recibida. En comunicaciones
-digitales, los bits se representan mediante cambios discretos de los parámetros
-de la portadora.
-
-\subsubsection{Señales de tiempo continuo}
-
-Una señal de tiempo continuo está definida para todo instante dentro de un
-intervalo y se representa matemáticamente como $x(t)$, donde $t$ puede tomar
-cualquier valor real. Las señales analógicas son ejemplos típicos; una onda
-senoidal utilizada como portadora de radiofrecuencia constituye un caso
-clásico.
-
-\subsubsection{Señales de tiempo discreto}
-
-Una señal de tiempo discreto está definida únicamente en determinados
-instantes, generalmente separados por un intervalo constante. Se representa
-como $x[n]$, donde $n$ es un índice entero. Las señales digitales se asocian
-frecuentemente con señales de tiempo discreto y amplitud discreta; por ejemplo,
-una secuencia binaria formada por ceros y unos.
-
 \subsection{Análisis del gráfico de la onda electromagnética}
 
 En el gráfico del enunciado se observa una onda periódica cuya intensidad varía
@@ -121,7 +68,7 @@ con la distancia. A partir de las marcas del eje horizontal, la separación
 entre dos puntos equivalentes consecutivos permite estimar
 
 \[
-\lambda=60\ \mathrm{mm}=0{,}060\ \mathrm{m}.
+\lambda=x_2 - x_1 = 120\mathrm{mm} - 60\mathrm{mm} =60\ \mathrm{mm}=0{,}060\ \mathrm{m}.
 \]
 
 La curva negra representa la oscilación de la onda. La línea roja de trazos
@@ -147,12 +94,59 @@ Por lo tanto, los resultados son
 
 \subsection{Región del espectro electromagnético y banda}
 
-Una onda de aproximadamente $5\ \mathrm{GHz}$ pertenece a la región de las
-\textbf{microondas}. De acuerdo con la clasificación de la Unión Internacional
-de Telecomunicaciones (ITU), el intervalo de $3$ a $30\ \mathrm{GHz}$
-corresponde a la banda \textbf{SHF} (\emph{Super High Frequency}). También se
-denomina región de ondas centimétricas, dado que sus longitudes de onda son del
-orden de los centímetros.
+El espectro electromagnético comprende el conjunto de todas las ondas
+electromagnéticas, clasificadas de acuerdo con su frecuencia $f$ o su
+longitud de onda $\lambda$. Ambas magnitudes se relacionan mediante:
+
+\begin{equation}
+    c = \lambda f
+\end{equation}
+
+donde $c \approx 3 \times 10^{8}\ \text{m/s}$ es la velocidad de propagación
+de la luz en el vacío. Por lo tanto, al aumentar la frecuencia disminuye la
+longitud de onda, y viceversa.
+
+El espectro electromagnético se divide, de manera general, en las siguientes
+regiones: ondas de radio, microondas, infrarrojo, luz visible, ultravioleta,
+rayos X y rayos gamma. Dentro de la región correspondiente a las
+radiofrecuencias, la Unión Internacional de Telecomunicaciones (ITU) establece
+distintas bandas de frecuencia.
+
+Entre las principales bandas utilizadas en telecomunicaciones se encuentran:
+
+\begin{table}[H]
+\centering
+\begin{tabular}{c c c}
+\hline
+\textbf{Banda} & \textbf{Nombre} & \textbf{Rango de frecuencia} \\
+\hline
+VLF & Very Low Frequency & $3 - 30\ \text{kHz}$ \\
+LF  & Low Frequency & $30 - 300\ \text{kHz}$ \\
+MF  & Medium Frequency & $300\ \text{kHz} - 3\ \text{MHz}$ \\
+HF  & High Frequency & $3 - 30\ \text{MHz}$ \\
+VHF & Very High Frequency & $30 - 300\ \text{MHz}$ \\
+UHF & Ultra High Frequency & $300\ \text{MHz} - 3\ \text{GHz}$ \\
+SHF & Super High Frequency & $3 - 30\ \text{GHz}$ \\
+EHF & Extremely High Frequency & $30 - 300\ \text{GHz}$ \\
+\hline
+\end{tabular}
+\caption{Principales bandas de radiofrecuencia según la nomenclatura de la ITU.}
+\end{table}
+
+Para la onda analizada se obtuvo una longitud de onda es de \( \lambda = 0.06\ \text{m} \), y teniendo en
+cuenta que la frecuencia calculada es de \( f \approx 5\ \text{GHz} \), podemos determinar que se encuentra
+dentro de la región de \textbf{microondas} del espectro electromagnético. Además, según la
+clasificación de la ITU, se encuentra dentro de la banda
+\textbf{SHF (Super High Frequency)}, cuyo rango se extiende desde
+$3\ \text{GHz}$ hasta $30\ \text{GHz}$.
+
+Por lo tanto, la onda estudiada puede clasificarse como:
+
+\begin{equation}
+    \boxed{f = 5\ \text{GHz}
+    \quad \Rightarrow \quad
+    \text{Microondas} \quad \Rightarrow \quad \text{SHF}}
+\end{equation}
 
 \subsection{Dispositivos que operan en esta banda}
 
@@ -160,10 +154,10 @@ Un ejemplo representativo son los equipos de redes inalámbricas Wi-Fi que
 operan en la banda de $5\ \mathrm{GHz}$, entre ellos:
 
 \begin{itemize}
-  \item routers Wi-Fi de doble banda;
-  \item puntos de acceso inalámbricos;
-  \item placas de red Wi-Fi;
-  \item computadoras y teléfonos con conectividad IEEE 802.11 en $5\ \mathrm{GHz}$.
+  \item Routers Wi-Fi de doble banda;
+  \item Puntos de acceso inalámbricos;
+  \item Placas de red Wi-Fi;
+  \item Computadoras y teléfonos con conectividad IEEE 802.11 en $5\ \mathrm{GHz}$.
 \end{itemize}
 
 Como caso concreto puede considerarse un router Wi-Fi doméstico o empresarial
