@@ -1,0 +1,3 @@
+# Ignore the files used to build the pdf
+/output/*
+!/output/*.pdf
