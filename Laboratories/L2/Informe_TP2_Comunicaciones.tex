@@ -59,6 +59,192 @@
 
 \section{Ítem 1: Análisis del primer fenómeno físico}
 
+\subsection*{a) ¿Qué fenómeno físico se está representando? ¿Cuáles son sus características principales?}
+
+La Figura representa el \textbf{efecto Doppler} (o corrimiento Doppler) en un enlace
+satelital. La onda dibujada entre el buque y el satélite presenta una longitud de onda
+que \textbf{se acorta progresivamente} hacia el receptor, manteniendo la amplitud
+prácticamente constante: es decir, la frecuencia percibida es mayor que la emitida, lo
+que corresponde a un acercamiento entre emisor y receptor.
+
+Antes de avanzar conviene justificar el descarte de las alternativas, ya que la figura no
+indica explícitamente ningún desplazamiento:
+
+\begin{itemize}
+  \item No se trata de \emph{atenuación}, porque en ese caso la amplitud decaería con la
+        distancia y la longitud de onda permanecería constante.
+  \item No se trata de \emph{ruido} ni de \emph{distorsión}, porque la forma de onda se
+        mantiene sinusoidal y limpia en todo el trayecto (además, la Figura 2 ya cubre
+        ese fenómeno).
+  \item No se trata de \emph{dispersión}, que se manifestaría como el ensanchamiento de
+        un pulso y no como una sinusoide continua.
+\end{itemize}
+
+Cabe señalar que la representación es didáctica y no estrictamente rigurosa: no se dibuja
+el vector velocidad ni la dirección de propagación, y una onda electromagnética no se
+comprime progresivamente \emph{a lo largo del trayecto}. La lectura correcta consiste en
+interpretar el eje horizontal como \textbf{tiempo} y no como espacio: durante un pase
+satelital la frecuencia recibida varía de forma continua porque cambia la velocidad
+radial entre ambos extremos. El movimiento está implícito en la elección del satélite
+como receptor, ya que un satélite es por definición un objeto en movimiento relativo
+permanente respecto de la superficie terrestre.
+
+\subsubsection*{Características principales}
+
+\begin{itemize}
+  \item \textbf{Definición.} Es el cambio aparente de frecuencia de una onda percibido
+        por un receptor cuando existe movimiento relativo entre la fuente y el
+        observador. No cambia la frecuencia realmente emitida: cambia la frecuencia
+        \emph{percibida}.
+
+  \item \textbf{Expresión analítica.} Para ondas electromagnéticas con $v \ll c$:
+        \begin{equation}
+          f_r = f_t\left(1 + \frac{v_r}{c}\right)
+          \qquad \Longrightarrow \qquad
+          f_d = f_r - f_t = \frac{v_r}{c}\, f_t \cos\theta
+        \end{equation}
+        donde $v_r$ es la velocidad radial, $\theta$ el ángulo entre el vector velocidad
+        y la línea de vista, y $c$ la velocidad de la luz.
+
+  \item \textbf{Depende de la portadora.} El corrimiento absoluto es proporcional a la
+        frecuencia de trabajo. Un satélite LEO con velocidad radial de $7{,}5$~km/s
+        produce aproximadamente $47$~kHz de corrimiento en banda S ($2$~GHz), pero unos
+        $280$~kHz en banda Ku ($12$~GHz).
+
+  \item \textbf{Depende de la geometría.} Es máximo cuando el movimiento es puramente de
+        acercamiento o alejamiento ($\theta = 0^\circ$ o $180^\circ$) y \emph{nulo}
+        cuando es perpendicular a la línea de vista ($\theta = 90^\circ$).
+
+  \item \textbf{Es dinámico.} No es un \emph{offset} fijo sino que varía en el tiempo,
+        describiendo la clásica curva en ``S'' durante un pase: positivo al aparecer el
+        satélite sobre el horizonte, nulo en el punto de máxima elevación y negativo al
+        alejarse. Se define entonces una tasa de variación (\emph{Doppler rate}), en
+        Hz/s, que obliga a un seguimiento continuo y no a una corrección estática.
+
+  \item \textbf{Dispersión Doppler (\emph{Doppler spread}).} En canales con
+        multitrayectoria, cada eco llega con un ángulo distinto y por lo tanto con un
+        corrimiento distinto: una portadora pura se convierte en un espectro ensanchado
+        de ancho $2 f_{d,\max}$. Esto define el tiempo de coherencia del canal:
+        \begin{equation}
+          T_c \approx \frac{0{,}423}{f_{d,\max}}
+        \end{equation}
+        es decir, cuanto mayor el Doppler, más rápido cambia el canal
+        (\emph{fast fading}).
+
+  \item \textbf{Efectos sobre la comunicación.} Rotación progresiva de la constelación en
+        modulaciones coherentes, pérdida de enganche de los lazos de portadora (PLL),
+        interferencia entre subportadoras (ICI) en OFDM y corrimiento del reloj de
+        símbolo, ya que la escala temporal completa se comprime o se estira.
+\end{itemize}
+
+En el caso concreto de la Figura, el buque se desplaza a $\sim 10$~m/s (aporte
+despreciable), mientras que es el satélite el que domina el fenómeno.
+
+\subsection*{b) ¿A qué tipos de transmisión afecta más este fenómeno? ¿Cuáles son más resilientes?}
+
+\subsubsection*{Transmisiones más afectadas}
+
+\begin{center}
+\begin{tabular}{p{0.34\textwidth} p{0.58\textwidth}}
+\hline
+\textbf{Categoría} & \textbf{Justificación} \\
+\hline
+Bandas altas (SHF, EHF, mmWave) & El corrimiento es proporcional a $f_t$. Enlaces Ku/Ka y 5G mmWave sufren corrimientos de cientos de kHz a MHz. \\
+Enlaces con alta movilidad relativa & Satélites LEO/MEO, comunicaciones aeronáuticas, trenes de alta velocidad, telemetría de lanzadores. \\
+Sistemas de banda angosta & Si el corrimiento es comparable al ancho de banda del canal, la señal se sale del filtro del receptor. \\
+OFDM con subportadoras muy juntas & Se rompe la ortogonalidad y aparece ICI. LTE usa $15$~kHz de separación: unos pocos kHz de Doppler ya son problemáticos. \\
+Modulaciones coherentes de alto orden & 64-QAM, 256-QAM y APSK dependen de una referencia de fase estable. \\
+Sistemas GNSS & El receptor GPS debe buscar en un espacio bidimensional código-frecuencia por el Doppler de los satélites ($\pm 5$~kHz típicos). \\
+\hline
+\end{tabular}
+\end{center}
+
+\subsubsection*{Transmisiones más resilientes}
+
+\begin{center}
+\begin{tabular}{p{0.34\textwidth} p{0.58\textwidth}}
+\hline
+\textbf{Categoría} & \textbf{Justificación} \\
+\hline
+Medios guiados (par trenzado, coaxial, fibra) & No hay movimiento relativo entre extremos: Doppler nulo. Inmunes por definición. \\
+Bandas bajas (VLF a VHF) & El corrimiento absoluto es pequeño: un móvil a $100$~km/h en $100$~MHz genera unos $9$~Hz. \\
+Modulaciones diferenciales y no coherentes & DPSK y FSK no coherente no necesitan referencia absoluta de fase. \\
+FSK con gran separación de tonos & Si $\Delta f \gg f_d$, el corrimiento no confunde los símbolos. \\
+Espectro ensanchado (DSSS, FHSS) & El ancho de banda es mucho mayor que el corrimiento y el receptor incorpora búsqueda en frecuencia. \\
+OFDM con numerología ancha & 5G NR permite separaciones de $30$, $60$ y $120$~kHz precisamente para tolerar Doppler alto. \\
+Sistemas con AFC, pilotos o precompensación & Lazos de control automático de frecuencia, subportadoras piloto o precorrección por efemérides (Starlink, Iridium). \\
+Tasas de símbolo altas & Menor relación $f_d / R_s$: la fase rota menos dentro de cada símbolo. \\
+\hline
+\end{tabular}
+\end{center}
+
+\subsection*{c) ¿Por qué no se debe encender el celular arriba de un avión? ¿Tiene algo que ver el fenómeno anterior?}
+
+Existen tres familias de razones, y el efecto Doppler participa, aunque no es la principal.
+
+\subsubsection*{1. Interferencia electromagnética (EMI) con la aviónica}
+
+\begin{itemize}
+  \item Todo transmisor genera emisiones espurias, armónicos y productos de
+        intermodulación fuera de su banda asignada. Algunos pueden caer en bandas
+        críticas de navegación: VOR ($108$--$118$~MHz), ILS ($108$--$112$~MHz y
+        $328$--$335$~MHz), VHF~COM ($118$--$137$~MHz), GPS~L1 ($1575{,}42$~MHz) y
+        radioaltímetro ($4{,}2$--$4{,}4$~GHz).
+  \item El fuselaje actúa como cavidad resonante y el cableado de aviónica corre cerca de
+        la cabina de pasajeros.
+  \item Nunca se demostró causalidad concluyente, pero se aplica el \textbf{principio de
+        precaución}: el costo de un falso negativo durante una aproximación por
+        instrumentos es catastrófico.
+  \item Caso concreto y reciente: el despliegue de 5G en banda~C ($3{,}7$--$3{,}98$~GHz)
+        en EE.UU. obligó a restringir operaciones por su amenaza a los radioaltímetros,
+        usados en aterrizajes CAT~II/III.
+\end{itemize}
+
+\subsubsection*{2. Razones de la red celular terrestre}
+
+\begin{itemize}
+  \item A $10\,000$~m de altura el terminal tiene línea de vista directa a decenas o
+        cientos de estaciones base simultáneamente, rompiendo la premisa de
+        \textbf{reutilización de frecuencias} sobre la que se diseña la red celular.
+  \item Ocupa recursos de radio en muchas celdas a la vez y dispara actualizaciones de
+        ubicación y \emph{handovers} en cascada a $900$~km/h.
+  \item Al estar lejos de cualquier celda, transmite a potencia máxima de forma continua,
+        lo que agrava la EMI y el consumo.
+\end{itemize}
+
+\subsubsection*{3. Vínculo con el fenómeno de los puntos anteriores}
+
+Aquí es donde el efecto Doppler entra en juego de forma directa:
+
+\begin{itemize}
+  \item A $900$~km/h ($250$~m/s) y en $1800$~MHz, el corrimiento vale
+        \begin{equation}
+          f_d = \frac{250}{3 \times 10^{8}} \cdot 1{,}8 \times 10^{9} \approx 1{,}5~\text{kHz}
+        \end{equation}
+        y el cambio de signo al sobrevolar la celda implica un salto abrupto de $3$~kHz.
+        Las redes GSM y LTE están homologadas para velocidades de hasta
+        $250$--$350$~km/h; por encima de eso los lazos de sincronización de las estaciones
+        base pierden el enganche.
+  \item Se suma un problema de \textbf{retardo de propagación}: el \emph{timing advance}
+        de GSM limita el radio de celda a unos $35$~km. Desde $10$~km de altura la
+        distancia oblicua a muchas celdas supera ese límite, con lo que las ráfagas del
+        terminal caen fuera de su \emph{time slot} TDMA y corrompen las ranuras de otros
+        usuarios.
+\end{itemize}
+
+\subsubsection*{4. Razón operativa}
+
+Durante el despegue y el aterrizaje, que son las fases críticas del vuelo, se exige
+atención a las instrucciones de la tripulación y objetos asegurados.
+
+\subsubsection*{Situación actual}
+
+El ``modo avión'' resuelve el problema desactivando los transmisores del dispositivo.
+Muchas aerolíneas ofrecen conectividad mediante \textbf{picoceldas a bordo}: el celular ve
+una celda a pocos metros, transmite a potencia mínima y no alcanza la red terrestre. Desde
+2013 la FAA y desde 2014 la EASA permiten el uso de dispositivos electrónicos en todas las
+fases del vuelo, siempre en modo avión.
+
 
 \section{Ítem 2: Análisis del segundo fenómeno físico}
 
