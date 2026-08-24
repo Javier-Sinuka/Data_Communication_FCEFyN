@@ -62,6 +62,42 @@
 
 \section{Ítem 2: Análisis del segundo fenómeno físico}
 
+\subsection{Fenómeno y características principales}
+
+La figura representa la incorporación de \textbf{ruido electromagnético} ---o
+interferencia no intencional--- en un canal de comunicación. La perturbación se
+superpone a la señal útil durante la propagación y distorsiona su forma de onda;
+puede modificar sus valores instantáneos de amplitud y fase, y dificultar la
+decisión correcta de los símbolos en el receptor. Su efecto depende de la
+potencia, el espectro y la duración del ruido respecto de los de la señal útil.
+
+\subsection{Efecto según las bandas y tipos de transmisión}
+
+El ruido atmosférico y el producido por fuentes eléctricas humanas tiene una
+incidencia especialmente relevante en las bandas LF, MF y HF, donde puede elevar
+el nivel de ruido recibido. En VHF, UHF y SHF suele disminuir la contribución de
+ese ruido externo, y pueden emplearse antenas más directivas y filtrado más
+selectivo; sin embargo, dichas bandas no son inmunes, ya que la relación entre
+la potencia recibida y el ruido continúa determinando la calidad del enlace.
+Los enlaces por fibra óptica son los más resilientes frente a la interferencia
+electromagnética, mientras que los medios inalámbricos y los conductores
+eléctricos sin apantallamiento adecuado son más susceptibles.
+
+\subsection{Relación señal a ruido y tasa de error de bits}
+
+La \textbf{relación señal a ruido} (SNR, \emph{Signal-to-Noise Ratio}) cuantifica
+la relación entre la potencia media de la señal útil y la del ruido en el punto
+de recepción; usualmente se expresa en decibeles:
+
+\[
+    \mathrm{SNR}_{\mathrm{dB}}=10\log_{10}\left(\frac{P_s}{P_n}\right).
+\]
+
+No es equivalente al \textbf{BER} definido en el TP1, que mide la proporción de
+bits recibidos erróneamente. No obstante, ambos conceptos están directamente
+relacionados: para una modulación, codificación y receptor dados, una SNR mayor
+incrementa la separación efectiva entre símbolos y, en general, reduce el BER.
+
 
 \section{Ítem 3: Transmisión digital frente al ruido y los cambios de frecuencia}
 
