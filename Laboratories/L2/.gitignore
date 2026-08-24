@@ -36,6 +36,5 @@
 *.backup
 *~
 
-# Mantener los fuentes y PDFs
+# Mantener solo los fuentes
 !*.tex
-!*.pdf

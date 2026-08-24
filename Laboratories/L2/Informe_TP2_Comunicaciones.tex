@@ -65,8 +65,76 @@
 
 \section{Ítem 3: Transmisión digital frente al ruido y los cambios de frecuencia}
 
+\subsection*{Detección y corrección de errores producidos por ruido}
+
+La transmisión digital representa la información mediante un conjunto discreto de valores (por ejemplo, 0 y 1), lo que otorga una ventaja fundamental frente al ruido: mientras la perturbación no supere un umbral de decisión, el receptor puede regenerar perfectamente la señal original. Además, los sistemas digitales incorporan mecanismos formales de \textbf{control de errores}:
+
+\begin{itemize}
+  \item \textbf{Detección de errores:} se agregan bits redundantes calculados a partir de los datos (por ejemplo, bits de paridad, CRC o sumas de verificación). El receptor recalcula el valor de control y, si no coincide con el recibido, sabe que hubo un error y puede solicitar la retransmisión (esquema ARQ).
+  \item \textbf{Corrección directa (FEC):} códigos como Hamming o Reed-Solomon añaden suficiente redundancia para que el receptor no solo detecte sino también \emph{corrija} ciertos errores sin necesidad de retransmisión, lo que es especialmente útil en canales de alto retardo (por ejemplo, comunicaciones satelitales).
+\end{itemize}
+
+\subsection*{Compensación de cambios en la frecuencia}
+
+Los cambios en la frecuencia portadora (desplazamiento Doppler, inestabilidad de osciladores, etc.) pueden provocar que la señal recibida esté desplazada respecto de la esperada. Para compensarlo se emplean:
+
+\begin{itemize}
+  \item \textbf{Bucles de enganche de fase (PLL):} permiten que el receptor se sincronice continuamente con la frecuencia y fase de la portadora recibida, rastreando variaciones lentas.
+  \item \textbf{Estimación de canal y ecualización:} mediante secuencias de entrenamiento conocidas (pilotos), el receptor estima el desplazamiento frecuencial y corrige la demodulación en consecuencia.
+  \item \textbf{OFDM con subportadoras:} dividir el espectro en muchas subportadoras estrechas hace que cada una experimente un canal casi plano, reduciendo la sensibilidad a variaciones frecuenciales selectivas.
+\end{itemize}
+
 
 \section{Ítem 4: Interpretación de la información decodificada}
+
+\subsection{Sincronización en una comunicación digital}
+
+En una comunicación digital, \textbf{sincronización} es el proceso mediante el cual emisor y receptor se ponen de acuerdo en el \emph{tiempo}: el receptor debe saber exactamente cuándo muestrear cada símbolo recibido para interpretar correctamente la información. Sin sincronización, los límites entre bits o tramas se vuelven ambiguos y los datos decodificados resultan erróneos.
+
+\begin{itemize}
+  \item \textbf{Sincronización de bits (nivel de símbolo):} el receptor recupera el \emph{reloj de bit}, es decir, determina la tasa y los instantes de muestreo correctos para leer cada bit. Se logra mediante técnicas como la codificación con transiciones frecuentes (Manchester, NRZ-I) o circuitos PLL que se enganchen a las transiciones de la señal.
+  \item \textbf{Sincronización de trama:} una vez sincronizados a nivel de bit, el receptor debe identificar los \emph{límites de la trama}, es decir, dónde comienza y termina cada unidad de datos de capa superior. Para ello se recurre a patrones especiales (flags, preámbulos o campos de longitud) que marcan el inicio o fin de cada trama.
+\end{itemize}
+
+En resumen, la sincronización de bits opera a nivel de señal física, mientras que la sincronización de trama opera a nivel lógico/protocolo.
+
+\subsection{La trama (frame): estructura y componentes}
+
+Una \textbf{trama} es la unidad de datos de la capa de enlace de datos. Es el bloque que se transmite de un nodo al siguiente dentro de un mismo segmento de red. Su estructura típica incluye tres regiones:
+
+\begin{itemize}
+  \item \textbf{Encabezado (header):} precede a los datos útiles. Contiene información de control necesaria para la entrega correcta de la trama: direcciones origen y destino (MAC), tipo de protocolo de capa superior, número de secuencia, flags de control, etc.
+  \item \textbf{Carga útil (payload):} es el contenido real que se desea comunicar, es decir, el paquete de capa de red (u otro dato encapsulado) que el enlace transporta de extremo a extremo del segmento.
+  \item \textbf{Tráiler (trailer):} se ubica al final de la trama y generalmente contiene información para la \emph{detección de errores}, como el CRC (\emph{Cyclic Redundancy Check}) o el FCS (\emph{Frame Check Sequence}). Algunos protocolos incluyen también un delimitador de fin de trama.
+\end{itemize}
+
+\subsection{El preámbulo}
+
+Un \textbf{preámbulo} es una secuencia de bits fija, colocada \emph{antes} del encabezado, que el receptor usa con fines de sincronización y detección del inicio de trama. Sus funciones principales son:
+
+\begin{itemize}
+  \item Permitir que el receptor sincronice su reloj de bit con la señal entrante (sincronización de bits).
+  \item Indicar que una trama está por comenzar (sincronización de trama).
+  \item En algunos protocolos, permitir la estimación inicial del canal.
+\end{itemize}
+
+El preámbulo \textbf{no forma parte de la información útil} que se desea transmitir: es overhead de protocolo, añadido por la capa de enlace y descartado por el receptor una vez cumplida su función. Por ejemplo, Ethernet 802.3 utiliza un preámbulo de 7 bytes con patrón alternante (\texttt{10101010...}) seguido de un \emph{Start Frame Delimiter} (\texttt{10101011}).
+
+\subsection{Métodos para delimitar tramas}
+
+Un problema central en la capa de enlace es determinar dónde termina una trama. Los principales métodos son:
+
+\begin{enumerate}
+  \item \textbf{Longitud fija:} todas las tramas tienen exactamente el mismo número de bytes. El receptor simplemente lee ese número fijo de bytes y los trata como una trama completa. Es simple de implementar, pero desperdicia ancho de banda cuando los datos son menores al tamaño fijo y no tolera la pérdida de sincronización. Ejemplo: las celdas ATM (53 bytes fijos).
+
+  \item \textbf{Campo de longitud explícita:} el encabezado incluye un campo numérico que indica cuántos bytes tiene la carga útil (o la trama completa). El receptor lee ese campo y sabe exactamente cuántos bytes debe leer a continuación. Es flexible y eficiente, pero requiere que el campo de longitud no se corrompa. Ejemplo: Ethernet II incluye en el encabezado un campo \emph{EtherType/Length}.
+
+  \item \textbf{Caracteres o secuencias delimitadoras:} se utilizan patrones de bits especiales para marcar el inicio y/o fin de una trama.
+    \begin{itemize}
+      \item \emph{Byte stuffing} (enmarcado por caracteres): se designa un byte especial como delimitador de trama (\emph{flag}). Si ese byte aparece en los datos, se lo ``escapa'' insertando un byte adicional (\emph{stuffing}), el cual el receptor elimina. Ejemplo: el protocolo PPP usa \texttt{0x7E} como flag y \texttt{0x7D} como escape.
+      \item \emph{Bit stuffing} (enmarcado por bits): se define una secuencia de bits como bandera (por ejemplo, \texttt{01111110} en HDLC). Si esa secuencia aparece en los datos, el transmisor inserta un bit \texttt{0} adicional después de cinco unos consecutivos; el receptor lo elimina al procesar la trama.
+    \end{itemize}
+\end{enumerate}
 
 
 \section{Ítem 5: Extracción y reconstrucción de datos serializados}
