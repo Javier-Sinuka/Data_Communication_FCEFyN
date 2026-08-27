@@ -59,7 +59,7 @@
 
 \section{Ítem 1: Análisis del primer fenómeno físico}
 
-\subsection*{a) ¿Qué fenómeno físico se está representando? ¿Cuáles son sus características principales?}
+\subsection{¿Qué fenómeno físico se está representando? ¿Cuáles son sus características principales?}
 
 La Figura representa el \textbf{efecto Doppler} (o corrimiento Doppler) en un enlace
 satelital. La onda dibujada entre el buque y el satélite presenta una longitud de onda
@@ -140,7 +140,7 @@ permanente respecto de la superficie terrestre.
 En el caso concreto de la Figura, el buque se desplaza a $\sim 10$~m/s (aporte
 despreciable), mientras que es el satélite el que domina el fenómeno.
 
-\subsection*{b) ¿A qué tipos de transmisión afecta más este fenómeno? ¿Cuáles son más resilientes?}
+\subsection{¿A qué tipos de transmisión afecta más este fenómeno? ¿Cuáles son más resilientes?}
 
 \subsubsection*{Transmisiones más afectadas}
 
@@ -178,11 +178,11 @@ Tasas de símbolo altas & Menor relación $f_d / R_s$: la fase rota menos dentro
 \end{tabular}
 \end{center}
 
-\subsection*{c) ¿Por qué no se debe encender el celular arriba de un avión? ¿Tiene algo que ver el fenómeno anterior?}
+\subsection{¿Por qué no se debe encender el celular arriba de un avión? ¿Tiene algo que ver el fenómeno anterior?}
 
 Existen tres familias de razones, y el efecto Doppler participa, aunque no es la principal.
 
-\subsubsection*{1. Interferencia electromagnética (EMI) con la aviónica}
+\subsubsection*{Interferencia electromagnética (EMI) con la aviónica}
 
 \begin{itemize}
   \item Todo transmisor genera emisiones espurias, armónicos y productos de
@@ -200,7 +200,7 @@ Existen tres familias de razones, y el efecto Doppler participa, aunque no es la
         usados en aterrizajes CAT~II/III.
 \end{itemize}
 
-\subsubsection*{2. Razones de la red celular terrestre}
+\subsubsection*{Razones de la red celular terrestre}
 
 \begin{itemize}
   \item A $10\,000$~m de altura el terminal tiene línea de vista directa a decenas o
@@ -212,7 +212,7 @@ Existen tres familias de razones, y el efecto Doppler participa, aunque no es la
         lo que agrava la EMI y el consumo.
 \end{itemize}
 
-\subsubsection*{3. Vínculo con el fenómeno de los puntos anteriores}
+\subsubsection*{Vínculo con el fenómeno de los puntos anteriores}
 
 Aquí es donde el efecto Doppler entra en juego de forma directa:
 
@@ -232,7 +232,7 @@ Aquí es donde el efecto Doppler entra en juego de forma directa:
         usuarios.
 \end{itemize}
 
-\subsubsection*{4. Razón operativa}
+\subsubsection*{Razón operativa}
 
 Durante el despegue y el aterrizaje, que son las fases críticas del vuelo, se exige
 atención a las instrucciones de la tripulación y objetos asegurados.
@@ -287,7 +287,7 @@ incrementa la separación efectiva entre símbolos y, en general, reduce el BER.
 
 \section{Ítem 3: Transmisión digital frente al ruido y los cambios de frecuencia}
 
-\subsection*{Detección y corrección de errores producidos por ruido}
+\subsection{Detección y corrección de errores producidos por ruido}
 
 La transmisión digital representa la información mediante un conjunto discreto de valores (por ejemplo, 0 y 1), lo que otorga una ventaja fundamental frente al ruido: mientras la perturbación no supere un umbral de decisión, el receptor puede regenerar perfectamente la señal original. Además, los sistemas digitales incorporan mecanismos formales de \textbf{control de errores}:
 
@@ -296,7 +296,7 @@ La transmisión digital representa la información mediante un conjunto discreto
   \item \textbf{Corrección directa (FEC):} códigos como Hamming o Reed-Solomon añaden suficiente redundancia para que el receptor no solo detecte sino también \emph{corrija} ciertos errores sin necesidad de retransmisión, lo que es especialmente útil en canales de alto retardo (por ejemplo, comunicaciones satelitales).
 \end{itemize}
 
-\subsection*{Compensación de cambios en la frecuencia}
+\subsection{Compensación de cambios en la frecuencia}
 
 Los cambios en la frecuencia portadora (desplazamiento Doppler, inestabilidad de osciladores, etc.) pueden provocar que la señal recibida esté desplazada respecto de la esperada. Para compensarlo se emplean:
 
@@ -360,6 +360,65 @@ Un problema central en la capa de enlace es determinar dónde termina una trama.
 
 
 \section{Ítem 5: Extracción y reconstrucción de datos serializados}
+
+\subsection{Identificación de la carga útil correspondiente al grupo}
+
+Se utilizó el formato de trama definido en la consigna:
+
+\[
+\texttt{GROUP (40 bits)} + \texttt{SEQ (8 bits)} + \texttt{LENGTH (8 bits)} + \texttt{PAYLOAD}.
+\]
+
+El identificador del grupo \textbf{MiLANesas} se obtiene tomando sus primeros
+cinco caracteres en minúsculas, por lo que \texttt{GROUP = milan}. Se buscó esta
+secuencia de cinco bytes en \texttt{frames.bin}; el byte siguiente se interpretó
+como \texttt{SEQ}, el posterior como \texttt{LENGTH} y se leyeron a continuación
+tantos bytes como indicó este último campo.
+
+\subsubsection*{Implementación utilizada}
+
+El script \texttt{decoder.py} automatiza este procedimiento. Primero lee
+\texttt{frames.bin} como una secuencia de bytes y genera el patrón ASCII
+\texttt{milan}. Luego recorre el archivo mediante \texttt{find()}, identifica
+cada coincidencia del campo \texttt{GROUP} y obtiene \texttt{SEQ} y
+\texttt{LENGTH} en los desplazamientos $+5$ y $+6$, respectivamente. Con estos
+valores extrae el intervalo correspondiente al \texttt{PAYLOAD}, almacena cada
+paquete y finalmente los ordena por \texttt{SEQ} para mostrar los datos en el
+orden de reconstrucción.
+
+\begin{table}[H]
+\centering
+\begin{tabular}{ll}
+\toprule
+\textbf{Campo} & \textbf{Valor obtenido} \\
+\midrule
+\texttt{GROUP} & \texttt{milan} \\
+\texttt{SEQ} & 17 \\
+\texttt{LENGTH} & 2 bytes \\
+\texttt{PAYLOAD} & \texttt{ho} \\
+\bottomrule
+\end{tabular}
+\caption{Carga útil identificada para el grupo MiLANesas.}
+\end{table}
+
+Por lo tanto, la carga útil correspondiente al grupo es \texttt{ho}. Estos
+valores constituyen la información a registrar en la pestaña del grupo de la
+planilla compartida.
+
+\subsection{Reorganización de los paquetes y reconstrucción de la información final}
+
+Para reconstruir el mensaje se extrajeron los campos \texttt{GROUP},
+\texttt{SEQ}, \texttt{LENGTH} y \texttt{PAYLOAD} de todos los paquetes. Luego,
+se ordenaron ascendentemente según \texttt{SEQ} y se concatenaron las cargas
+útiles respetando ese orden. El resultado es:
+
+\begin{center}
+\url{https://www.youtube.com/shorts/dbbe_ln6Lnw}
+\end{center}
+
+Durante el análisis se observaron secuencias faltantes y una secuencia
+duplicada. No obstante, el orden de los fragmentos disponibles y la estructura
+del enlace permiten reconstruir la cadena final de forma inequívoca.
 
 
 \end{document}
