@@ -1,0 +1,100 @@
+\documentclass[12pt,a4paper]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[spanish,es-nodecimaldot]{babel}
+\usepackage{lmodern}
+\usepackage{textcomp}
+\usepackage{amsmath,amssymb}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{float}
+\usepackage{xcolor}
+\usepackage{microtype}
+\usepackage{tikz}
+\usepackage[hidelinks]{hyperref}
+\usepackage[a4paper,margin=2.5cm]{geometry}
+
+\usetikzlibrary{arrows.meta,babel,calc}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.65em}
+\setcounter{tocdepth}{3}
+\renewcommand{\arraystretch}{1.25}
+
+\begin{document}
+\hypersetup{pageanchor=false}
+
+\begin{titlepage}
+\centering
+\textbf{UNIVERSIDAD NACIONAL DE CÓRDOBA}\par
+\vspace{0.5em}
+\textbf{Facultad de Ciencias Exactas, Físicas y Naturales}\par
+\vspace{0.5em}
+\textbf{Ingeniería en Computación}\par
+\vfill
+{\LARGE\bfseries Trabajo Práctico N.\textsuperscript{o} 3\par}
+\vspace{1.5em}
+{\Large\bfseries Capas de enlace de datos, red y transporte\par}
+\vfill
+\begin{tabular}{@{}ll@{}}
+\textbf{Asignatura:} & Redes de Computadoras \\
+\textbf{Grupo:} & MiLANesas \\
+\textbf{Alumnos:} &
+  \begin{tabular}[t]{@{}ll@{}}
+  Tomas Brigido & Kevin Cufre \\
+  Rocco Delgado & Facundo Lugones \\
+  Javier Siñuka & Agustin Tosolini
+  \end{tabular} \\
+\textbf{Fecha:} & Septiembre de 2026
+\end{tabular}
+\vfill
+\end{titlepage}
+
+\hypersetup{pageanchor=true}
+\pagenumbering{roman}
+\tableofcontents
+\clearpage
+\pagenumbering{arabic}
+
+\section{Ítem 1: Organización de la información dentro de una red local}
+
+\subsection{¿Qué función cumple la capa de enlace dentro del modelo OSI? ¿Qué tipo de comunicación resuelve?}
+
+\subsection{¿Qué es una dirección MAC? ¿En qué se diferencia de una dirección IP?}
+
+\subsection{¿Qué es una trama Ethernet? Identificar sus principales campos y explicar brevemente para qué sirve cada uno.}
+
+\subsection{¿Qué información permite determinar qué protocolo de capa superior está transportando una trama Ethernet?}
+
+\section{Ítem 2: Captura y análisis de tráfico con Wireshark}
+
+\subsection{Seleccionar una trama Ethernet e identificar las direcciones MAC de origen y destino. ¿A qué dispositivos creen que corresponden?}
+
+\subsection{Dentro de la misma trama, identificar el paquete IP. ¿Cuáles son las direcciones IP de origen y destino?}
+
+\subsection{Comparar las direcciones MAC y las direcciones IP encontradas. ¿Representan lo mismo?}
+
+\subsection{Observar el campo EtherType. ¿Qué protocolo está encapsulado dentro de la trama analizada?}
+
+\section{Ítem 3: Transporte de información mediante TCP}
+
+\subsection{¿Qué problema(s) resuelve TCP que no resuelve directamente Ethernet ni IP?}
+
+\subsection{Investigar los campos más importantes de la metadata en un frame TCP. ¿Para qué sirve cada uno?}
+
+\subsection{Explicar el Three-way y Four-way handshake en TCP.}
+
+\subsection{Iniciar la conexión enviando un paquete, capturar el handshake y el paquete de datos. Analizar el paquete de datos, sus distintas partes y encontrar la carga útil del paquete usando Wireshark.}
+
+\subsection{Finalizar la conexión y capturar el Four-way handshake.}
+
+\subsection{¿Qué conclusión podemos sacar de que sea tan fácil ver un paquete que viaja a través de la red?}
+
+\section{Ítem 4: Comunicación con un servidor remoto mediante PacketSender}
+
+\subsection{Iniciar una conexión con el servidor y obtener respuestas para los comandos admitidos: hola, ping, tic y status.}
+
+\subsection{Iniciar la conexión, enviar el comando correspondiente al grupo y documentar la respuesta del servidor.}
+
+\end{document}
