@@ -1,4 +1,4 @@
-\documentclass[12pt,a4paper]{article}
+   \documentclass[12pt,a4paper]{article}
 
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
@@ -11,6 +11,7 @@
 \usepackage{float}
 \usepackage{xcolor}
 \usepackage{microtype}
+\usepackage{graphicx}
 \usepackage{tikz}
 \usepackage[hidelinks]{hyperref}
 \usepackage[a4paper,margin=2.5cm]{geometry}
@@ -81,15 +82,138 @@
 
 \subsection{¿Qué problema(s) resuelve TCP que no resuelve directamente Ethernet ni IP?}
 
+Tanto Ethernet (capa de enlace) como IP (capa de red) ofrecen un servicio de entrega \textbf{no confiable y sin conexión}: los paquetes pueden perderse, duplicarse, llegar desordenados o corromperse, y ninguno de esos protocolos lo detecta ni lo corrige automáticamente.
+
+TCP (Transmission Control Protocol), operando en la capa de transporte, resuelve los siguientes problemas:
+
+\begin{itemize}
+  \item \textbf{Entrega confiable:} mediante números de secuencia y acuses de recibo (ACK), TCP detecta segmentos perdidos y los retransmite.
+  \item \textbf{Orden de llegada:} los segmentos se reensamblan en el receptor en el orden correcto, independientemente del orden en que llegaron.
+  \item \textbf{Control de flujo:} el receptor indica al emisor cuántos bytes puede aceptar (campo \textit{Window Size}), evitando que lo desborde.
+  \item \textbf{Control de congestión:} TCP adapta la tasa de envío cuando detecta congestión en la red (algoritmos como \textit{slow start} y \textit{congestion avoidance}).
+  \item \textbf{Comunicación orientada a conexión:} establece y cierra sesiones de forma explícita (handshakes), lo que permite mantener estado en ambos extremos.
+  \item \textbf{Detección de errores:} incluye un checksum obligatorio sobre la cabecera y los datos.
+\end{itemize}
+
 \subsection{Investigar los campos más importantes de la metadata en un frame TCP. ¿Para qué sirve cada uno?}
+
+Un segmento TCP tiene una cabecera mínima de 20 bytes. Sus campos principales son:
+
+\begin{table}[H]
+\centering
+\begin{tabular}{@{}lp{9cm}@{}}
+\toprule
+\textbf{Campo} & \textbf{Descripción} \\
+\midrule
+Puerto origen & Identifica el proceso emisor en el host origen (16 bits). \\
+Puerto destino & Identifica el proceso receptor en el host destino (16 bits). \\
+Número de secuencia & Indica el byte del flujo al que corresponde el primer byte de datos del segmento (32 bits). \\
+Número de ACK & Indica el próximo byte que el receptor espera recibir; confirma la recepción de todos los bytes anteriores (32 bits). \\
+Data offset & Longitud de la cabecera TCP en palabras de 32 bits; permite ubicar dónde comienzan los datos. \\
+Flags & Bits de control: \textbf{SYN} (sincronización), \textbf{ACK} (confirmación), \textbf{FIN} (cierre), \textbf{RST} (reset), \textbf{PSH} (envío inmediato), \textbf{URG} (datos urgentes). \\
+Window size & Cantidad de bytes que el receptor está dispuesto a aceptar sin ACK (control de flujo, 16 bits). \\
+Checksum & Verificación de integridad de la cabecera y los datos (16 bits). \\
+Urgent pointer & Indica el desplazamiento al último byte urgente; solo válido si el flag URG está activo. \\
+\bottomrule
+\end{tabular}
+\caption{Campos principales de la cabecera TCP.}
+\end{table}
 
 \subsection{Explicar el Three-way y Four-way handshake en TCP.}
 
+\textbf{Three-way handshake (establecimiento de conexión):}
+
+El three-way handshake es el proceso mediante el cual cliente y servidor sincronizan sus números de secuencia iniciales y acuerdan los parámetros de la conexión antes de intercambiar datos:
+
+\begin{enumerate}
+  \item \textbf{SYN:} el cliente envía un segmento con el flag SYN activo y un número de secuencia inicial aleatorio ($seq = x$).
+  \item \textbf{SYN-ACK:} el servidor responde con SYN y ACK activos, confirma el número del cliente ($ack = x+1$) y anuncia su propio número de secuencia inicial ($seq = y$).
+  \item \textbf{ACK:} el cliente confirma el número del servidor ($ack = y+1$). La conexión queda establecida y ambos lados pueden enviar datos.
+\end{enumerate}
+
+\textbf{Four-way handshake (cierre de conexión):}
+
+Como TCP es full-duplex, cada extremo debe cerrar su mitad de la conexión de forma independiente:
+
+\begin{enumerate}
+  \item \textbf{FIN:} el extremo que desea cerrar (por ejemplo, el cliente) envía un segmento con el flag FIN activo.
+  \item \textbf{ACK:} el otro extremo (servidor) confirma el FIN. En este punto el servidor aún puede seguir enviando datos.
+  \item \textbf{FIN:} cuando el servidor también termina de enviar, envía su propio FIN.
+  \item \textbf{ACK:} el cliente confirma el FIN del servidor. La conexión queda completamente cerrada.
+\end{enumerate}
+
 \subsection{Iniciar la conexión enviando un paquete, capturar el handshake y el paquete de datos. Analizar el paquete de datos, sus distintas partes y encontrar la carga útil del paquete usando Wireshark.}
+
+Utilizando dos instancias de la herramienta \textbf{PacketSender} (una actuando como cliente y otra como servidor en la misma computadora), se estableció una conexión TCP por la interfaz de loopback (\texttt{127.0.0.1}) en el puerto \texttt{61361}, capturando el tráfico generado con Wireshark. 
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{capture_3_4_packetsender_servidor.png}
+    \caption{Configuración de PacketSender (instancia Servidor).}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{capture_3_4_packetsender_cliente.png}
+    \caption{Configuración de PacketSender (instancia Cliente).}
+\end{figure}
+
+En primer lugar, se observa el \textit{three-way handshake} mediante el cual se establece la conexión TCP:
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{three_ways_handshake.png}
+    \caption{Captura del Three-way handshake inicial en Wireshark (loopback).}
+\end{figure}
+
+Como se aprecia en la captura superior, la conexión se establece mediante tres paquetes fundamentales:
+\begin{enumerate}
+    \item \textbf{Paquete SYN:} El cliente (puerto origen 57382) solicita abrir la conexión al servidor.
+    \item \textbf{Paquete SYN, ACK:} El servidor (puerto 61361) responde aceptando la conexión y sincronizando los números de secuencia.
+    \item \textbf{Paquete ACK:} El cliente confirma la recepción, quedando la conexión TCP establecida.
+\end{enumerate}
+
+Inmediatamente después del establecimiento, se envía el paquete de datos (\texttt{PSH, ACK}) conteniendo el mensaje. A continuación se analiza en detalle este paquete y su respectiva confirmación:
+
+\begin{figure}[H]
+    \centering
+    \makebox[\textwidth][c]{\includegraphics[width=1.15\textwidth]{capture_3_4_payload.png}}
+    \caption{Análisis del paquete de datos y su carga útil (Data).}
+\end{figure}
+
+Al seleccionar este paquete de datos en Wireshark, identificamos sus distintas capas encapsuladas:
+\begin{itemize}
+    \item \textbf{Capa de Enlace (Null/Loopback):} Al ser tráfico local, no viaja por Ethernet físico sino por una interfaz virtual de loopback.
+    \item \textbf{Capa de Red (IPv4):} Indica que tanto la IP de origen como la de destino son la misma (\texttt{127.0.0.1}), confirmando que es tráfico interno.
+    \item \textbf{Capa de Transporte (TCP):} Muestra el puerto de origen dinámico asignado al cliente (\texttt{57382}) y el puerto de destino del servidor PacketSender (\texttt{61361}).
+    \item \textbf{Carga Útil (Payload):} Desplegando la sección \textit{Data} al final de la pila de protocolos, encontramos la carga útil. Esta contiene la información transferida propiamente dicha, es decir, el texto o mensaje enviado desde el cliente hacia el servidor (por ejemplo, "Hola" o el nombre del grupo).
+\end{itemize}
 
 \subsection{Finalizar la conexión y capturar el Four-way handshake.}
 
+Una vez que PacketSender finaliza la transmisión de datos, se produce el cierre ordenado de la conexión mediante el \textit{four-way handshake}.
+
+En la captura se pueden observar los paquetes de finalización al final del flujo, donde el equipo local y el servidor intercambian segmentos con las banderas \texttt{FIN} (indicando que ya no hay más datos para enviar) y \texttt{ACK} (confirmando la recepción de la solicitud de cierre del otro extremo), hasta que la conexión queda completamente cerrada en ambos extremos.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{four_ways_handshake.png}
+    \caption{Captura del Four-way handshake cerrando la conexión TCP (paquetes con flag FIN y ACK).}
+\end{figure}
+
 \subsection{¿Qué conclusión podemos sacar de que sea tan fácil ver un paquete que viaja a través de la red?}
+
+El hecho de que herramientas como Wireshark permitan capturar e inspeccionar cualquier paquete que circula por la red local pone de manifiesto una limitación fundamental: \textbf{TCP/IP no cifra los datos por defecto}. La información viaja en texto plano y cualquier dispositivo en el mismo segmento de red puede interceptarla y leerla sin mayor dificultad.
+
+Esto tiene implicancias importantes en materia de seguridad:
+
+\begin{itemize}
+  \item Datos sensibles como contraseñas, cookies de sesión o información personal pueden ser capturados mediante ataques de tipo \textit{sniffing} o \textit{man-in-the-middle}.
+  \item Protocolos como HTTP, FTP o Telnet son especialmente vulnerables ya que transmiten todo en texto plano.
+  \item La solución adoptada por la industria es cifrar el contenido en la capa de aplicación mediante TLS/SSL (HTTPS, SFTP, SSH, etc.), de modo que aunque el atacante capture los paquetes, los datos sean ilegibles.
+\end{itemize}
+
+En conclusión, la facilidad de captura de tráfico demuestra que la seguridad en redes no puede depender únicamente del modelo TCP/IP, sino que requiere capas adicionales de cifrado y autenticación.
 
 \section{Ítem 4: Comunicación con un servidor remoto mediante PacketSender}
 
