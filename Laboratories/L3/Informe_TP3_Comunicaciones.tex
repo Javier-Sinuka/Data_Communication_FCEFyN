@@ -9,6 +9,7 @@
 \usepackage{booktabs}
 \usepackage{array}
 \usepackage{float}
+\usepackage{graphicx}
 \usepackage{xcolor}
 \usepackage{microtype}
 \usepackage{tikz}
@@ -69,13 +70,74 @@
 
 \section{Ítem 2: Captura y análisis de tráfico con Wireshark}
 
+Para el desarrollo de esta actividad, se realizó una captura de tráfico de red en la interfaz local utilizando el software Wireshark. A partir de los paquetes capturados, se seleccionó para su análisis la trama identificada como \textbf{Frame 271}, correspondiente a un segmento de comunicación TCP entre el host local y un servidor remoto.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.98\textwidth]{capturaWire.png}
+    \caption{Captura de tráfico en Wireshark y desglose de la trama Ethernet II (Frame 271).}
+    \label{fig:captura_wireshark}
+\end{figure}
+
 \subsection{Seleccionar una trama Ethernet e identificar las direcciones MAC de origen y destino. ¿A qué dispositivos creen que corresponden?}
+
+Al inspeccionar la cabecera Ethernet II de la trama seleccionada (Frame 271), se identifican los siguientes campos de direccionamiento físico:
+
+\begin{itemize}
+    \item \textbf{Dirección MAC de Origen (Source MAC):} \texttt{a0:ad:9f:13:dd:5b} (etiquetada en la captura como \texttt{ASUSTekCOMPU\_13:dd:5b}).
+    \item \textbf{Dirección MAC de Destino (Destination MAC):} \texttt{34:53:d2:98:26:47} (etiquetada en la captura como \texttt{SagemcomBroa\_98:26:47}).
+\end{itemize}
+
+\textbf{Identificación de los dispositivos:}
+\begin{enumerate}
+    \item \textbf{Dispositivo de origen (\texttt{a0:ad:9f:13:dd:5b}):} Corresponde a la tarjeta de interfaz de red (NIC) de la computadora personal desde la cual se realizó la captura. El prefijo OUI (\textit{Organizationally Unique Identifier}) \texttt{a0:ad:9f} identifica al fabricante como \textbf{ASUSTeK Computer Inc.} (fabricante del motherboard / placa de red del equipo emisor).
+    \item \textbf{Dispositivo de destino (\texttt{34:53:d2:98:26:47}):} Corresponde al router hogareño o puerta de enlace predeterminada (\textit{Default Gateway}) de la red local. El prefijo OUI \texttt{34:53:d2} pertenece al fabricante \textbf{Sagemcom Broadband SAS}, correspondiente al módem/router provisto por el proveedor de servicios de Internet (ISP) para la conexión a la red externa.
+\end{enumerate}
+
+Es importante destacar que, debido a que el destinatario final del paquete se encuentra fuera de la red local (en Internet), la computadora no puede entregar la trama directamente a dicho servidor en la Capa 2. Por ello, la trama Ethernet tiene como destino local inmediato la dirección MAC del router, el cual se encargará de desencapsularla y encaminar el paquete IP hacia el siguiente salto.
 
 \subsection{Dentro de la misma trama, identificar el paquete IP. ¿Cuáles son las direcciones IP de origen y destino?}
 
+Desplegando la cabecera del protocolo de Capa de Red (\textit{Internet Protocol Version 4}), se identifican las siguientes direcciones lógicas:
+
+\begin{itemize}
+    \item \textbf{Dirección IP de Origen (Source IP):} \texttt{192.168.0.219}
+    \item \textbf{Dirección IP de Destino (Destination IP):} \texttt{51.79.9.235}
+\end{itemize}
+
+La dirección \texttt{192.168.0.219} es una dirección IPv4 privada (perteneciente al rango RFC 1918 de Clase C) asignada dinámicamente por el servidor DHCP de la red local a la computadora emisora. 
+
+Por su parte, la dirección \texttt{51.79.9.235} es una dirección IPv4 pública y globalmente enrutable, correspondiente al servidor remoto en Internet con el cual se está manteniendo el intercambio de datos en el puerto TCP 16000.
+
 \subsection{Comparar las direcciones MAC y las direcciones IP encontradas. ¿Representan lo mismo?}
 
+\textbf{No, no representan lo mismo.} Ambas direcciones cumplen roles fundamentalmente distintos y operan en capas diferentes del modelo TCP/IP:
+
+\begin{enumerate}
+    \item \textbf{Capa de operación y alcance:}
+    \begin{itemize}
+        \item La \textbf{dirección MAC} opera en la \textbf{Capa de Enlace de Datos (Capa 2)} y tiene un alcance puramente \textit{local (hop-by-hop)}. Su función es permitir la entrega de la trama entre interfaces directamente conectadas dentro del mismo segmento físico de red. La dirección MAC de destino en este caso identifica al router local, ya que la trama física concluye su viaje allí.
+        \item La \textbf{dirección IP} opera en la \textbf{Capa de Red (Capa 3)} y tiene un alcance \textit{global extremo a extremo (end-to-end)}. Identifica la procedencia original y el destino final del paquete a través de toda la interred, manteniéndose invariable a lo largo del trayecto a través de múltiples routers intermediarios.
+    \end{itemize}
+    
+    \item \textbf{Naturaleza del direccionamiento:}
+    \begin{itemize}
+        \item La dirección MAC es una dirección física plana de 48 bits fijada por el fabricante del hardware.
+        \item La dirección IP es una dirección lógica jerárquica de 32 bits estructurada en red y host, permitiendo el enrutamiento y la división en subredes.
+    \end{itemize}
+\end{enumerate}
+
+En síntesis, mientras que la dirección IP responde a la pregunta \textit{¿cuál es el destino final de la comunicación en Internet?} (\texttt{51.79.9.235}), la dirección MAC responde a \textit{¿a qué dispositivo físico local adyacente se le debe entregar la trama en el siguiente paso?} (\texttt{34:53:d2:98:26:47}, el router de la LAN).
+
 \subsection{Observar el campo EtherType. ¿Qué protocolo está encapsulado dentro de la trama analizada?}
+
+En el encabezado de la trama Ethernet II se encuentra el campo \textbf{Type (EtherType)} con el valor:
+
+$$\text{Type: } \texttt{0x0800} \quad (\text{IPv4})$$
+
+El valor hexadecimal \texttt{0x0800} es el identificador asignado por el estándar IEEE/IANA para indicar que la carga útil (\textit{payload}) contenida dentro del campo de datos de la trama Ethernet corresponde a un paquete del protocolo \textbf{IPv4 (Internet Protocol version 4)}.
+
+Este campo le indica a la capa de enlace receptora qué protocolo de capa superior (Capa 3) debe recibir y procesar los datos una vez que se remueve la cabecera Ethernet. A su vez, dentro del paquete IPv4 se encuentra el campo \textit{Protocol: 6}, indicando que el protocolo de capa de transporte encapsulado es TCP.
 
 \section{Ítem 3: Transporte de información mediante TCP}
 

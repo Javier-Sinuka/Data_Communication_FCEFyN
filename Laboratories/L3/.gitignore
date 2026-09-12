@@ -35,6 +35,7 @@
 *.bak
 *.backup
 *~
+*.pdf
 
 # Mantener solo los fuentes
 !*.tex
