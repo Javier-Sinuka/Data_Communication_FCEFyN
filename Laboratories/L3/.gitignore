@@ -37,5 +37,8 @@
 *~
 *.pdf
 
+# Ignorar PDFs generados a partir del .tex
+Informe_TP3_Comunicaciones.pdf
+
 # Mantener solo los fuentes
 !*.tex
