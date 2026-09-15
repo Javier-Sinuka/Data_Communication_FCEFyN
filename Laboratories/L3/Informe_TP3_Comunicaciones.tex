@@ -24,6 +24,9 @@
 \setcounter{tocdepth}{3}
 \renewcommand{\arraystretch}{1.25}
 
+\let\oldsection\section
+\renewcommand{\section}{\clearpage\oldsection}
+
 \begin{document}
 \hypersetup{pageanchor=false}
 
@@ -281,6 +284,41 @@ En conclusión, la facilidad de captura de tráfico demuestra que la seguridad e
 
 \subsection{Iniciar una conexión con el servidor y obtener respuestas para los comandos admitidos: hola, ping, tic y status.}
 
+Se configuró una instancia de PacketSender como cliente TCP apuntando a la dirección y puerto provistos por la cátedra para el servicio en la nube (34.136.251.235, puerto 5555). Se activaron las opciones \textbf{Persistent TCP}, para mantener la conexión abierta durante todo el intercambio, y \textbf{Append \textbackslash r}, para que cada mensaje enviado incorporara automáticamente el terminador que el servidor espera al final de cada comando.
+
+Una vez establecida la conexión se enviaron sucesivamente los comandos \texttt{hola}, \texttt{ping}, \texttt{tic} y \texttt{status}, obteniendo en cada caso una respuesta coherente por parte del servidor (un saludo, \texttt{pong}, \texttt{toc} y una descripción variable del estado del servicio, respectivamente). La Figura~\ref{fig:packet-sender} muestra la ventana de la sesión persistente con el historial completo de comandos enviados y respuestas recibidas.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.9\textwidth]{img/packet-sender.png}
+\caption{Sesión persistente de PacketSender con los comandos enviados al servidor y sus respuestas.}
+\label{fig:packet-sender}
+\end{figure}
+
+En paralelo se capturó la totalidad de la sesión con Wireshark, filtrando por \texttt{tcp.port == 5555} (Figura~\ref{fig:wireshark-ps}). La captura permite reconstruir con claridad todo el ciclo de vida de la conexión TCP, desde el establecimiento hasta el cierre.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=\textwidth]{img/wireshark-packet-sender.png}
+\caption{Captura de Wireshark de la sesión TCP completa contra el servidor remoto.}
+\label{fig:wireshark-ps}
+\end{figure}
+
+Lo primero que se observa es el three-way handshake: el cliente (192.168.0.97, puerto efímero 39623) abre la conexión con un segmento \texttt{SYN}, cuyo número de secuencia relativo es \texttt{Seq=0} (Wireshark expresa los números de secuencia en forma relativa al inicio de la conexión, no como el valor absoluto de 32 bits que realmente viaja en el paquete). El servidor responde con \texttt{SYN, ACK}, con su propio \texttt{Seq=0} y \texttt{Ack=1}: aunque el segmento \texttt{SYN} no transporta datos, consume igualmente un número de secuencia, por lo que el servidor confirma esperando a partir del byte 1. El cliente cierra el handshake con un \texttt{ACK} puro (\texttt{Seq=1 Ack=1}), quedando la conexión establecida.
+
+A partir de ese punto, cada segmento con datos (marcado \texttt{PSH, ACK}) hace avanzar el número de secuencia de su emisor en tantas unidades como bytes de carga útil transporte (campo \texttt{Len}), y el otro extremo confirma la recepción con un \texttt{ACK} cuyo valor es exactamente \texttt{Seq + Len} recibido, es decir, el número del \emph{siguiente} byte que espera recibir. Por ejemplo, cuando el cliente envía \texttt{hola\textbackslash r} (\texttt{Seq=1, Len=5}), el servidor confirma con \texttt{Ack=6}; cuando a continuación el servidor responde con 8 bytes de payload (\texttt{Seq=1, Len=8}), el cliente reconoce con \texttt{Ack=9}. Este patrón se repite en cada intercambio de la sesión —\texttt{ping}, \texttt{tic}, \texttt{status} y los mensajes adicionales enviados durante la prueba—, de modo que los contadores de secuencia de cliente y servidor crecen de forma monótona e independiente entre sí, reflejando en todo momento cuántos bytes efectivos ha transmitido cada extremo.
+
+Finalmente, la conexión se cierra mediante un four-way handshake: el cliente envía \texttt{FIN, ACK} con \texttt{Seq=46 Ack=234}; el servidor responde con \texttt{FIN, ACK} con \texttt{Seq=234 Ack=47}, confirmando el \texttt{FIN} del cliente y cerrando su propio extremo en el mismo segmento (por eso en la captura se observan solo tres paquetes de cierre en lugar de cuatro: el \texttt{ACK} y el \texttt{FIN} del servidor viajan juntos); y el cliente confirma con un \texttt{ACK} final, \texttt{Seq=47 Ack=235}. Igual que ocurrió con el \texttt{SYN} inicial, la bandera \texttt{FIN} también consume un número de secuencia, motivo por el cual, nuevamente, el \texttt{ACK} de confirmación resulta ser exactamente uno más que el \texttt{Seq} del \texttt{FIN} recibido.
+
 \subsection{Iniciar la conexión, enviar el comando correspondiente al grupo y documentar la respuesta del servidor.}
+
+El servidor está configurado para reconocer, además de los comandos genéricos, un comando particular por cada grupo de la cátedra correspondiente a su nombre. Sobre la misma conexión persistente se envió el comando \texttt{MiLANesas\textbackslash r}, obteniendo como respuesta \texttt{seq: 18, payload: ?} (Figura~\ref{fig:group-name}), lo que confirma que el servidor identificó correctamente al grupo. Esta respuesta, junto con el resto de la interacción, fue documentada además en la pestaña correspondiente de la planilla compartida de la cátedra.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.5\textwidth]{img/group-name.png}
+\caption{Respuesta del servidor al enviar el comando correspondiente al nombre del grupo.}
+\label{fig:group-name}
+\end{figure}
 
 \end{document}
