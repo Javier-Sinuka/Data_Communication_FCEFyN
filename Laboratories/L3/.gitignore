@@ -1,6 +1,4 @@
-# Ignore the files used to build the pdf
-/output/*
-!/output/*.pdf
+
 
 # Archivos auxiliares generados por LaTeX
 *.aux
@@ -39,6 +37,10 @@
 
 # Ignorar PDFs generados a partir del .tex
 Informe_TP3_Comunicaciones.pdf
+
+# Publicar el informe compilado dentro de output
+!output/
+!output/*.pdf
 
 # Mantener solo los fuentes
 !*.tex
