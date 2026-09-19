@@ -1,6 +1,4 @@
-# Ignore the files used to build the pdf
-/output/*
-!/output/*.pdf
+
 
 # Archivos auxiliares generados por LaTeX
 *.aux
