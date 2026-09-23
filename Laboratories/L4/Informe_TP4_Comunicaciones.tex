@@ -66,6 +66,269 @@
 
 \section{Ítem 2: Implementacion de topología}
 
+\newcommand{\capturaptdos}[2]{%
+\begin{figure}[H]
+\centering
+\includegraphics[width=\linewidth,height=0.44\textheight,keepaspectratio]{img/#1}
+\caption{#2}
+\end{figure}}
+
+\subsection{Topología y direccionamiento}
+Se implementó la topología en Cisco Packet Tracer 9.0.1 con dos switches
+2960-24TT y dos computadoras. PC-A se conectó a Fa0/6 de sw1 y PC-B a
+Fa0/18 de sw2 mediante cable de cobre directo. Los switches se unieron
+por sus puertos Fa0/1 mediante cable cruzado. Además, cada PC se conectó
+desde RS-232 al puerto Console de su switch con un cable de consola.
+La configuración IOS se realizó desde \textit{Desktop--Terminal} de cada
+PC, con 9600 bit/s, 8 bits de datos, sin paridad, un bit de parada y sin
+control de flujo.
+
+\begin{center}
+\small
+\begin{tabular}{@{}llll@{}}
+\toprule
+Equipo & Interfaz inicial & Dirección / prefijo & Puerta de enlace \\
+\midrule
+sw1 & VLAN 1 & 192.168.1.11/24 & No configurada \\
+sw2 & VLAN 1 & 192.168.1.12/24 & No configurada \\
+PC-A & FastEthernet0 & 192.168.10.3/24 & 192.168.10.1 \\
+PC-B & FastEthernet0 & 192.168.10.4/24 & 192.168.10.1 \\
+\bottomrule
+\end{tabular}
+\end{center}
+En todos los casos se utilizó la máscara 255.255.255.0. La tabla de la
+consigna es una tabla de direccionamiento: la topología no incluye un
+router que implemente la puerta de enlace 192.168.10.1. Esto no impide el
+ping entre PCs de la misma subred, pues ese tráfico se entrega directamente
+por la LAN.
+
+\capturaptdos{p2_topologia.png}{Topología implementada en Packet Tracer; los enlaces celestes son conexiones de consola.}
+\capturaptdos{p2_pc_a_ip.png}{Configuración IPv4 de PC-A.}
+\capturaptdos{p2_pc_b_ip.png}{Configuración IPv4 de PC-B.}
+
+\subsection{Incisos a), b) y c): nombres y contraseñas}
+Se ingresó al modo privilegiado con \texttt{enable} y al modo de
+configuración global con \texttt{configure terminal}. En sw1 se ejecutó:
+\begin{verbatim}
+enable
+configure terminal
+hostname sw1
+enable secret ExecTP4
+line console 0
+ password ConsolaTP4
+ login
+ exit
+line vty 0 15
+ password VtyTP4
+ login
+ exit
+service password-encryption
+\end{verbatim}
+En sw2 se repitieron estos comandos usando \texttt{hostname sw2}.
+Las contraseñas indicadas son exclusivamente para esta simulación.
+\texttt{enable secret} protege el acceso al modo privilegiado;
+\texttt{login} exige la contraseña configurada en consola y VTY.
+
+La configuración observada muestra \texttt{enable secret 5} y
+\texttt{password 7} en las líneas de acceso. El primero almacena un hash;
+\texttt{service password-encryption} oculta las contraseñas de línea con
+el mecanismo reversible de tipo 7, que no constituye protección
+criptográfica robusta. Tampoco cifra por sí mismo una sesión remota.
+\capturaptdos{p2_sw1_seguridad.png}{Configuración real de sw1: nombre, service password-encryption y enable secret.}
+\capturaptdos{p2_sw1_lineas.png}{Contraseñas de consola y VTY almacenadas como tipo 7. IOS muestra las VTY separadas en los grupos 0--4 y 5--15.}
+
+\subsection{Incisos d), e) y f): administración, puertos y guardado}
+Se configuró inicialmente la interfaz virtual VLAN 1 de sw1:
+\begin{verbatim}
+interface vlan 1
+ ip address 192.168.1.11 255.255.255.0
+ no shutdown
+ exit
+\end{verbatim}
+En sw2 se utilizó 192.168.1.12 con la misma máscara. Estas direcciones
+pertenecen a las interfaces virtuales de administración (SVI); los puertos
+físicos del switch operan en capa 2 y no requieren dirección IP.
+
+Después de revisar \texttt{show ip interface brief}, se deshabilitaron
+administrativamente los puertos sin uso. En sw1:
+\begin{verbatim}
+interface range fastEthernet 0/2 - 5
+ shutdown
+ exit
+interface range fastEthernet 0/7 - 24
+ shutdown
+ exit
+interface range gigabitEthernet 0/1 - 2
+ shutdown
+ exit
+end
+write memory
+\end{verbatim}
+En sw2 se deshabilitaron Fa0/2--Fa0/17, Fa0/19--Fa0/24 y Gi0/1--Gi0/2.
+Se conservaron activos Fa0/1 y Fa0/6 en sw1, y Fa0/1 y Fa0/18 en sw2.
+\texttt{shutdown} deshabilita administrativamente una interfaz; no elimina
+su pertenencia a una VLAN. \texttt{write memory} guardó la configuración
+en la configuración de inicio, con confirmación \texttt{[OK]}.
+\capturaptdos{p2_sw1_inicial.png}{Estado inicial de sw1: puertos no utilizados administrativamente apagados y VLAN 1 con 192.168.1.11 en estado up/up.}
+
+\subsection{Inciso g): comunicación inicial entre computadoras}
+Antes de cambiar la pertenencia de los puertos, todos los puertos de
+acceso utilizados pertenecían a VLAN 1. Se ejecutó
+\texttt{ping 192.168.10.4} en PC-A y \texttt{ping 192.168.10.3} en PC-B.
+En ambos sentidos se recibieron cuatro respuestas de cuatro solicitudes
+(0\,\% de pérdida). Las computadoras comparten la subred
+192.168.10.0/24 y, en esta etapa, el mismo dominio de difusión de capa 2.
+Las IP de administración de los switches no intervienen como gateways.
+\capturaptdos{p2_ping_inicial_a_b.png}{Ping inicial PC-A a PC-B: cuatro respuestas y ninguna pérdida.}
+\capturaptdos{p2_ping_inicial_b_a.png}{Ping inicial PC-B a PC-A: cuatro respuestas y ninguna pérdida.}
+
+\subsection{Incisos h) e i): creación y listado de VLAN}
+En ambos switches se crearon las VLAN solicitadas:
+\begin{verbatim}
+configure terminal
+vlan 10
+ name Laboratorio
+vlan 20
+ name Bar
+vlan 99
+ name Management
+end
+show vlan brief
+\end{verbatim}
+La VLAN utilizada por defecto es la \textbf{VLAN 1}, cuyo nombre es
+\texttt{default}. Crear las VLAN no cambia automáticamente la asignación
+de los puertos. Por ello, en la salida del inciso i), Fa0/1--Fa0/24 y
+Gi0/1--Gi0/2 todavía aparecen en VLAN 1, y las nuevas VLAN aparecen sin
+puertos asignados. También se muestran las VLAN reservadas 1002--1005.
+El estado \texttt{active} de una VLAN indica que existe y está habilitada;
+no demuestra que sus equipos tengan conectividad entre switches.
+\capturaptdos{p2_i_vlan_brief.png}{Salida real de show vlan brief en sw1 después de crear las VLAN y antes de reasignar PC-A.}
+
+\subsection{Incisos j), k) y l): PC-A y administración de sw1}
+Se asignó el puerto de PC-A a Laboratorio y se trasladó la IP de
+administración desde VLAN 1 a VLAN 99:
+\begin{verbatim}
+configure terminal
+interface fastEthernet 0/6
+ switchport mode access
+ switchport access vlan 10
+interface vlan 1
+ no ip address
+interface vlan 99
+ ip address 192.168.1.11 255.255.255.0
+ no shutdown
+end
+show vlan brief
+show ip interface brief
+\end{verbatim}
+Se incluyó \texttt{no shutdown} en VLAN 99 para habilitar explícitamente
+la nueva SVI. La dirección IP se conservó: el número de VLAN no obliga
+a cambiar la red IP ni a utilizar 192.168.99.0/24.
+
+La salida de \texttt{show vlan brief} confirma Fa0/6 en VLAN 10, mientras
+Fa0/1 permanece en VLAN 1. VLAN 20 y VLAN 99 no tienen puertos de acceso
+asignados. En \texttt{show ip interface brief}, Fa0/1 y Fa0/6 figuran
+\texttt{up/up}; los puertos apagados figuran
+\texttt{administratively down/down}. VLAN 1 aparece
+\texttt{unassigned}, con estado \texttt{up/up}; VLAN 99 tiene
+192.168.1.11 y estado \texttt{up/down}. Esta última está habilitada
+administrativamente, pero su protocolo de línea no está operativo:
+no hay un puerto activo que transporte VLAN 99.
+\capturaptdos{p2_l_vlan_brief.png}{Inciso l): show vlan brief de sw1, con Fa0/6 asignado a Laboratorio.}
+\capturaptdos{p2_l_interfaces.png}{Inciso l): show ip interface brief de sw1 después de trasladar la dirección a VLAN 99.}
+
+\subsection{Inciso m): PC-B y administración de sw2}
+Después de crear las mismas VLAN en sw2, se ejecutó:
+\begin{verbatim}
+configure terminal
+interface fastEthernet 0/18
+ switchport mode access
+ switchport access vlan 10
+interface vlan 1
+ no ip address
+interface vlan 99
+ ip address 192.168.1.12 255.255.255.0
+ no shutdown
+end
+write memory
+show vlan brief
+show ip interface brief
+\end{verbatim}
+Se volvió a ejecutar \texttt{write memory} en sw1 después de sus cambios.
+En sw2 se verificó Fa0/18 en VLAN 10, VLAN 1 sin dirección IP y VLAN 99
+con 192.168.1.12. Al igual que en sw1, la SVI VLAN 99 quedó
+\texttt{up/down} por falta de un enlace operativo para esa VLAN.
+\capturaptdos{p2_m_vlan_brief.png}{VLAN de sw2: PC-B pertenece a Laboratorio por Fa0/18.}
+\capturaptdos{p2_m_interfaces.png}{Estado de interfaces de sw2: Fa0/1 y Fa0/18 activos y administración trasladada a VLAN 99.}
+
+\subsection{Inciso n): pruebas finales e interpretación}
+Se repitieron los pings entre las computadoras y se realizaron pings
+entre las direcciones de administración de los switches.
+\begin{center}
+\small
+\begin{tabular}{@{}llll@{}}
+\toprule
+Origen & Destino & Respuestas & Resultado \\
+\midrule
+PC-A & 192.168.10.4 (PC-B) & 0/4 & Sin conectividad \\
+PC-B & 192.168.10.3 (PC-A) & 0/4 & Sin conectividad \\
+sw1 & 192.168.1.12 (sw2) & 0/5 & Sin conectividad \\
+sw2 & 192.168.1.11 (sw1) & 0/5 & Sin conectividad \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\textbf{Entre computadoras.} Aunque ambas pertenecen a VLAN 10 y tienen
+IP de la misma subred, el enlace Fa0/1 entre los switches sigue operando
+en VLAN 1 y no se configuró como troncal. Las tramas de VLAN 10 no
+atraviesan ese enlace. Por lo tanto, la resolución ARP y el intercambio
+ICMP necesarios para el ping no pueden completarse entre las PCs.
+La consulta \texttt{show interfaces fastEthernet 0/1 switchport} confirmó \texttt{Administrative Mode: dynamic auto}, \texttt{Operational Mode: static access} y \texttt{Access Mode VLAN: 1}. Crear VLAN con el mismo identificador en ambos switches no basta para
+extender su dominio de difusión entre ellos.
+
+\textbf{Entre switches.} Las direcciones de administración se trasladaron
+a VLAN 99, pero esa VLAN tampoco se transporta por Fa0/1. Las SVI tienen
+protocolo de línea \texttt{down}, por lo que no hay conectividad IP entre
+192.168.1.11 y 192.168.1.12. La pérdida observada es coherente con los
+estados de las interfaces.
+
+\capturaptdos{p2_n_ping_a_b.png}{PC-A: comparación del ping inicial exitoso con el ping final fallido hacia PC-B.}
+\capturaptdos{p2_n_ping_b_a.png}{PC-B: comparación del ping inicial exitoso con el ping final fallido hacia PC-A.}
+\capturaptdos{p2_n_ping_sw1_sw2.png}{Ping final desde sw1 hacia 192.168.1.12.}
+\capturaptdos{p2_n_ping_sw2_sw1.png}{Ping final desde sw2 hacia 192.168.1.11: éxito de 0/5.}
+
+\capturaptdos{p2_n_enlace.png}{Modo operativo de Fa0/1 en sw2: acceso en VLAN 1, sin enlace troncal.}
+
+\textbf{Conclusión.} El resultado final de los pasos a)--n) es la pérdida
+de conectividad, porque falta transportar las nuevas VLAN por el enlace
+entre switches. Para recuperar simultáneamente la comunicación de
+Laboratorio y Management, una solución sería configurar Fa0/1 como
+troncal en ambos extremos y permitir VLAN 10 y VLAN 99 (y VLAN 20 si se
+requiere transportar Bar). Por ejemplo:
+\begin{verbatim}
+configure terminal
+interface fastEthernet 0/1
+ switchport mode trunk
+ switchport trunk allowed vlan 10,20,99
+end
+\end{verbatim}
+Estos últimos comandos son una \textbf{propuesta de corrección, no aplicada}
+al escenario entregado, para conservar el resultado de la secuencia
+solicitada. Un enlace troncal transportaría las distintas VLAN mediante
+802.1Q; no realizaría enrutamiento entre ellas. La comunicación entre
+subredes distintas requeriría un router o un switch de capa 3.
+
+\subsection{Archivos de la práctica}
+Las capturas reales de la aplicación se guardaron en \texttt{img/}.
+En \texttt{output/} se conservaron dos escenarios:
+\begin{itemize}
+\item \texttt{p2\_01\_inicial.pkt}: configuración inicial guardada y
+comunicación entre PCs en VLAN 1, correspondiente al inciso g).
+\item \texttt{p2\_02\_vlans.pkt}: estado final de los incisos h)--n), con
+las PCs en VLAN 10, administración en VLAN 99 y enlace entre switches
+sin configurar como troncal.
+\end{itemize}
+
 \section{Ítem 3: Simulación de despliegue en una aeronave}
 
 
