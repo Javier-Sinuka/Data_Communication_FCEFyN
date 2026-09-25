@@ -64,9 +64,55 @@
 
 \section{Ítem 1: Alcance de Redes y Virtualización}
 
+\subsection{a) Clasificación de redes según su alcance}
+
+\begin{itemize}
+    \item \textbf{PAN (Personal Area Network)} — Alcance: pocos metros (\textasciitilde 10 m). Conecta dispositivos personales (celular, auriculares, wearables); suele ser inalámbrica (Bluetooth).
+    \item \textbf{LAN (Local Area Network)} — Alcance: un edificio u oficina. Red privada de alta velocidad y bajo costo, administrada por una sola organización.
+    \item \textbf{CAN (Campus Area Network)} — Alcance: varios edificios cercanos (campus/planta). Interconecta varias LAN dentro de un área geográfica limitada.
+    \item \textbf{MAN (Metropolitan Area Network)} — Alcance: una ciudad. Une varias LAN/CAN a escala urbana, suele usar fibra óptica.
+    \item \textbf{WAN (Wide Area Network)} — Alcance: país/continente/global. Interconecta redes distantes, generalmente a través de proveedores de servicio (ISP); Internet es la WAN más grande.
+\end{itemize}
+
+\subsection{b) ¿Qué es una VLAN? ¿Cómo se clasifican?}
+
+Una \textbf{VLAN} (Virtual LAN) es una \textbf{red LAN lógica} creada dentro de un switch (o varios switches) que agrupa dispositivos como si estuvieran en la misma red física, sin importar su ubicación real. Permite \textbf{segmentar el tráfico} (broadcast, seguridad, administración) sin necesidad de cablear redes separadas.
+
+Se clasifican según el \textbf{criterio de asignación de puertos}:
+
+\begin{itemize}
+    \item \textbf{VLAN por puerto (estática)}: se asigna manualmente un puerto del switch a una VLAN.
+    \item \textbf{VLAN por MAC address (dinámica)}: la VLAN se asigna según la MAC del dispositivo conectado.
+    \item \textbf{VLAN por protocolo}: según el protocolo de capa 3 utilizado (IP, IPX, etc.).
+    \item \textbf{VLAN de administración}: usada exclusivamente para gestionar el switch (ej. VLAN 99 del TP).
+    \item \textbf{VLAN nativa}: la única VLAN cuyo tráfico \textbf{no lleva etiqueta} (tag) en un enlace trunk.
+\end{itemize}
+
+\subsection{c) Protocolo IEEE 802.1Q}
+
+Es el estándar que define el \textbf{etiquetado (tagging)} de tramas Ethernet para que puedan pertenecer a distintas VLAN. Inserta un campo de \textbf{4 bytes} en la trama (el ``Tag'' 802.1Q), que incluye el \textbf{VLAN ID} (identifica a qué VLAN pertenece, de 1 a 4094) y un campo de prioridad (para QoS).
+
+\textbf{Relación con las VLAN}: es el mecanismo que permite que \textbf{un solo enlace físico (trunk)} transporte el tráfico de \textbf{múltiples VLAN} simultáneamente, ya que cada trama queda marcada con la VLAN a la que pertenece, permitiendo que switches y routers la identifiquen y la envíen correctamente.
+
+\subsection{d) ¿Qué es el Tagging?}
+
+Es el proceso de \textbf{insertar la etiqueta 802.1Q} (con el VLAN ID) en cada trama Ethernet antes de enviarla por un enlace \textbf{trunk}. Así, el switch/router receptor sabe a qué VLAN pertenece esa trama y la reenvía solo a los puertos de esa misma VLAN. Las tramas de la \textbf{VLAN nativa} viajan sin esta etiqueta (sin tag).
+
 \section{Ítem 2: Implementacion de topología}
 
 \section{Ítem 3: Simulación de despliegue en una aeronave}
+
+\section{Referencias}
+
+\begin{itemize}
+    \item Wikipedia contributors. \textit{Local area network}. Wikipedia, The Free Encyclopedia. \url{https://en.wikipedia.org/wiki/Local_area_network}
+    \item Wikipedia contributors. \textit{Personal area network}. Wikipedia, The Free Encyclopedia. \url{https://en.wikipedia.org/wiki/Personal_area_network}
+    \item Wikipedia contributors. \textit{Metropolitan area network}. Wikipedia, The Free Encyclopedia. \url{https://en.wikipedia.org/wiki/Metropolitan_area_network}
+    \item Wikipedia contributors. \textit{Campus network}. Wikipedia, The Free Encyclopedia. \url{https://en.wikipedia.org/wiki/Campus_network}
+    \item Wikipedia contributors. \textit{Wide area network}. Wikipedia, The Free Encyclopedia. \url{https://en.wikipedia.org/wiki/Wide_area_network}
+    \item Wikipedia contributors. \textit{VLAN}. Wikipedia, The Free Encyclopedia. \url{https://en.wikipedia.org/wiki/VLAN}
+    \item Wikipedia contributors. \textit{IEEE 802.1Q}. Wikipedia, The Free Encyclopedia. \url{https://en.wikipedia.org/wiki/IEEE_802.1Q}
+\end{itemize}
 
 
 \end{document}
