@@ -1,0 +1,46 @@
+
+
+# Archivos auxiliares generados por LaTeX
+*.aux
+*.bbl
+*.bcf
+*.blg
+*.fdb_latexmk
+*.fls
+*.log
+*.out
+*.run.xml
+*.synctex.gz
+*.toc
+*.lof
+*.lot
+*.nav
+*.snm
+*.vrb
+*.idx
+*.ilg
+*.ind
+*.acn
+*.acr
+*.alg
+*.glg
+*.glo
+*.gls
+*.ist
+
+# Archivos temporales
+*.tmp
+*.bak
+*.backup
+*~
+*.pdf
+
+# Ignorar PDFs generados a partir del .tex
+Informe_TP4_Comunicaciones.pdf
+
+# Publicar el informe compilado dentro de output
+!output/
+!output/*.pdf
+
+# Mantener solo los fuentes
+!*.tex
