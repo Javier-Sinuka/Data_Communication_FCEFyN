@@ -36,7 +36,7 @@
 *.pdf
 
 # Ignorar PDFs generados a partir del .tex
-Informe_TP3_Comunicaciones.pdf
+Informe_TP4_Comunicaciones.pdf
 
 # Publicar el informe compilado dentro de output
 !output/
