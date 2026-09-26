@@ -334,5 +334,180 @@ sin configurar como troncal.
 
 \section{Ítem 3: Simulación de despliegue en una aeronave}
 
+\subsection{Objetivo y diseño de la red}
+Se diseñó una LAN para una aeronave con tres segmentos lógicos. La separación se realizó mediante VLAN para limitar los dominios de difusión y aplicar una política de acceso diferente a cada clase de usuario:
+
+\begin{center}
+\small
+\begin{tabular}{@{}lllll@{}}
+\toprule
+VLAN & Nombre & Red & Gateway & Acceso previsto \\
+\midrule
+10 & Turista & 10.10.10.0/24 & 10.10.10.1 & Servidor de entretenimiento \\
+20 & Business & 10.10.20.0/24 & 10.10.20.1 & Servidor e Internet \\
+99 & Administracion & 10.10.99.0/24 & 10.10.99.1 & Acceso total \\
+-- & Enlace ISP & 200.0.0.0/30 & 200.0.0.1 & -- \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+El servidor de entretenimiento se ubicó en la VLAN 99 con la dirección 10.10.99.10. El enlace entre el switch y el router se configuró como troncal, de modo que transporta las VLAN 10, 20 y 99 mediante etiquetas IEEE 802.1Q. Los puertos conectados a los equipos finales se configuraron como puertos de acceso y pertenecen a una única VLAN.
+
+\capturaptdos{imgp3/topologiaRed.png}{Topología implementada para la red de la aeronave.}
+\capturaptdos{imgp3/3vlan.png}{Separación lógica de los segmentos Turista, Business y Administración.}
+
+\subsection{Configuración del switch}
+En el switch se crearon las VLAN y se asignaron los puertos según el tipo de equipo. Fa0/1 se utilizó como enlace troncal hacia el router; Fa0/2 y Fa0/3 se reservaron para Turista, Fa0/4 y Fa0/5 para Business, y Fa0/6 y Fa0/7 para Administración y el servidor, respectivamente.
+
+\begin{verbatim}
+enable
+configure terminal
+vlan 10
+ name Turista
+vlan 20
+ name Business
+vlan 99
+ name Administracion
+interface fastEthernet 0/1
+ switchport mode trunk
+ switchport trunk allowed vlan 10,20,99
+interface range fastEthernet 0/2 - 3
+ switchport mode access
+ switchport access vlan 10
+interface range fastEthernet 0/4 - 5
+ switchport mode access
+ switchport access vlan 20
+interface range fastEthernet 0/6 - 7
+ switchport mode access
+ switchport access vlan 99
+end
+write memory
+\end{verbatim}
+
+La salida de verificación confirma la existencia de las tres VLAN y la asignación de los puertos a sus respectivos segmentos. La configuración del puerto Fa0/1 como trunk es necesaria: un puerto de acceso solo podría transportar una VLAN y no permitiría que el router recibiera tráfico de las tres redes.
+\capturaptdos{imgp3/configPuertos.png}{Configuración de puertos de acceso y del enlace troncal.}
+\capturaptdos{imgp3/checkVLANS.png}{Verificación de las VLAN configuradas en el switch.}
+
+\subsection{Configuración del router}
+Se utilizó el método \textit{router-on-a-stick}. La interfaz física FastEthernet0/0 se conecta al trunk del switch y se divide en tres subinterfaces. Cada subinterfaz funciona como gateway de su VLAN y se identifica con \texttt{encapsulation dot1Q}.
+
+\begin{verbatim}
+enable
+configure terminal
+interface fastEthernet 0/0
+ no shutdown
+interface fastEthernet 0/0.10
+ encapsulation dot1Q 10
+ ip address 10.10.10.1 255.255.255.0
+ ip nat inside
+interface fastEthernet 0/0.20
+ encapsulation dot1Q 20
+ ip address 10.10.20.1 255.255.255.0
+ ip nat inside
+interface fastEthernet 0/0.99
+ encapsulation dot1Q 99
+ ip address 10.10.99.1 255.255.255.0
+ ip nat inside
+interface fastEthernet 0/1
+ ip address 200.0.0.1 255.255.255.252
+ ip nat outside
+ no shutdown
+ip route 0.0.0.0 0.0.0.0 200.0.0.2
+\end{verbatim}
+
+El ISP se simuló con la dirección 200.0.0.2, perteneciente al mismo enlace /30 que la interfaz externa del router. La ruta por defecto indica que los destinos que no pertenecen a las redes internas deben enviarse al ISP.
+
+\subsection{Asignación dinámica de direcciones}
+Para evitar configurar manualmente cada equipo final, se habilitó DHCP en el router. Se excluyeron las primeras direcciones de cada red para reservarlas para gateways, servidores u otros dispositivos de infraestructura.
+
+\begin{verbatim}
+ip dhcp excluded-address 10.10.10.1 10.10.10.10
+ip dhcp excluded-address 10.10.20.1 10.10.20.10
+ip dhcp excluded-address 10.10.99.1 10.10.99.10
+ip dhcp pool Turista
+ network 10.10.10.0 255.255.255.0
+ default-router 10.10.10.1
+ip dhcp pool Business
+ network 10.10.20.0 255.255.255.0
+ default-router 10.10.20.1
+ip dhcp pool Administracion
+ network 10.10.99.0 255.255.255.0
+ default-router 10.10.99.1
+\end{verbatim}
+
+La comprobación de interfaces y de los pools permitió verificar que el router tenía activas las tres subinterfaces y que cada clase recibía una dirección del rango correspondiente.
+\capturaptdos{imgp3/interfacesCheck.png}{Estado de las interfaces y subinterfaces del router.}
+\capturaptdos{imgp3/configDHCP.png}{Configuración de DHCP para las tres VLAN.}
+
+\subsection{Servidor de entretenimiento}
+El servidor se configuró en la VLAN 99 con los siguientes parámetros:
+
+\begin{center}
+\small
+\begin{tabular}{@{}ll@{}}
+\toprule
+Dirección IP & 10.10.99.10 \\
+Máscara & 255.255.255.0 \\
+Gateway & 10.10.99.1 \\
+Servicio & HTTP habilitado \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+En el servicio HTTP se publicó una página de bienvenida para simular el sistema de entretenimiento a bordo. Al estar en la VLAN 99, los usuarios de Turista y Business llegan a ella mediante el enrutamiento entre VLANs, siempre que la ACL no bloquee ese destino.
+
+\subsection{NAT y control de acceso}
+NAT permite que las direcciones privadas de la red interna compartan la dirección pública 200.0.0.1 al salir hacia el ISP. Se incluyeron Business y Administración en la lista de traducción; Turista queda fuera porque su política no permite acceso a Internet.
+
+\begin{verbatim}
+access-list 20 permit 10.10.20.0 0.0.0.255
+access-list 20 permit 10.10.99.0 0.0.0.255
+ip nat inside source list 20 interface fastEthernet 0/1 overload
+\end{verbatim}
+
+La ACL de Turista se aplicó en entrada sobre su subinterfaz. Primero se permite el destino local del servidor y luego se rechaza cualquier otro destino. La última regla permite el tráfico restante que no corresponda a la red de Turista.
+
+\begin{verbatim}
+access-list 100 permit ip 10.10.10.0 0.0.0.255 host 10.10.99.10
+access-list 100 deny ip 10.10.10.0 0.0.0.255 any
+access-list 100 permit ip any any
+interface fastEthernet 0/0.10
+ ip access-group 100 in
+\end{verbatim}
+
+El orden es importante: las ACL se procesan de arriba hacia abajo. Si se colocara primero el rechazo general, también se bloquearía el acceso legítimo al servidor de entretenimiento.
+
+\subsection{Pruebas de conectividad}
+Se realizaron las pruebas solicitadas desde equipos pertenecientes a cada segmento. Los resultados fueron los siguientes:
+
+\begin{center}
+\small
+\begin{tabular}{@{}p{0.32\linewidth}p{0.23\linewidth}p{0.25\linewidth}@{}}
+\toprule
+Prueba & Resultado & Interpretación \\
+\midrule
+PC Turista a 10.10.99.10 & Exitoso & La ACL permite el servidor local. \\
+HTTP desde PC Turista & Exitoso & El servicio HTTP responde. \\
+PC Turista a Internet & Bloqueado & La ACL rechaza destinos externos. \\
+HTTP desde PC Business & Exitoso & El router enruta entre VLANs. \\
+PC Business a Internet & Exitoso & La ruta por defecto y NAT funcionan. \\
+PC Administración a los demás segmentos & Exitoso & Tiene acceso a las redes internas. \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\capturaptdos{imgp3/p3_ping_turista_server.png}{Ping desde un equipo Turista hacia el servidor de entretenimiento.}
+\capturaptdos{imgp3/p3_http_turistaserver.png}{Acceso HTTP al servidor desde la VLAN Turista.}
+\capturaptdos{imgp3/p3_ping_turista_internet_bloqueado.png}{Ping desde Turista hacia Internet rechazado por la ACL.}
+\capturaptdos{imgp3/p3_http_business_server.png}{Acceso HTTP al servidor desde la VLAN Business.}
+\capturaptdos{imgp3/p3_ping_business_internet.png}{Ping desde Business hacia el destino simulado en Internet.}
+\capturaptdos{imgp3/p3_ping_admin1.png}{Prueba de conectividad desde Administración hacia una red interna.}
+\capturaptdos{imgp3/p3_ping_admin2.png}{Prueba adicional de conectividad desde Administración.}
+
+\subsection{Conclusiones}
+La práctica permitió comprobar que las VLAN separan lógicamente a los usuarios aunque compartan el mismo switch físico. El trunk 802.1Q y las subinterfaces del router hicieron posible transportar y enrutar las tres redes. DHCP simplificó la configuración de los equipos, mientras que NAT permitió la salida controlada de las redes privadas hacia el ISP.
+
+La ACL implementó la política solicitada: Turista conserva acceso al servidor de entretenimiento, pero no puede acceder a Internet; Business puede utilizar ambos servicios; y Administración mantiene acceso a los segmentos internos. Las pruebas confirmaron que la conectividad no depende solo de que exista un enlace físico: también deben coincidir la VLAN, el gateway, las rutas, la traducción NAT y las reglas de filtrado.
+
 
 \end{document}
