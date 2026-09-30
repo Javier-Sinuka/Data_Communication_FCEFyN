@@ -36,7 +36,7 @@
 *.pdf
 
 # Ignorar PDFs generados a partir del .tex
-Informe_TP4_Comunicaciones.pdf
+Informe_TP5_Comunicaciones.pdf
 
 # Publicar el informe compilado dentro de output
 !output/
@@ -44,3 +44,4 @@ Informe_TP4_Comunicaciones.pdf
 
 # Mantener solo los fuentes
 !*.tex
+!RC-TP-N5.pdf
