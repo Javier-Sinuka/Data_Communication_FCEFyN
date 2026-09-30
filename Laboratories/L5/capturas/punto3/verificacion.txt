@@ -1,0 +1,8 @@
+Verificación satisfactoria: 37 paquetes reales en 5 capturas.
+PCAPNG y bytes exportados por Wireshark coinciden; sin truncamiento.
+TCP/UDP principales: seis payloads idénticos; 49 bytes del cliente y 60 del servidor.
+Salidas de ambos procesos Ncat coinciden con los datos capturados.
+TCP: SYN/SYN-ACK/ACK; seis segmentos con datos y seis ACK; FIN-ACK/FIN-ACK/ACK.
+Una frase: 8 paquetes TCP frente a 1 UDP; payload idéntico de 16 bytes.
+Puertos cerrados: SYN/RST-ACK, UDP/ICMP tipo 3 código 3; ICMP contiene el IPv4 original.
+Checksums de transporte no validados: la captura local puede contener contribuciones parciales.

@@ -1,0 +1,3359 @@
+[
+  {
+    "jsonrpc": "2.0",
+    "id": 1,
+    "result": {
+      "status": "OK"
+    }
+  },
+  {
+    "jsonrpc": "2.0",
+    "id": 2,
+    "result": [
+      {
+        "c": [
+          "1",
+          "0.000000000",
+          "127.0.0.1",
+          "127.0.0.1",
+          "TCP",
+          "74",
+          "58404 \u2192 12000 [SYN] Seq=0 Win=65495 Len=0 MSS=65495 SACK_PERM TSval=1653457183 TSecr=0 WS=1024"
+        ],
+        "num": 1,
+        "bg": "a0a0a0",
+        "fg": "12272e"
+      },
+      {
+        "c": [
+          "2",
+          "0.000012435",
+          "127.0.0.1",
+          "127.0.0.1",
+          "TCP",
+          "54",
+          "12000 \u2192 58404 [RST, ACK] Seq=1 Ack=1 Win=0 Len=0"
+        ],
+        "num": 2,
+        "bg": "a40000",
+        "fg": "fffc9c"
+      },
+      {
+        "c": [
+          "3",
+          "1.722286338",
+          "127.0.0.1",
+          "127.0.0.1",
+          "LLC",
+          "58",
+          "I P, N(R)=48, N(S)=54; DSAP 0x48 Individual, SSAP 0x6e Response"
+        ],
+        "num": 3,
+        "bg": "daeeff",
+        "fg": "12272e"
+      },
+      {
+        "c": [
+          "4",
+          "1.722302571",
+          "127.0.0.1",
+          "127.0.0.1",
+          "ICMP",
+          "86",
+          "Destination unreachable (Port unreachable)"
+        ],
+        "num": 4,
+        "bg": "12272e",
+        "fg": "b7f774"
+      }
+    ]
+  },
+  {
+    "jsonrpc": "2.0",
+    "id": 3,
+    "result": {
+      "tree": [
+        {
+          "l": "Frame 1: 74 bytes on wire (592 bits), 74 bytes captured (592 bits) on interface lo, id 0",
+          "h": [
+            0,
+            74
+          ],
+          "t": "proto",
+          "f": "frame",
+          "fn": "frame",
+          "e": 14267,
+          "n": [
+            {
+              "l": "Section number: 1",
+              "f": "frame.section_number == 1",
+              "fn": "frame.section_number"
+            },
+            {
+              "l": "Interface id: 0 (lo)",
+              "f": "frame.interface_id == 0",
+              "fn": "frame.interface_id",
+              "e": 14268,
+              "n": [
+                {
+                  "l": "Interface name: lo",
+                  "f": "frame.interface_name == \"lo\"",
+                  "fn": "frame.interface_name"
+                }
+              ]
+            },
+            {
+              "l": "Encapsulation type: Ethernet (1)",
+              "f": "frame.encap_type == 1",
+              "fn": "frame.encap_type"
+            },
+            {
+              "l": "Arrival Time: Sep 30, 2026 18:00:33.839602208 -03",
+              "f": "frame.time == \"2026-09-30 18:00:33.839602208-0300\"",
+              "fn": "frame.time"
+            },
+            {
+              "l": "UTC Arrival Time: Sep 30, 2026 21:00:33.839602208 UTC",
+              "f": "frame.time_utc == \"2026-09-30 21:00:33.839602208Z\"",
+              "fn": "frame.time_utc"
+            },
+            {
+              "l": "Epoch Arrival Time: 1790802033.839602208",
+              "f": "frame.time_epoch == 1790802033.839602208",
+              "fn": "frame.time_epoch"
+            },
+            {
+              "l": "Time shift for this packet: 0.000000000 seconds",
+              "f": "frame.offset_shift == 0.000000000",
+              "fn": "frame.offset_shift",
+              "g": true
+            },
+            {
+              "l": "Time delta from previous captured frame: 0.000000000 seconds",
+              "f": "frame.time_delta == 0.000000000",
+              "fn": "frame.time_delta",
+              "g": true
+            },
+            {
+              "l": "Time delta from previous displayed frame: 0.000000000 seconds",
+              "f": "frame.time_delta_displayed == 0.000000000",
+              "fn": "frame.time_delta_displayed",
+              "g": true
+            },
+            {
+              "l": "Time since reference or first frame: 0.000000000 seconds",
+              "f": "frame.time_relative == 0.000000000",
+              "fn": "frame.time_relative",
+              "g": true
+            },
+            {
+              "l": "Frame Number: 1",
+              "f": "frame.number == 1",
+              "fn": "frame.number"
+            },
+            {
+              "l": "Frame Length: 74 bytes (592 bits)",
+              "f": "frame.len == 74",
+              "fn": "frame.len"
+            },
+            {
+              "l": "Capture Length: 74 bytes (592 bits)",
+              "f": "frame.cap_len == 74",
+              "fn": "frame.cap_len"
+            },
+            {
+              "l": "Frame is marked: False",
+              "f": "frame.marked == False",
+              "fn": "frame.marked",
+              "g": true
+            },
+            {
+              "l": "Frame is ignored: False",
+              "f": "frame.ignored == False",
+              "fn": "frame.ignored",
+              "g": true
+            },
+            {
+              "l": "Protocols in frame: eth:ethertype:ip:tcp",
+              "f": "frame.protocols == \"eth:ethertype:ip:tcp\"",
+              "fn": "frame.protocols",
+              "g": true
+            },
+            {
+              "l": "Coloring Rule Name: TCP SYN/FIN",
+              "f": "frame.coloring_rule.name == \"TCP SYN/FIN\"",
+              "fn": "frame.coloring_rule.name",
+              "g": true
+            },
+            {
+              "l": "Coloring Rule String: tcp.flags & 0x02 || tcp.flags.fin == 1",
+              "f": "frame.coloring_rule.string == \"tcp.flags & 0x02 || tcp.flags.fin == 1\"",
+              "fn": "frame.coloring_rule.string",
+              "g": true
+            }
+          ]
+        },
+        {
+          "l": "Ethernet II, Src: 00:00:00_00:00:00 (00:00:00:00:00:00), Dst: 00:00:00_00:00:00 (00:00:00:00:00:00)",
+          "h": [
+            0,
+            14
+          ],
+          "t": "proto",
+          "f": "eth",
+          "fn": "eth",
+          "e": 12620,
+          "n": [
+            {
+              "l": "Destination: 00:00:00_00:00:00 (00:00:00:00:00:00)",
+              "h": [
+                0,
+                6
+              ],
+              "f": "eth.dst == 00:00:00:00:00:00",
+              "fn": "eth.dst",
+              "e": 12622,
+              "n": [
+                {
+                  "l": "Address: 00:00:00_00:00:00 (00:00:00:00:00:00)",
+                  "h": [
+                    0,
+                    6
+                  ],
+                  "f": "eth.addr == 00:00:00:00:00:00",
+                  "fn": "eth.addr"
+                },
+                {
+                  "l": ".... ..0. .... .... .... .... = LG bit: Globally unique address (factory default)",
+                  "h": [
+                    0,
+                    3
+                  ],
+                  "f": "eth.dst.lg == False",
+                  "fn": "eth.dst.lg"
+                },
+                {
+                  "l": ".... ...0 .... .... .... .... = IG bit: Individual address (unicast)",
+                  "h": [
+                    0,
+                    3
+                  ],
+                  "f": "eth.dst.ig == False",
+                  "fn": "eth.dst.ig"
+                }
+              ]
+            },
+            {
+              "l": "Source: 00:00:00_00:00:00 (00:00:00:00:00:00)",
+              "h": [
+                6,
+                6
+              ],
+              "f": "eth.src == 00:00:00:00:00:00",
+              "fn": "eth.src",
+              "e": 12622,
+              "n": [
+                {
+                  "l": "Address: 00:00:00_00:00:00 (00:00:00:00:00:00)",
+                  "h": [
+                    6,
+                    6
+                  ],
+                  "f": "eth.addr == 00:00:00:00:00:00",
+                  "fn": "eth.addr"
+                },
+                {
+                  "l": ".... ..0. .... .... .... .... = LG bit: Globally unique address (factory default)",
+                  "h": [
+                    6,
+                    3
+                  ],
+                  "f": "eth.src.lg == False",
+                  "fn": "eth.src.lg"
+                },
+                {
+                  "l": ".... ...0 .... .... .... .... = IG bit: Individual address (unicast)",
+                  "h": [
+                    6,
+                    3
+                  ],
+                  "f": "eth.src.ig == False",
+                  "fn": "eth.src.ig"
+                }
+              ]
+            },
+            {
+              "l": "Type: IPv4 (0x0800)",
+              "h": [
+                12,
+                2
+              ],
+              "f": "eth.type == 0x0800",
+              "fn": "eth.type"
+            }
+          ]
+        },
+        {
+          "l": "Internet Protocol Version 4, Src: 127.0.0.1, Dst: 127.0.0.1",
+          "h": [
+            14,
+            20
+          ],
+          "t": "proto",
+          "f": "ip",
+          "fn": "ip",
+          "e": 21005,
+          "n": [
+            {
+              "l": "0100 .... = Version: 4",
+              "h": [
+                14,
+                1
+              ],
+              "f": "ip.version == 4",
+              "fn": "ip.version"
+            },
+            {
+              "l": ".... 0101 = Header Length: 20 bytes (5)",
+              "h": [
+                14,
+                1
+              ],
+              "f": "ip.hdr_len == 20",
+              "fn": "ip.hdr_len"
+            },
+            {
+              "l": "Differentiated Services Field: 0x00 (DSCP: CS0, ECN: Not-ECT)",
+              "h": [
+                15,
+                1
+              ],
+              "f": "ip.dsfield == 0x00",
+              "fn": "ip.dsfield",
+              "e": 21006,
+              "n": [
+                {
+                  "l": "0000 00.. = Differentiated Services Codepoint: Default (0)",
+                  "h": [
+                    15,
+                    1
+                  ],
+                  "f": "ip.dsfield.dscp == 0",
+                  "fn": "ip.dsfield.dscp"
+                },
+                {
+                  "l": ".... ..00 = Explicit Congestion Notification: Not ECN-Capable Transport (0)",
+                  "h": [
+                    15,
+                    1
+                  ],
+                  "f": "ip.dsfield.ecn == 0",
+                  "fn": "ip.dsfield.ecn"
+                }
+              ]
+            },
+            {
+              "l": "Total Length: 60",
+              "h": [
+                16,
+                2
+              ],
+              "f": "ip.len == 60",
+              "fn": "ip.len"
+            },
+            {
+              "l": "Identification: 0x8a3e (35390)",
+              "h": [
+                18,
+                2
+              ],
+              "f": "ip.id == 0x8a3e",
+              "fn": "ip.id"
+            },
+            {
+              "l": "010. .... = Flags: 0x2, Don't fragment",
+              "h": [
+                20,
+                1
+              ],
+              "f": "ip.flags == 0x02",
+              "fn": "ip.flags",
+              "e": 21008,
+              "n": [
+                {
+                  "l": "0... .... = Reserved bit: Not set",
+                  "h": [
+                    20,
+                    1
+                  ],
+                  "f": "ip.flags.rb == False",
+                  "fn": "ip.flags.rb"
+                },
+                {
+                  "l": ".1.. .... = Don't fragment: Set",
+                  "h": [
+                    20,
+                    1
+                  ],
+                  "f": "ip.flags.df == True",
+                  "fn": "ip.flags.df"
+                },
+                {
+                  "l": "..0. .... = More fragments: Not set",
+                  "h": [
+                    20,
+                    1
+                  ],
+                  "f": "ip.flags.mf == False",
+                  "fn": "ip.flags.mf"
+                }
+              ]
+            },
+            {
+              "l": "...0 0000 0000 0000 = Fragment Offset: 0",
+              "h": [
+                20,
+                2
+              ],
+              "f": "ip.frag_offset == 0",
+              "fn": "ip.frag_offset"
+            },
+            {
+              "l": "Time to Live: 64",
+              "h": [
+                22,
+                1
+              ],
+              "f": "ip.ttl == 64",
+              "fn": "ip.ttl"
+            },
+            {
+              "l": "Protocol: TCP (6)",
+              "h": [
+                23,
+                1
+              ],
+              "f": "ip.proto == 6",
+              "fn": "ip.proto"
+            },
+            {
+              "l": "Header Checksum: 0xb27b [validation disabled]",
+              "h": [
+                24,
+                2
+              ],
+              "f": "ip.checksum == 0xb27b",
+              "fn": "ip.checksum"
+            },
+            {
+              "l": "Header checksum status: Unverified",
+              "f": "ip.checksum.status == \"Unverified\"",
+              "fn": "ip.checksum.status",
+              "g": true
+            },
+            {
+              "l": "Source Address: 127.0.0.1",
+              "h": [
+                26,
+                4
+              ],
+              "f": "ip.src == 127.0.0.1",
+              "fn": "ip.src"
+            },
+            {
+              "l": "Destination Address: 127.0.0.1",
+              "h": [
+                30,
+                4
+              ],
+              "f": "ip.dst == 127.0.0.1",
+              "fn": "ip.dst"
+            }
+          ]
+        },
+        {
+          "l": "Transmission Control Protocol, Src Port: 58404, Dst Port: 12000, Seq: 0, Len: 0",
+          "h": [
+            34,
+            40
+          ],
+          "t": "proto",
+          "f": "tcp",
+          "fn": "tcp",
+          "s": "Chat",
+          "e": 55113,
+          "n": [
+            {
+              "l": "Source Port: 58404",
+              "h": [
+                34,
+                2
+              ],
+              "f": "tcp.srcport == 58404",
+              "fn": "tcp.srcport"
+            },
+            {
+              "l": "Destination Port: 12000",
+              "h": [
+                36,
+                2
+              ],
+              "f": "tcp.dstport == 12000",
+              "fn": "tcp.dstport"
+            },
+            {
+              "l": "Stream index: 0",
+              "f": "tcp.stream == 0",
+              "fn": "tcp.stream",
+              "g": true
+            },
+            {
+              "l": "Conversation completeness: Incomplete (37)",
+              "f": "tcp.completeness == 37",
+              "fn": "tcp.completeness",
+              "g": true,
+              "e": 55114,
+              "n": [
+                {
+                  "l": "..1. .... = RST: Present",
+                  "f": "tcp.completeness.rst == True",
+                  "fn": "tcp.completeness.rst"
+                },
+                {
+                  "l": "...0 .... = FIN: Absent",
+                  "f": "tcp.completeness.fin == False",
+                  "fn": "tcp.completeness.fin"
+                },
+                {
+                  "l": ".... 0... = Data: Absent",
+                  "f": "tcp.completeness.data == False",
+                  "fn": "tcp.completeness.data"
+                },
+                {
+                  "l": ".... .1.. = ACK: Present",
+                  "f": "tcp.completeness.ack == True",
+                  "fn": "tcp.completeness.ack"
+                },
+                {
+                  "l": ".... ..0. = SYN-ACK: Absent",
+                  "f": "tcp.completeness.syn-ack == False",
+                  "fn": "tcp.completeness.syn-ack"
+                },
+                {
+                  "l": ".... ...1 = SYN: Present",
+                  "f": "tcp.completeness.syn == True",
+                  "fn": "tcp.completeness.syn"
+                },
+                {
+                  "l": "Completeness Flags: R\u00b7\u00b7A\u00b7S",
+                  "f": "tcp.completeness.str == \"R\u00b7\u00b7A\u00b7S\"",
+                  "fn": "tcp.completeness.str",
+                  "g": true
+                }
+              ]
+            },
+            {
+              "l": "TCP Segment Len: 0",
+              "f": "tcp.len == 0",
+              "fn": "tcp.len",
+              "g": true
+            },
+            {
+              "l": "Sequence Number: 0    (relative sequence number)",
+              "h": [
+                38,
+                4
+              ],
+              "f": "tcp.seq == 0",
+              "fn": "tcp.seq"
+            },
+            {
+              "l": "Sequence Number (raw): 654262153",
+              "h": [
+                38,
+                4
+              ],
+              "f": "tcp.seq_raw == 654262153",
+              "fn": "tcp.seq_raw"
+            },
+            {
+              "l": "Next Sequence Number: 1    (relative sequence number)",
+              "f": "tcp.nxtseq == 1",
+              "fn": "tcp.nxtseq",
+              "g": true
+            },
+            {
+              "l": "Acknowledgment Number: 0",
+              "h": [
+                42,
+                4
+              ],
+              "f": "tcp.ack == 0",
+              "fn": "tcp.ack"
+            },
+            {
+              "l": "Acknowledgment number (raw): 0",
+              "h": [
+                42,
+                4
+              ],
+              "f": "tcp.ack_raw == 0",
+              "fn": "tcp.ack_raw"
+            },
+            {
+              "l": "1010 .... = Header Length: 40 bytes (10)",
+              "h": [
+                46,
+                1
+              ],
+              "f": "tcp.hdr_len == 40",
+              "fn": "tcp.hdr_len"
+            },
+            {
+              "l": "Flags: 0x002 (SYN)",
+              "h": [
+                46,
+                2
+              ],
+              "f": "tcp.flags == 0x0002",
+              "fn": "tcp.flags",
+              "s": "Chat",
+              "e": 55115,
+              "n": [
+                {
+                  "l": "000. .... .... = Reserved: Not set",
+                  "h": [
+                    46,
+                    1
+                  ],
+                  "f": "tcp.flags.res == False",
+                  "fn": "tcp.flags.res"
+                },
+                {
+                  "l": "...0 .... .... = Accurate ECN: Not set",
+                  "h": [
+                    46,
+                    1
+                  ],
+                  "f": "tcp.flags.ae == False",
+                  "fn": "tcp.flags.ae"
+                },
+                {
+                  "l": ".... 0... .... = Congestion Window Reduced: Not set",
+                  "h": [
+                    47,
+                    1
+                  ],
+                  "f": "tcp.flags.cwr == False",
+                  "fn": "tcp.flags.cwr"
+                },
+                {
+                  "l": ".... .0.. .... = ECN-Echo: Not set",
+                  "h": [
+                    47,
+                    1
+                  ],
+                  "f": "tcp.flags.ece == False",
+                  "fn": "tcp.flags.ece"
+                },
+                {
+                  "l": ".... ..0. .... = Urgent: Not set",
+                  "h": [
+                    47,
+                    1
+                  ],
+                  "f": "tcp.flags.urg == False",
+                  "fn": "tcp.flags.urg"
+                },
+                {
+                  "l": ".... ...0 .... = Acknowledgment: Not set",
+                  "h": [
+                    47,
+                    1
+                  ],
+                  "f": "tcp.flags.ack == False",
+                  "fn": "tcp.flags.ack"
+                },
+                {
+                  "l": ".... .... 0... = Push: Not set",
+                  "h": [
+                    47,
+                    1
+                  ],
+                  "f": "tcp.flags.push == False",
+                  "fn": "tcp.flags.push"
+                },
+                {
+                  "l": ".... .... .0.. = Reset: Not set",
+                  "h": [
+                    47,
+                    1
+                  ],
+                  "f": "tcp.flags.reset == False",
+                  "fn": "tcp.flags.reset"
+                },
+                {
+                  "l": ".... .... ..1. = Syn: Set",
+                  "h": [
+                    47,
+                    1
+                  ],
+                  "f": "tcp.flags.syn == True",
+                  "fn": "tcp.flags.syn",
+                  "s": "Chat",
+                  "e": 63034,
+                  "n": [
+                    {
+                      "l": "Expert Info (Chat/Sequence): Connection establish request (SYN): server port 12000",
+                      "t": "proto",
+                      "f": "_ws.expert",
+                      "fn": "_ws.expert",
+                      "g": true,
+                      "e": 63035,
+                      "n": [
+                        {
+                          "l": "Connection establish request (SYN): server port 12000",
+                          "f": "tcp.connection.syn",
+                          "fn": "tcp.connection.syn",
+                          "g": true
+                        },
+                        {
+                          "l": "Severity level: Chat",
+                          "f": "_ws.expert.severity == \"Chat\"",
+                          "fn": "_ws.expert.severity",
+                          "g": true
+                        },
+                        {
+                          "l": "Group: Sequence",
+                          "f": "_ws.expert.group == \"Sequence\"",
+                          "fn": "_ws.expert.group",
+                          "g": true
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "l": ".... .... ...0 = Fin: Not set",
+                  "h": [
+                    47,
+                    1
+                  ],
+                  "f": "tcp.flags.fin == False",
+                  "fn": "tcp.flags.fin"
+                },
+                {
+                  "l": "TCP Flags: \u00b7\u00b7\u00b7\u00b7\u00b7\u00b7\u00b7\u00b7\u00b7\u00b7S\u00b7",
+                  "h": [
+                    46,
+                    2
+                  ],
+                  "f": "tcp.flags.str == \"\u00b7\u00b7\u00b7\u00b7\u00b7\u00b7\u00b7\u00b7\u00b7\u00b7S\u00b7\"",
+                  "fn": "tcp.flags.str",
+                  "g": true
+                }
+              ]
+            },
+            {
+              "l": "Window: 65495",
+              "h": [
+                48,
+                2
+              ],
+              "f": "tcp.window_size_value == 65495",
+              "fn": "tcp.window_size_value"
+            },
+            {
+              "l": "Calculated window size: 65495",
+              "h": [
+                48,
+                2
+              ],
+              "f": "tcp.window_size == 65495",
+              "fn": "tcp.window_size",
+              "g": true
+            },
+            {
+              "l": "Checksum: 0xfe30 [unverified]",
+              "h": [
+                50,
+                2
+              ],
+              "f": "tcp.checksum == 0xfe30",
+              "fn": "tcp.checksum"
+            },
+            {
+              "l": "Checksum Status: Unverified",
+              "f": "tcp.checksum.status == \"Unverified\"",
+              "fn": "tcp.checksum.status",
+              "g": true
+            },
+            {
+              "l": "Urgent Pointer: 0",
+              "h": [
+                52,
+                2
+              ],
+              "f": "tcp.urgent_pointer == 0",
+              "fn": "tcp.urgent_pointer"
+            },
+            {
+              "l": "Options: (20 bytes), Maximum segment size, SACK permitted, Timestamps, No-Operation (NOP), Window scale",
+              "h": [
+                54,
+                20
+              ],
+              "f": "tcp.options == 02:04:ff:d7:04:02:08:0a:62:8d:c1:1f:00:00:00:00:01:03:03:0a",
+              "fn": "tcp.options",
+              "e": 55116,
+              "n": [
+                {
+                  "l": "TCP Option - Maximum segment size: 65495 bytes",
+                  "h": [
+                    54,
+                    4
+                  ],
+                  "f": "tcp.options.mss == 02:04:ff:d7",
+                  "fn": "tcp.options.mss",
+                  "e": 55129,
+                  "n": [
+                    {
+                      "l": "Kind: Maximum Segment Size (2)",
+                      "h": [
+                        54,
+                        1
+                      ],
+                      "f": "tcp.option_kind == 2",
+                      "fn": "tcp.option_kind"
+                    },
+                    {
+                      "l": "Length: 4",
+                      "h": [
+                        55,
+                        1
+                      ],
+                      "f": "tcp.option_len == 4",
+                      "fn": "tcp.option_len"
+                    },
+                    {
+                      "l": "MSS Value: 65495",
+                      "h": [
+                        56,
+                        2
+                      ],
+                      "f": "tcp.options.mss_val == 65495",
+                      "fn": "tcp.options.mss_val"
+                    }
+                  ]
+                },
+                {
+                  "l": "TCP Option - SACK permitted",
+                  "h": [
+                    58,
+                    2
+                  ],
+                  "f": "tcp.options.sack_perm == 04:02",
+                  "fn": "tcp.options.sack_perm",
+                  "e": 55128,
+                  "n": [
+                    {
+                      "l": "Kind: SACK Permitted (4)",
+                      "h": [
+                        58,
+                        1
+                      ],
+                      "f": "tcp.option_kind == 4",
+                      "fn": "tcp.option_kind"
+                    },
+                    {
+                      "l": "Length: 2",
+                      "h": [
+                        59,
+                        1
+                      ],
+                      "f": "tcp.option_len == 2",
+                      "fn": "tcp.option_len"
+                    }
+                  ]
+                },
+                {
+                  "l": "TCP Option - Timestamps",
+                  "h": [
+                    60,
+                    10
+                  ],
+                  "f": "tcp.options.timestamp == 08:0a:62:8d:c1:1f:00:00:00:00",
+                  "fn": "tcp.options.timestamp",
+                  "e": 55117,
+                  "n": [
+                    {
+                      "l": "Kind: Time Stamp Option (8)",
+                      "h": [
+                        60,
+                        1
+                      ],
+                      "f": "tcp.option_kind == 8",
+                      "fn": "tcp.option_kind"
+                    },
+                    {
+                      "l": "Length: 10",
+                      "h": [
+                        61,
+                        1
+                      ],
+                      "f": "tcp.option_len == 10",
+                      "fn": "tcp.option_len"
+                    },
+                    {
+                      "l": "Timestamp value: 1653457183: TSval 1653457183, TSecr 0",
+                      "h": [
+                        62,
+                        4
+                      ],
+                      "f": "tcp.options.timestamp.tsval == 1653457183",
+                      "fn": "tcp.options.timestamp.tsval"
+                    },
+                    {
+                      "l": "Timestamp echo reply: 0",
+                      "h": [
+                        66,
+                        4
+                      ],
+                      "f": "tcp.options.timestamp.tsecr == 0",
+                      "fn": "tcp.options.timestamp.tsecr"
+                    }
+                  ]
+                },
+                {
+                  "l": "TCP Option - No-Operation (NOP)",
+                  "h": [
+                    70,
+                    1
+                  ],
+                  "f": "tcp.options.nop == 01:",
+                  "fn": "tcp.options.nop",
+                  "e": 55149,
+                  "n": [
+                    {
+                      "l": "Kind: No-Operation (1)",
+                      "h": [
+                        70,
+                        1
+                      ],
+                      "f": "tcp.option_kind == 1",
+                      "fn": "tcp.option_kind"
+                    }
+                  ]
+                },
+                {
+                  "l": "TCP Option - Window scale: 10 (multiply by 1024)",
+                  "h": [
+                    71,
+                    3
+                  ],
+                  "f": "tcp.options.wscale == 03:03:0a",
+                  "fn": "tcp.options.wscale",
+                  "e": 55119,
+                  "n": [
+                    {
+                      "l": "Kind: Window Scale (3)",
+                      "h": [
+                        71,
+                        1
+                      ],
+                      "f": "tcp.option_kind == 3",
+                      "fn": "tcp.option_kind"
+                    },
+                    {
+                      "l": "Length: 3",
+                      "h": [
+                        72,
+                        1
+                      ],
+                      "f": "tcp.option_len == 3",
+                      "fn": "tcp.option_len"
+                    },
+                    {
+                      "l": "Shift count: 10",
+                      "h": [
+                        73,
+                        1
+                      ],
+                      "f": "tcp.options.wscale.shift == 10",
+                      "fn": "tcp.options.wscale.shift"
+                    },
+                    {
+                      "l": "Multiplier: 1024",
+                      "h": [
+                        73,
+                        1
+                      ],
+                      "f": "tcp.options.wscale.multiplier == 1024",
+                      "fn": "tcp.options.wscale.multiplier",
+                      "g": true
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "l": "Timestamps",
+              "f": "text",
+              "fn": "text",
+              "g": true,
+              "e": 55141,
+              "n": [
+                {
+                  "l": "Time since first frame in this TCP stream: 0.000000000 seconds",
+                  "f": "tcp.time_relative == 0.000000000",
+                  "fn": "tcp.time_relative",
+                  "g": true
+                },
+                {
+                  "l": "Time since previous frame in this TCP stream: 0.000000000 seconds",
+                  "f": "tcp.time_delta == 0.000000000",
+                  "fn": "tcp.time_delta",
+                  "g": true
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "bg": "a0a0a0",
+      "fg": "12272e",
+      "bytes": "AAAAAAAAAAAAAAAACABFAAA8ij5AAEAGsnt/AAABfwAAAeQkLuAm/z+JAAAAAKAC/9f+MAAAAgT/1wQCCApijcEfAAAAAAEDAwo=",
+      "fol": [
+        [
+          "TCP",
+          "tcp.stream eq 0"
+        ]
+      ]
+    }
+  },
+  {
+    "jsonrpc": "2.0",
+    "id": 4,
+    "result": {
+      "tree": [
+        {
+          "l": "Frame 2: 54 bytes on wire (432 bits), 54 bytes captured (432 bits) on interface lo, id 0",
+          "h": [
+            0,
+            54
+          ],
+          "t": "proto",
+          "f": "frame",
+          "fn": "frame",
+          "e": 14267,
+          "n": [
+            {
+              "l": "Section number: 1",
+              "f": "frame.section_number == 1",
+              "fn": "frame.section_number"
+            },
+            {
+              "l": "Interface id: 0 (lo)",
+              "f": "frame.interface_id == 0",
+              "fn": "frame.interface_id",
+              "e": 14268,
+              "n": [
+                {
+                  "l": "Interface name: lo",
+                  "f": "frame.interface_name == \"lo\"",
+                  "fn": "frame.interface_name"
+                }
+              ]
+            },
+            {
+              "l": "Encapsulation type: Ethernet (1)",
+              "f": "frame.encap_type == 1",
+              "fn": "frame.encap_type"
+            },
+            {
+              "l": "Arrival Time: Sep 30, 2026 18:00:33.839614643 -03",
+              "f": "frame.time == \"2026-09-30 18:00:33.839614643-0300\"",
+              "fn": "frame.time"
+            },
+            {
+              "l": "UTC Arrival Time: Sep 30, 2026 21:00:33.839614643 UTC",
+              "f": "frame.time_utc == \"2026-09-30 21:00:33.839614643Z\"",
+              "fn": "frame.time_utc"
+            },
+            {
+              "l": "Epoch Arrival Time: 1790802033.839614643",
+              "f": "frame.time_epoch == 1790802033.839614643",
+              "fn": "frame.time_epoch"
+            },
+            {
+              "l": "Time shift for this packet: 0.000000000 seconds",
+              "f": "frame.offset_shift == 0.000000000",
+              "fn": "frame.offset_shift",
+              "g": true
+            },
+            {
+              "l": "Time delta from previous captured frame: 0.000012435 seconds",
+              "f": "frame.time_delta == 0.000012435",
+              "fn": "frame.time_delta",
+              "g": true
+            },
+            {
+              "l": "Time delta from previous displayed frame: 0.000012435 seconds",
+              "f": "frame.time_delta_displayed == 0.000012435",
+              "fn": "frame.time_delta_displayed",
+              "g": true
+            },
+            {
+              "l": "Time since reference or first frame: 0.000012435 seconds",
+              "f": "frame.time_relative == 0.000012435",
+              "fn": "frame.time_relative",
+              "g": true
+            },
+            {
+              "l": "Frame Number: 2",
+              "f": "frame.number == 2",
+              "fn": "frame.number"
+            },
+            {
+              "l": "Frame Length: 54 bytes (432 bits)",
+              "f": "frame.len == 54",
+              "fn": "frame.len"
+            },
+            {
+              "l": "Capture Length: 54 bytes (432 bits)",
+              "f": "frame.cap_len == 54",
+              "fn": "frame.cap_len"
+            },
+            {
+              "l": "Frame is marked: False",
+              "f": "frame.marked == False",
+              "fn": "frame.marked",
+              "g": true
+            },
+            {
+              "l": "Frame is ignored: False",
+              "f": "frame.ignored == False",
+              "fn": "frame.ignored",
+              "g": true
+            },
+            {
+              "l": "Protocols in frame: eth:ethertype:ip:tcp",
+              "f": "frame.protocols == \"eth:ethertype:ip:tcp\"",
+              "fn": "frame.protocols",
+              "g": true
+            },
+            {
+              "l": "Coloring Rule Name: TCP RST",
+              "f": "frame.coloring_rule.name == \"TCP RST\"",
+              "fn": "frame.coloring_rule.name",
+              "g": true
+            },
+            {
+              "l": "Coloring Rule String: tcp.flags.reset eq 1",
+              "f": "frame.coloring_rule.string == \"tcp.flags.reset eq 1\"",
+              "fn": "frame.coloring_rule.string",
+              "g": true
+            }
+          ]
+        },
+        {
+          "l": "Ethernet II, Src: 00:00:00_00:00:00 (00:00:00:00:00:00), Dst: 00:00:00_00:00:00 (00:00:00:00:00:00)",
+          "h": [
+            0,
+            14
+          ],
+          "t": "proto",
+          "f": "eth",
+          "fn": "eth",
+          "e": 12620,
+          "n": [
+            {
+              "l": "Destination: 00:00:00_00:00:00 (00:00:00:00:00:00)",
+              "h": [
+                0,
+                6
+              ],
+              "f": "eth.dst == 00:00:00:00:00:00",
+              "fn": "eth.dst",
+              "e": 12622,
+              "n": [
+                {
+                  "l": "Address: 00:00:00_00:00:00 (00:00:00:00:00:00)",
+                  "h": [
+                    0,
+                    6
+                  ],
+                  "f": "eth.addr == 00:00:00:00:00:00",
+                  "fn": "eth.addr"
+                },
+                {
+                  "l": ".... ..0. .... .... .... .... = LG bit: Globally unique address (factory default)",
+                  "h": [
+                    0,
+                    3
+                  ],
+                  "f": "eth.dst.lg == False",
+                  "fn": "eth.dst.lg"
+                },
+                {
+                  "l": ".... ...0 .... .... .... .... = IG bit: Individual address (unicast)",
+                  "h": [
+                    0,
+                    3
+                  ],
+                  "f": "eth.dst.ig == False",
+                  "fn": "eth.dst.ig"
+                }
+              ]
+            },
+            {
+              "l": "Source: 00:00:00_00:00:00 (00:00:00:00:00:00)",
+              "h": [
+                6,
+                6
+              ],
+              "f": "eth.src == 00:00:00:00:00:00",
+              "fn": "eth.src",
+              "e": 12622,
+              "n": [
+                {
+                  "l": "Address: 00:00:00_00:00:00 (00:00:00:00:00:00)",
+                  "h": [
+                    6,
+                    6
+                  ],
+                  "f": "eth.addr == 00:00:00:00:00:00",
+                  "fn": "eth.addr"
+                },
+                {
+                  "l": ".... ..0. .... .... .... .... = LG bit: Globally unique address (factory default)",
+                  "h": [
+                    6,
+                    3
+                  ],
+                  "f": "eth.src.lg == False",
+                  "fn": "eth.src.lg"
+                },
+                {
+                  "l": ".... ...0 .... .... .... .... = IG bit: Individual address (unicast)",
+                  "h": [
+                    6,
+                    3
+                  ],
+                  "f": "eth.src.ig == False",
+                  "fn": "eth.src.ig"
+                }
+              ]
+            },
+            {
+              "l": "Type: IPv4 (0x0800)",
+              "h": [
+                12,
+                2
+              ],
+              "f": "eth.type == 0x0800",
+              "fn": "eth.type"
+            }
+          ]
+        },
+        {
+          "l": "Internet Protocol Version 4, Src: 127.0.0.1, Dst: 127.0.0.1",
+          "h": [
+            14,
+            20
+          ],
+          "t": "proto",
+          "f": "ip",
+          "fn": "ip",
+          "e": 21005,
+          "n": [
+            {
+              "l": "0100 .... = Version: 4",
+              "h": [
+                14,
+                1
+              ],
+              "f": "ip.version == 4",
+              "fn": "ip.version"
+            },
+            {
+              "l": ".... 0101 = Header Length: 20 bytes (5)",
+              "h": [
+                14,
+                1
+              ],
+              "f": "ip.hdr_len == 20",
+              "fn": "ip.hdr_len"
+            },
+            {
+              "l": "Differentiated Services Field: 0x00 (DSCP: CS0, ECN: Not-ECT)",
+              "h": [
+                15,
+                1
+              ],
+              "f": "ip.dsfield == 0x00",
+              "fn": "ip.dsfield",
+              "e": 21006,
+              "n": [
+                {
+                  "l": "0000 00.. = Differentiated Services Codepoint: Default (0)",
+                  "h": [
+                    15,
+                    1
+                  ],
+                  "f": "ip.dsfield.dscp == 0",
+                  "fn": "ip.dsfield.dscp"
+                },
+                {
+                  "l": ".... ..00 = Explicit Congestion Notification: Not ECN-Capable Transport (0)",
+                  "h": [
+                    15,
+                    1
+                  ],
+                  "f": "ip.dsfield.ecn == 0",
+                  "fn": "ip.dsfield.ecn"
+                }
+              ]
+            },
+            {
+              "l": "Total Length: 40",
+              "h": [
+                16,
+                2
+              ],
+              "f": "ip.len == 40",
+              "fn": "ip.len"
+            },
+            {
+              "l": "Identification: 0x0000 (0)",
+              "h": [
+                18,
+                2
+              ],
+              "f": "ip.id == 0x0000",
+              "fn": "ip.id"
+            },
+            {
+              "l": "010. .... = Flags: 0x2, Don't fragment",
+              "h": [
+                20,
+                1
+              ],
+              "f": "ip.flags == 0x02",
+              "fn": "ip.flags",
+              "e": 21008,
+              "n": [
+                {
+                  "l": "0... .... = Reserved bit: Not set",
+                  "h": [
+                    20,
+                    1
+                  ],
+                  "f": "ip.flags.rb == False",
+                  "fn": "ip.flags.rb"
+                },
+                {
+                  "l": ".1.. .... = Don't fragment: Set",
+                  "h": [
+                    20,
+                    1
+                  ],
+                  "f": "ip.flags.df == True",
+                  "fn": "ip.flags.df"
+                },
+                {
+                  "l": "..0. .... = More fragments: Not set",
+                  "h": [
+                    20,
+                    1
+                  ],
+                  "f": "ip.flags.mf == False",
+                  "fn": "ip.flags.mf"
+                }
+              ]
+            },
+            {
+              "l": "...0 0000 0000 0000 = Fragment Offset: 0",
+              "h": [
+                20,
+                2
+              ],
+              "f": "ip.frag_offset == 0",
+              "fn": "ip.frag_offset"
+            },
+            {
+              "l": "Time to Live: 64",
+              "h": [
+                22,
+                1
+              ],
+              "f": "ip.ttl == 64",
+              "fn": "ip.ttl"
+            },
+            {
+              "l": "Protocol: TCP (6)",
+              "h": [
+                23,
+                1
+              ],
+              "f": "ip.proto == 6",
+              "fn": "ip.proto"
+            },
+            {
+              "l": "Header Checksum: 0x3cce [validation disabled]",
+              "h": [
+                24,
+                2
+              ],
+              "f": "ip.checksum == 0x3cce",
+              "fn": "ip.checksum"
+            },
+            {
+              "l": "Header checksum status: Unverified",
+              "f": "ip.checksum.status == \"Unverified\"",
+              "fn": "ip.checksum.status",
+              "g": true
+            },
+            {
+              "l": "Source Address: 127.0.0.1",
+              "h": [
+                26,
+                4
+              ],
+              "f": "ip.src == 127.0.0.1",
+              "fn": "ip.src"
+            },
+            {
+              "l": "Destination Address: 127.0.0.1",
+              "h": [
+                30,
+                4
+              ],
+              "f": "ip.dst == 127.0.0.1",
+              "fn": "ip.dst"
+            }
+          ]
+        },
+        {
+          "l": "Transmission Control Protocol, Src Port: 12000, Dst Port: 58404, Seq: 1, Ack: 1, Len: 0",
+          "h": [
+            34,
+            20
+          ],
+          "t": "proto",
+          "f": "tcp",
+          "fn": "tcp",
+          "s": "Warning",
+          "e": 55113,
+          "n": [
+            {
+              "l": "Source Port: 12000",
+              "h": [
+                34,
+                2
+              ],
+              "f": "tcp.srcport == 12000",
+              "fn": "tcp.srcport"
+            },
+            {
+              "l": "Destination Port: 58404",
+              "h": [
+                36,
+                2
+              ],
+              "f": "tcp.dstport == 58404",
+              "fn": "tcp.dstport"
+            },
+            {
+              "l": "Stream index: 0",
+              "f": "tcp.stream == 0",
+              "fn": "tcp.stream",
+              "g": true
+            },
+            {
+              "l": "Conversation completeness: Incomplete (37)",
+              "f": "tcp.completeness == 37",
+              "fn": "tcp.completeness",
+              "g": true,
+              "e": 55114,
+              "n": [
+                {
+                  "l": "..1. .... = RST: Present",
+                  "f": "tcp.completeness.rst == True",
+                  "fn": "tcp.completeness.rst"
+                },
+                {
+                  "l": "...0 .... = FIN: Absent",
+                  "f": "tcp.completeness.fin == False",
+                  "fn": "tcp.completeness.fin"
+                },
+                {
+                  "l": ".... 0... = Data: Absent",
+                  "f": "tcp.completeness.data == False",
+                  "fn": "tcp.completeness.data"
+                },
+                {
+                  "l": ".... .1.. = ACK: Present",
+                  "f": "tcp.completeness.ack == True",
+                  "fn": "tcp.completeness.ack"
+                },
+                {
+                  "l": ".... ..0. = SYN-ACK: Absent",
+                  "f": "tcp.completeness.syn-ack == False",
+                  "fn": "tcp.completeness.syn-ack"
+                },
+                {
+                  "l": ".... ...1 = SYN: Present",
+                  "f": "tcp.completeness.syn == True",
+                  "fn": "tcp.completeness.syn"
+                },
+                {
+                  "l": "Completeness Flags: R\u00b7\u00b7A\u00b7S",
+                  "f": "tcp.completeness.str == \"R\u00b7\u00b7A\u00b7S\"",
+                  "fn": "tcp.completeness.str",
+                  "g": true
+                }
+              ]
+            },
+            {
+              "l": "TCP Segment Len: 0",
+              "f": "tcp.len == 0",
+              "fn": "tcp.len",
+              "g": true
+            },
+            {
+              "l": "Sequence Number: 1    (relative sequence number)",
+              "h": [
+                38,
+                4
+              ],
+              "f": "tcp.seq == 1",
+              "fn": "tcp.seq"
+            },
+            {
+              "l": "Sequence Number (raw): 0",
+              "h": [
+                38,
+                4
+              ],
+              "f": "tcp.seq_raw == 0",
+              "fn": "tcp.seq_raw"
+            },
+            {
+              "l": "Next Sequence Number: 1    (relative sequence number)",
+              "f": "tcp.nxtseq == 1",
+              "fn": "tcp.nxtseq",
+              "g": true
+            },
+            {
+              "l": "Acknowledgment Number: 1    (relative ack number)",
+              "h": [
+                42,
+                4
+              ],
+              "f": "tcp.ack == 1",
+              "fn": "tcp.ack"
+            },
+            {
+              "l": "Acknowledgment number (raw): 654262154",
+              "h": [
+                42,
+                4
+              ],
+              "f": "tcp.ack_raw == 654262154",
+              "fn": "tcp.ack_raw"
+            },
+            {
+              "l": "0101 .... = Header Length: 20 bytes (5)",
+              "h": [
+                46,
+                1
+              ],
+              "f": "tcp.hdr_len == 20",
+              "fn": "tcp.hdr_len"
+            },
+            {
+              "l": "Flags: 0x014 (RST, ACK)",
+              "h": [
+                46,
+                2
+              ],
+              "f": "tcp.flags == 0x0014",
+              "fn": "tcp.flags",
+              "s": "Warning",
+              "e": 55115,
+              "n": [
+                {
+                  "l": "000. .... .... = Reserved: Not set",
+                  "h": [
+                    46,
+                    1
+                  ],
+                  "f": "tcp.flags.res == False",
+                  "fn": "tcp.flags.res"
+                },
+                {
+                  "l": "...0 .... .... = Accurate ECN: Not set",
+                  "h": [
+                    46,
+                    1
+                  ],
+                  "f": "tcp.flags.ae == False",
+                  "fn": "tcp.flags.ae"
+                },
+                {
+                  "l": ".... 0... .... = Congestion Window Reduced: Not set",
+                  "h": [
+                    47,
+                    1
+                  ],
+                  "f": "tcp.flags.cwr == False",
+                  "fn": "tcp.flags.cwr"
+                },
+                {
+                  "l": ".... .0.. .... = ECN-Echo: Not set",
+                  "h": [
+                    47,
+                    1
+                  ],
+                  "f": "tcp.flags.ece == False",
+                  "fn": "tcp.flags.ece"
+                },
+                {
+                  "l": ".... ..0. .... = Urgent: Not set",
+                  "h": [
+                    47,
+                    1
+                  ],
+                  "f": "tcp.flags.urg == False",
+                  "fn": "tcp.flags.urg"
+                },
+                {
+                  "l": ".... ...1 .... = Acknowledgment: Set",
+                  "h": [
+                    47,
+                    1
+                  ],
+                  "f": "tcp.flags.ack == True",
+                  "fn": "tcp.flags.ack"
+                },
+                {
+                  "l": ".... .... 0... = Push: Not set",
+                  "h": [
+                    47,
+                    1
+                  ],
+                  "f": "tcp.flags.push == False",
+                  "fn": "tcp.flags.push"
+                },
+                {
+                  "l": ".... .... .1.. = Reset: Set",
+                  "h": [
+                    47,
+                    1
+                  ],
+                  "f": "tcp.flags.reset == True",
+                  "fn": "tcp.flags.reset",
+                  "s": "Warning",
+                  "e": 63034,
+                  "n": [
+                    {
+                      "l": "Expert Info (Warning/Sequence): Connection reset (RST)",
+                      "t": "proto",
+                      "f": "_ws.expert",
+                      "fn": "_ws.expert",
+                      "g": true,
+                      "e": 63035,
+                      "n": [
+                        {
+                          "l": "Connection reset (RST)",
+                          "f": "tcp.connection.rst",
+                          "fn": "tcp.connection.rst",
+                          "g": true
+                        },
+                        {
+                          "l": "Severity level: Warning",
+                          "f": "_ws.expert.severity == \"Warning\"",
+                          "fn": "_ws.expert.severity",
+                          "g": true
+                        },
+                        {
+                          "l": "Group: Sequence",
+                          "f": "_ws.expert.group == \"Sequence\"",
+                          "fn": "_ws.expert.group",
+                          "g": true
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "l": ".... .... ..0. = Syn: Not set",
+                  "h": [
+                    47,
+                    1
+                  ],
+                  "f": "tcp.flags.syn == False",
+                  "fn": "tcp.flags.syn"
+                },
+                {
+                  "l": ".... .... ...0 = Fin: Not set",
+                  "h": [
+                    47,
+                    1
+                  ],
+                  "f": "tcp.flags.fin == False",
+                  "fn": "tcp.flags.fin"
+                },
+                {
+                  "l": "TCP Flags: \u00b7\u00b7\u00b7\u00b7\u00b7\u00b7\u00b7A\u00b7R\u00b7\u00b7",
+                  "h": [
+                    46,
+                    2
+                  ],
+                  "f": "tcp.flags.str == \"\u00b7\u00b7\u00b7\u00b7\u00b7\u00b7\u00b7A\u00b7R\u00b7\u00b7\"",
+                  "fn": "tcp.flags.str",
+                  "g": true
+                }
+              ]
+            },
+            {
+              "l": "Window: 0",
+              "h": [
+                48,
+                2
+              ],
+              "f": "tcp.window_size_value == 0",
+              "fn": "tcp.window_size_value"
+            },
+            {
+              "l": "Calculated window size: 0",
+              "h": [
+                48,
+                2
+              ],
+              "f": "tcp.window_size == 0",
+              "fn": "tcp.window_size",
+              "g": true
+            },
+            {
+              "l": "Window size scaling factor: -1 (unknown)",
+              "h": [
+                48,
+                2
+              ],
+              "f": "tcp.window_size_scalefactor == -1",
+              "fn": "tcp.window_size_scalefactor",
+              "g": true
+            },
+            {
+              "l": "Checksum: 0x3840 [unverified]",
+              "h": [
+                50,
+                2
+              ],
+              "f": "tcp.checksum == 0x3840",
+              "fn": "tcp.checksum"
+            },
+            {
+              "l": "Checksum Status: Unverified",
+              "f": "tcp.checksum.status == \"Unverified\"",
+              "fn": "tcp.checksum.status",
+              "g": true
+            },
+            {
+              "l": "Urgent Pointer: 0",
+              "h": [
+                52,
+                2
+              ],
+              "f": "tcp.urgent_pointer == 0",
+              "fn": "tcp.urgent_pointer"
+            },
+            {
+              "l": "Timestamps",
+              "f": "text",
+              "fn": "text",
+              "g": true,
+              "e": 55141,
+              "n": [
+                {
+                  "l": "Time since first frame in this TCP stream: 0.000012435 seconds",
+                  "f": "tcp.time_relative == 0.000012435",
+                  "fn": "tcp.time_relative",
+                  "g": true
+                },
+                {
+                  "l": "Time since previous frame in this TCP stream: 0.000012435 seconds",
+                  "f": "tcp.time_delta == 0.000012435",
+                  "fn": "tcp.time_delta",
+                  "g": true
+                }
+              ]
+            },
+            {
+              "l": "SEQ/ACK analysis",
+              "f": "tcp.analysis",
+              "fn": "tcp.analysis",
+              "g": true,
+              "e": 55140,
+              "n": [
+                {
+                  "l": "This is an ACK to the segment in frame: 1",
+                  "t": "framenum",
+                  "fnum": 1,
+                  "f": "tcp.analysis.acks_frame == 1",
+                  "fn": "tcp.analysis.acks_frame",
+                  "g": true
+                },
+                {
+                  "l": "The RTT to ACK the segment was: 0.000012435 seconds",
+                  "f": "tcp.analysis.ack_rtt == 0.000012435",
+                  "fn": "tcp.analysis.ack_rtt",
+                  "g": true
+                },
+                {
+                  "l": "iRTT: 0.000012435 seconds",
+                  "f": "tcp.analysis.initial_rtt == 0.000012435",
+                  "fn": "tcp.analysis.initial_rtt",
+                  "g": true
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "bg": "a40000",
+      "fg": "fffc9c",
+      "bytes": "AAAAAAAAAAAAAAAACABFAAAoAABAAEAGPM5/AAABfwAAAS7g5CQAAAAAJv8/ilAUAAA4QAAA",
+      "fol": [
+        [
+          "TCP",
+          "tcp.stream eq 0"
+        ]
+      ]
+    }
+  },
+  {
+    "jsonrpc": "2.0",
+    "id": 5,
+    "result": {
+      "tree": [
+        {
+          "l": "Frame 3: 58 bytes on wire (464 bits), 58 bytes captured (464 bits) on interface lo, id 0",
+          "h": [
+            0,
+            58
+          ],
+          "t": "proto",
+          "f": "frame",
+          "fn": "frame",
+          "e": 14267,
+          "n": [
+            {
+              "l": "Section number: 1",
+              "f": "frame.section_number == 1",
+              "fn": "frame.section_number"
+            },
+            {
+              "l": "Interface id: 0 (lo)",
+              "f": "frame.interface_id == 0",
+              "fn": "frame.interface_id",
+              "e": 14268,
+              "n": [
+                {
+                  "l": "Interface name: lo",
+                  "f": "frame.interface_name == \"lo\"",
+                  "fn": "frame.interface_name"
+                }
+              ]
+            },
+            {
+              "l": "Encapsulation type: Ethernet (1)",
+              "f": "frame.encap_type == 1",
+              "fn": "frame.encap_type"
+            },
+            {
+              "l": "Arrival Time: Sep 30, 2026 18:00:35.561888546 -03",
+              "f": "frame.time == \"2026-09-30 18:00:35.561888546-0300\"",
+              "fn": "frame.time"
+            },
+            {
+              "l": "UTC Arrival Time: Sep 30, 2026 21:00:35.561888546 UTC",
+              "f": "frame.time_utc == \"2026-09-30 21:00:35.561888546Z\"",
+              "fn": "frame.time_utc"
+            },
+            {
+              "l": "Epoch Arrival Time: 1790802035.561888546",
+              "f": "frame.time_epoch == 1790802035.561888546",
+              "fn": "frame.time_epoch"
+            },
+            {
+              "l": "Time shift for this packet: 0.000000000 seconds",
+              "f": "frame.offset_shift == 0.000000000",
+              "fn": "frame.offset_shift",
+              "g": true
+            },
+            {
+              "l": "Time delta from previous captured frame: 1.722273903 seconds",
+              "f": "frame.time_delta == 1.722273903",
+              "fn": "frame.time_delta",
+              "g": true
+            },
+            {
+              "l": "Time delta from previous displayed frame: 1.722273903 seconds",
+              "f": "frame.time_delta_displayed == 1.722273903",
+              "fn": "frame.time_delta_displayed",
+              "g": true
+            },
+            {
+              "l": "Time since reference or first frame: 1.722286338 seconds",
+              "f": "frame.time_relative == 1.722286338",
+              "fn": "frame.time_relative",
+              "g": true
+            },
+            {
+              "l": "Frame Number: 3",
+              "f": "frame.number == 3",
+              "fn": "frame.number"
+            },
+            {
+              "l": "Frame Length: 58 bytes (464 bits)",
+              "f": "frame.len == 58",
+              "fn": "frame.len"
+            },
+            {
+              "l": "Capture Length: 58 bytes (464 bits)",
+              "f": "frame.cap_len == 58",
+              "fn": "frame.cap_len"
+            },
+            {
+              "l": "Frame is marked: False",
+              "f": "frame.marked == False",
+              "fn": "frame.marked",
+              "g": true
+            },
+            {
+              "l": "Frame is ignored: False",
+              "f": "frame.ignored == False",
+              "fn": "frame.ignored",
+              "g": true
+            },
+            {
+              "l": "Protocols in frame: eth:ethertype:ip:udp:llc:data",
+              "f": "frame.protocols == \"eth:ethertype:ip:udp:llc:data\"",
+              "fn": "frame.protocols",
+              "g": true
+            },
+            {
+              "l": "Coloring Rule Name: UDP",
+              "f": "frame.coloring_rule.name == \"UDP\"",
+              "fn": "frame.coloring_rule.name",
+              "g": true
+            },
+            {
+              "l": "Coloring Rule String: udp",
+              "f": "frame.coloring_rule.string == \"udp\"",
+              "fn": "frame.coloring_rule.string",
+              "g": true
+            }
+          ]
+        },
+        {
+          "l": "Ethernet II, Src: 00:00:00_00:00:00 (00:00:00:00:00:00), Dst: 00:00:00_00:00:00 (00:00:00:00:00:00)",
+          "h": [
+            0,
+            14
+          ],
+          "t": "proto",
+          "f": "eth",
+          "fn": "eth",
+          "e": 12620,
+          "n": [
+            {
+              "l": "Destination: 00:00:00_00:00:00 (00:00:00:00:00:00)",
+              "h": [
+                0,
+                6
+              ],
+              "f": "eth.dst == 00:00:00:00:00:00",
+              "fn": "eth.dst",
+              "e": 12622,
+              "n": [
+                {
+                  "l": "Address: 00:00:00_00:00:00 (00:00:00:00:00:00)",
+                  "h": [
+                    0,
+                    6
+                  ],
+                  "f": "eth.addr == 00:00:00:00:00:00",
+                  "fn": "eth.addr"
+                },
+                {
+                  "l": ".... ..0. .... .... .... .... = LG bit: Globally unique address (factory default)",
+                  "h": [
+                    0,
+                    3
+                  ],
+                  "f": "eth.dst.lg == False",
+                  "fn": "eth.dst.lg"
+                },
+                {
+                  "l": ".... ...0 .... .... .... .... = IG bit: Individual address (unicast)",
+                  "h": [
+                    0,
+                    3
+                  ],
+                  "f": "eth.dst.ig == False",
+                  "fn": "eth.dst.ig"
+                }
+              ]
+            },
+            {
+              "l": "Source: 00:00:00_00:00:00 (00:00:00:00:00:00)",
+              "h": [
+                6,
+                6
+              ],
+              "f": "eth.src == 00:00:00:00:00:00",
+              "fn": "eth.src",
+              "e": 12622,
+              "n": [
+                {
+                  "l": "Address: 00:00:00_00:00:00 (00:00:00:00:00:00)",
+                  "h": [
+                    6,
+                    6
+                  ],
+                  "f": "eth.addr == 00:00:00:00:00:00",
+                  "fn": "eth.addr"
+                },
+                {
+                  "l": ".... ..0. .... .... .... .... = LG bit: Globally unique address (factory default)",
+                  "h": [
+                    6,
+                    3
+                  ],
+                  "f": "eth.src.lg == False",
+                  "fn": "eth.src.lg"
+                },
+                {
+                  "l": ".... ...0 .... .... .... .... = IG bit: Individual address (unicast)",
+                  "h": [
+                    6,
+                    3
+                  ],
+                  "f": "eth.src.ig == False",
+                  "fn": "eth.src.ig"
+                }
+              ]
+            },
+            {
+              "l": "Type: IPv4 (0x0800)",
+              "h": [
+                12,
+                2
+              ],
+              "f": "eth.type == 0x0800",
+              "fn": "eth.type"
+            }
+          ]
+        },
+        {
+          "l": "Internet Protocol Version 4, Src: 127.0.0.1, Dst: 127.0.0.1",
+          "h": [
+            14,
+            20
+          ],
+          "t": "proto",
+          "f": "ip",
+          "fn": "ip",
+          "e": 21005,
+          "n": [
+            {
+              "l": "0100 .... = Version: 4",
+              "h": [
+                14,
+                1
+              ],
+              "f": "ip.version == 4",
+              "fn": "ip.version"
+            },
+            {
+              "l": ".... 0101 = Header Length: 20 bytes (5)",
+              "h": [
+                14,
+                1
+              ],
+              "f": "ip.hdr_len == 20",
+              "fn": "ip.hdr_len"
+            },
+            {
+              "l": "Differentiated Services Field: 0x00 (DSCP: CS0, ECN: Not-ECT)",
+              "h": [
+                15,
+                1
+              ],
+              "f": "ip.dsfield == 0x00",
+              "fn": "ip.dsfield",
+              "e": 21006,
+              "n": [
+                {
+                  "l": "0000 00.. = Differentiated Services Codepoint: Default (0)",
+                  "h": [
+                    15,
+                    1
+                  ],
+                  "f": "ip.dsfield.dscp == 0",
+                  "fn": "ip.dsfield.dscp"
+                },
+                {
+                  "l": ".... ..00 = Explicit Congestion Notification: Not ECN-Capable Transport (0)",
+                  "h": [
+                    15,
+                    1
+                  ],
+                  "f": "ip.dsfield.ecn == 0",
+                  "fn": "ip.dsfield.ecn"
+                }
+              ]
+            },
+            {
+              "l": "Total Length: 44",
+              "h": [
+                16,
+                2
+              ],
+              "f": "ip.len == 44",
+              "fn": "ip.len"
+            },
+            {
+              "l": "Identification: 0x2d22 (11554)",
+              "h": [
+                18,
+                2
+              ],
+              "f": "ip.id == 0x2d22",
+              "fn": "ip.id"
+            },
+            {
+              "l": "010. .... = Flags: 0x2, Don't fragment",
+              "h": [
+                20,
+                1
+              ],
+              "f": "ip.flags == 0x02",
+              "fn": "ip.flags",
+              "e": 21008,
+              "n": [
+                {
+                  "l": "0... .... = Reserved bit: Not set",
+                  "h": [
+                    20,
+                    1
+                  ],
+                  "f": "ip.flags.rb == False",
+                  "fn": "ip.flags.rb"
+                },
+                {
+                  "l": ".1.. .... = Don't fragment: Set",
+                  "h": [
+                    20,
+                    1
+                  ],
+                  "f": "ip.flags.df == True",
+                  "fn": "ip.flags.df"
+                },
+                {
+                  "l": "..0. .... = More fragments: Not set",
+                  "h": [
+                    20,
+                    1
+                  ],
+                  "f": "ip.flags.mf == False",
+                  "fn": "ip.flags.mf"
+                }
+              ]
+            },
+            {
+              "l": "...0 0000 0000 0000 = Fragment Offset: 0",
+              "h": [
+                20,
+                2
+              ],
+              "f": "ip.frag_offset == 0",
+              "fn": "ip.frag_offset"
+            },
+            {
+              "l": "Time to Live: 64",
+              "h": [
+                22,
+                1
+              ],
+              "f": "ip.ttl == 64",
+              "fn": "ip.ttl"
+            },
+            {
+              "l": "Protocol: UDP (17)",
+              "h": [
+                23,
+                1
+              ],
+              "f": "ip.proto == 17",
+              "fn": "ip.proto"
+            },
+            {
+              "l": "Header Checksum: 0x0f9d [validation disabled]",
+              "h": [
+                24,
+                2
+              ],
+              "f": "ip.checksum == 0x0f9d",
+              "fn": "ip.checksum"
+            },
+            {
+              "l": "Header checksum status: Unverified",
+              "f": "ip.checksum.status == \"Unverified\"",
+              "fn": "ip.checksum.status",
+              "g": true
+            },
+            {
+              "l": "Source Address: 127.0.0.1",
+              "h": [
+                26,
+                4
+              ],
+              "f": "ip.src == 127.0.0.1",
+              "fn": "ip.src"
+            },
+            {
+              "l": "Destination Address: 127.0.0.1",
+              "h": [
+                30,
+                4
+              ],
+              "f": "ip.dst == 127.0.0.1",
+              "fn": "ip.dst"
+            }
+          ]
+        },
+        {
+          "l": "User Datagram Protocol, Src Port: 44168, Dst Port: 12001",
+          "h": [
+            34,
+            8
+          ],
+          "t": "proto",
+          "f": "udp",
+          "fn": "udp",
+          "e": 56133,
+          "n": [
+            {
+              "l": "Source Port: 44168",
+              "h": [
+                34,
+                2
+              ],
+              "f": "udp.srcport == 44168",
+              "fn": "udp.srcport"
+            },
+            {
+              "l": "Destination Port: 12001",
+              "h": [
+                36,
+                2
+              ],
+              "f": "udp.dstport == 12001",
+              "fn": "udp.dstport"
+            },
+            {
+              "l": "Length: 24",
+              "h": [
+                38,
+                2
+              ],
+              "f": "udp.length == 24",
+              "fn": "udp.length"
+            },
+            {
+              "l": "Checksum: 0xfe2b [unverified]",
+              "h": [
+                40,
+                2
+              ],
+              "f": "udp.checksum == 0xfe2b",
+              "fn": "udp.checksum"
+            },
+            {
+              "l": "Checksum Status: Unverified",
+              "f": "udp.checksum.status == \"Unverified\"",
+              "fn": "udp.checksum.status",
+              "g": true
+            },
+            {
+              "l": "Stream index: 0",
+              "f": "udp.stream == 0",
+              "fn": "udp.stream",
+              "g": true
+            },
+            {
+              "l": "Timestamps",
+              "f": "text",
+              "fn": "text",
+              "g": true,
+              "e": 56136,
+              "n": [
+                {
+                  "l": "Time since first frame: 0.000000000 seconds",
+                  "f": "udp.time_relative == 0.000000000",
+                  "fn": "udp.time_relative",
+                  "g": true
+                },
+                {
+                  "l": "Time since previous frame: 0.000000000 seconds",
+                  "f": "udp.time_delta == 0.000000000",
+                  "fn": "udp.time_delta",
+                  "g": true
+                }
+              ]
+            },
+            {
+              "l": "UDP payload (16 bytes)",
+              "h": [
+                42,
+                16
+              ],
+              "f": "udp.payload == 48:6f:6c:61:20:64:65:73:64:65:20:4e:63:61:74:0a",
+              "fn": "udp.payload"
+            }
+          ]
+        },
+        {
+          "l": "Logical-Link Control",
+          "h": [
+            42,
+            4
+          ],
+          "t": "proto",
+          "f": "llc",
+          "fn": "llc",
+          "e": 23675,
+          "n": [
+            {
+              "l": "DSAP: Unknown (0x48)",
+              "h": [
+                42,
+                1
+              ],
+              "f": "llc.dsap == 0x48",
+              "fn": "llc.dsap",
+              "e": 23676,
+              "n": [
+                {
+                  "l": "0100 100. = SAP: Unknown",
+                  "h": [
+                    42,
+                    1
+                  ],
+                  "f": "llc.dsap.sap == 36",
+                  "fn": "llc.dsap.sap"
+                },
+                {
+                  "l": ".... ...0 = IG Bit: Individual",
+                  "h": [
+                    42,
+                    1
+                  ],
+                  "f": "llc.dsap.ig == False",
+                  "fn": "llc.dsap.ig"
+                }
+              ]
+            },
+            {
+              "l": "SSAP: Unknown (0x6f)",
+              "h": [
+                43,
+                1
+              ],
+              "f": "llc.ssap == 0x6f",
+              "fn": "llc.ssap",
+              "e": 23677,
+              "n": [
+                {
+                  "l": "0110 111. = SAP: Unknown",
+                  "h": [
+                    43,
+                    1
+                  ],
+                  "f": "llc.ssap.sap == 55",
+                  "fn": "llc.ssap.sap"
+                },
+                {
+                  "l": ".... ...1 = CR Bit: Response",
+                  "h": [
+                    43,
+                    1
+                  ],
+                  "f": "llc.ssap.cr == True",
+                  "fn": "llc.ssap.cr"
+                }
+              ]
+            },
+            {
+              "l": "Control field: I P, N(R)=48, N(S)=54 (0x616C)",
+              "h": [
+                44,
+                2
+              ],
+              "f": "llc.control == 0x616c",
+              "fn": "llc.control",
+              "e": 23678,
+              "n": [
+                {
+                  "l": "0110 000. .... .... = N(R): 48",
+                  "h": [
+                    44,
+                    2
+                  ],
+                  "f": "llc.control.n_r == 48",
+                  "fn": "llc.control.n_r"
+                },
+                {
+                  "l": ".... .... 0110 110. = N(S): 54",
+                  "h": [
+                    44,
+                    2
+                  ],
+                  "f": "llc.control.n_s == 54",
+                  "fn": "llc.control.n_s"
+                },
+                {
+                  "l": ".... ...1 .... .... = Poll: Set",
+                  "h": [
+                    44,
+                    2
+                  ],
+                  "f": "llc.control.p == True",
+                  "fn": "llc.control.p"
+                },
+                {
+                  "l": ".... .... .... ...0 = Frame type: Information frame (0x0)",
+                  "h": [
+                    44,
+                    2
+                  ],
+                  "f": "llc.control.ftype == 0x0000",
+                  "fn": "llc.control.ftype"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "l": "Data (12 bytes)",
+          "h": [
+            46,
+            12
+          ],
+          "t": "proto",
+          "f": "data",
+          "fn": "data",
+          "e": 4280,
+          "n": [
+            {
+              "l": "Data: 206465736465204e6361740a",
+              "h": [
+                46,
+                12
+              ],
+              "f": "data.data == 20:64:65:73:64:65:20:4e:63:61:74:0a",
+              "fn": "data.data"
+            },
+            {
+              "l": "Length: 12",
+              "f": "data.len == 12",
+              "fn": "data.len",
+              "g": true
+            }
+          ]
+        }
+      ],
+      "bg": "daeeff",
+      "fg": "12272e",
+      "bytes": "AAAAAAAAAAAAAAAACABFAAAsLSJAAEARD51/AAABfwAAAayILuEAGP4rSG9sYSBkZXNkZSBOY2F0Cg==",
+      "fol": [
+        [
+          "UDP",
+          "udp.stream eq 0"
+        ]
+      ]
+    }
+  },
+  {
+    "jsonrpc": "2.0",
+    "id": 6,
+    "result": {
+      "tree": [
+        {
+          "l": "Frame 4: 86 bytes on wire (688 bits), 86 bytes captured (688 bits) on interface lo, id 0",
+          "h": [
+            0,
+            86
+          ],
+          "t": "proto",
+          "f": "frame",
+          "fn": "frame",
+          "e": 14267,
+          "n": [
+            {
+              "l": "Section number: 1",
+              "f": "frame.section_number == 1",
+              "fn": "frame.section_number"
+            },
+            {
+              "l": "Interface id: 0 (lo)",
+              "f": "frame.interface_id == 0",
+              "fn": "frame.interface_id",
+              "e": 14268,
+              "n": [
+                {
+                  "l": "Interface name: lo",
+                  "f": "frame.interface_name == \"lo\"",
+                  "fn": "frame.interface_name"
+                }
+              ]
+            },
+            {
+              "l": "Encapsulation type: Ethernet (1)",
+              "f": "frame.encap_type == 1",
+              "fn": "frame.encap_type"
+            },
+            {
+              "l": "Arrival Time: Sep 30, 2026 18:00:35.561904779 -03",
+              "f": "frame.time == \"2026-09-30 18:00:35.561904779-0300\"",
+              "fn": "frame.time"
+            },
+            {
+              "l": "UTC Arrival Time: Sep 30, 2026 21:00:35.561904779 UTC",
+              "f": "frame.time_utc == \"2026-09-30 21:00:35.561904779Z\"",
+              "fn": "frame.time_utc"
+            },
+            {
+              "l": "Epoch Arrival Time: 1790802035.561904779",
+              "f": "frame.time_epoch == 1790802035.561904779",
+              "fn": "frame.time_epoch"
+            },
+            {
+              "l": "Time shift for this packet: 0.000000000 seconds",
+              "f": "frame.offset_shift == 0.000000000",
+              "fn": "frame.offset_shift",
+              "g": true
+            },
+            {
+              "l": "Time delta from previous captured frame: 0.000016233 seconds",
+              "f": "frame.time_delta == 0.000016233",
+              "fn": "frame.time_delta",
+              "g": true
+            },
+            {
+              "l": "Time delta from previous displayed frame: 0.000016233 seconds",
+              "f": "frame.time_delta_displayed == 0.000016233",
+              "fn": "frame.time_delta_displayed",
+              "g": true
+            },
+            {
+              "l": "Time since reference or first frame: 1.722302571 seconds",
+              "f": "frame.time_relative == 1.722302571",
+              "fn": "frame.time_relative",
+              "g": true
+            },
+            {
+              "l": "Frame Number: 4",
+              "f": "frame.number == 4",
+              "fn": "frame.number"
+            },
+            {
+              "l": "Frame Length: 86 bytes (688 bits)",
+              "f": "frame.len == 86",
+              "fn": "frame.len"
+            },
+            {
+              "l": "Capture Length: 86 bytes (688 bits)",
+              "f": "frame.cap_len == 86",
+              "fn": "frame.cap_len"
+            },
+            {
+              "l": "Frame is marked: False",
+              "f": "frame.marked == False",
+              "fn": "frame.marked",
+              "g": true
+            },
+            {
+              "l": "Frame is ignored: False",
+              "f": "frame.ignored == False",
+              "fn": "frame.ignored",
+              "g": true
+            },
+            {
+              "l": "Protocols in frame: eth:ethertype:ip:icmp:ip:udp:llc:data",
+              "f": "frame.protocols == \"eth:ethertype:ip:icmp:ip:udp:llc:data\"",
+              "fn": "frame.protocols",
+              "g": true
+            },
+            {
+              "l": "Coloring Rule Name: ICMP errors",
+              "f": "frame.coloring_rule.name == \"ICMP errors\"",
+              "fn": "frame.coloring_rule.name",
+              "g": true
+            },
+            {
+              "l": "Coloring Rule String: icmp.type in { 3..5, 11 } || icmpv6.type in { 1..4 }",
+              "f": "frame.coloring_rule.string == \"icmp.type in { 3..5, 11 } || icmpv6.type in { 1..4 }\"",
+              "fn": "frame.coloring_rule.string",
+              "g": true
+            }
+          ]
+        },
+        {
+          "l": "Ethernet II, Src: 00:00:00_00:00:00 (00:00:00:00:00:00), Dst: 00:00:00_00:00:00 (00:00:00:00:00:00)",
+          "h": [
+            0,
+            14
+          ],
+          "t": "proto",
+          "f": "eth",
+          "fn": "eth",
+          "e": 12620,
+          "n": [
+            {
+              "l": "Destination: 00:00:00_00:00:00 (00:00:00:00:00:00)",
+              "h": [
+                0,
+                6
+              ],
+              "f": "eth.dst == 00:00:00:00:00:00",
+              "fn": "eth.dst",
+              "e": 12622,
+              "n": [
+                {
+                  "l": "Address: 00:00:00_00:00:00 (00:00:00:00:00:00)",
+                  "h": [
+                    0,
+                    6
+                  ],
+                  "f": "eth.addr == 00:00:00:00:00:00",
+                  "fn": "eth.addr"
+                },
+                {
+                  "l": ".... ..0. .... .... .... .... = LG bit: Globally unique address (factory default)",
+                  "h": [
+                    0,
+                    3
+                  ],
+                  "f": "eth.dst.lg == False",
+                  "fn": "eth.dst.lg"
+                },
+                {
+                  "l": ".... ...0 .... .... .... .... = IG bit: Individual address (unicast)",
+                  "h": [
+                    0,
+                    3
+                  ],
+                  "f": "eth.dst.ig == False",
+                  "fn": "eth.dst.ig"
+                }
+              ]
+            },
+            {
+              "l": "Source: 00:00:00_00:00:00 (00:00:00:00:00:00)",
+              "h": [
+                6,
+                6
+              ],
+              "f": "eth.src == 00:00:00:00:00:00",
+              "fn": "eth.src",
+              "e": 12622,
+              "n": [
+                {
+                  "l": "Address: 00:00:00_00:00:00 (00:00:00:00:00:00)",
+                  "h": [
+                    6,
+                    6
+                  ],
+                  "f": "eth.addr == 00:00:00:00:00:00",
+                  "fn": "eth.addr"
+                },
+                {
+                  "l": ".... ..0. .... .... .... .... = LG bit: Globally unique address (factory default)",
+                  "h": [
+                    6,
+                    3
+                  ],
+                  "f": "eth.src.lg == False",
+                  "fn": "eth.src.lg"
+                },
+                {
+                  "l": ".... ...0 .... .... .... .... = IG bit: Individual address (unicast)",
+                  "h": [
+                    6,
+                    3
+                  ],
+                  "f": "eth.src.ig == False",
+                  "fn": "eth.src.ig"
+                }
+              ]
+            },
+            {
+              "l": "Type: IPv4 (0x0800)",
+              "h": [
+                12,
+                2
+              ],
+              "f": "eth.type == 0x0800",
+              "fn": "eth.type"
+            }
+          ]
+        },
+        {
+          "l": "Internet Protocol Version 4, Src: 127.0.0.1, Dst: 127.0.0.1",
+          "h": [
+            14,
+            20
+          ],
+          "t": "proto",
+          "f": "ip",
+          "fn": "ip",
+          "e": 21005,
+          "n": [
+            {
+              "l": "0100 .... = Version: 4",
+              "h": [
+                14,
+                1
+              ],
+              "f": "ip.version == 4",
+              "fn": "ip.version"
+            },
+            {
+              "l": ".... 0101 = Header Length: 20 bytes (5)",
+              "h": [
+                14,
+                1
+              ],
+              "f": "ip.hdr_len == 20",
+              "fn": "ip.hdr_len"
+            },
+            {
+              "l": "Differentiated Services Field: 0xc0 (DSCP: CS6, ECN: Not-ECT)",
+              "h": [
+                15,
+                1
+              ],
+              "f": "ip.dsfield == 0xc0",
+              "fn": "ip.dsfield",
+              "e": 21006,
+              "n": [
+                {
+                  "l": "1100 00.. = Differentiated Services Codepoint: Class Selector 6 (48)",
+                  "h": [
+                    15,
+                    1
+                  ],
+                  "f": "ip.dsfield.dscp == 48",
+                  "fn": "ip.dsfield.dscp"
+                },
+                {
+                  "l": ".... ..00 = Explicit Congestion Notification: Not ECN-Capable Transport (0)",
+                  "h": [
+                    15,
+                    1
+                  ],
+                  "f": "ip.dsfield.ecn == 0",
+                  "fn": "ip.dsfield.ecn"
+                }
+              ]
+            },
+            {
+              "l": "Total Length: 72",
+              "h": [
+                16,
+                2
+              ],
+              "f": "ip.len == 72",
+              "fn": "ip.len"
+            },
+            {
+              "l": "Identification: 0x90ec (37100)",
+              "h": [
+                18,
+                2
+              ],
+              "f": "ip.id == 0x90ec",
+              "fn": "ip.id"
+            },
+            {
+              "l": "000. .... = Flags: 0x0",
+              "h": [
+                20,
+                1
+              ],
+              "f": "ip.flags == 0x00",
+              "fn": "ip.flags",
+              "e": 21008,
+              "n": [
+                {
+                  "l": "0... .... = Reserved bit: Not set",
+                  "h": [
+                    20,
+                    1
+                  ],
+                  "f": "ip.flags.rb == False",
+                  "fn": "ip.flags.rb"
+                },
+                {
+                  "l": ".0.. .... = Don't fragment: Not set",
+                  "h": [
+                    20,
+                    1
+                  ],
+                  "f": "ip.flags.df == False",
+                  "fn": "ip.flags.df"
+                },
+                {
+                  "l": "..0. .... = More fragments: Not set",
+                  "h": [
+                    20,
+                    1
+                  ],
+                  "f": "ip.flags.mf == False",
+                  "fn": "ip.flags.mf"
+                }
+              ]
+            },
+            {
+              "l": "...0 0000 0000 0000 = Fragment Offset: 0",
+              "h": [
+                20,
+                2
+              ],
+              "f": "ip.frag_offset == 0",
+              "fn": "ip.frag_offset"
+            },
+            {
+              "l": "Time to Live: 64",
+              "h": [
+                22,
+                1
+              ],
+              "f": "ip.ttl == 64",
+              "fn": "ip.ttl"
+            },
+            {
+              "l": "Protocol: ICMP (1)",
+              "h": [
+                23,
+                1
+              ],
+              "f": "ip.proto == 1",
+              "fn": "ip.proto"
+            },
+            {
+              "l": "Header Checksum: 0xeb06 [validation disabled]",
+              "h": [
+                24,
+                2
+              ],
+              "f": "ip.checksum == 0xeb06",
+              "fn": "ip.checksum"
+            },
+            {
+              "l": "Header checksum status: Unverified",
+              "f": "ip.checksum.status == \"Unverified\"",
+              "fn": "ip.checksum.status",
+              "g": true
+            },
+            {
+              "l": "Source Address: 127.0.0.1",
+              "h": [
+                26,
+                4
+              ],
+              "f": "ip.src == 127.0.0.1",
+              "fn": "ip.src"
+            },
+            {
+              "l": "Destination Address: 127.0.0.1",
+              "h": [
+                30,
+                4
+              ],
+              "f": "ip.dst == 127.0.0.1",
+              "fn": "ip.dst"
+            }
+          ]
+        },
+        {
+          "l": "Internet Control Message Protocol",
+          "h": [
+            34,
+            52
+          ],
+          "t": "proto",
+          "f": "icmp",
+          "fn": "icmp",
+          "e": 19566,
+          "n": [
+            {
+              "l": "Type: 3 (Destination unreachable)",
+              "h": [
+                34,
+                1
+              ],
+              "f": "icmp.type == 3",
+              "fn": "icmp.type"
+            },
+            {
+              "l": "Code: 3 (Port unreachable)",
+              "h": [
+                35,
+                1
+              ],
+              "f": "icmp.code == 3",
+              "fn": "icmp.code"
+            },
+            {
+              "l": "Checksum: 0x8c87 [correct]",
+              "h": [
+                36,
+                2
+              ],
+              "f": "icmp.checksum == 0x8c87",
+              "fn": "icmp.checksum"
+            },
+            {
+              "l": "Checksum Status: Good",
+              "f": "icmp.checksum.status == \"Good\"",
+              "fn": "icmp.checksum.status",
+              "g": true
+            },
+            {
+              "l": "Unused: 00000000",
+              "h": [
+                38,
+                4
+              ],
+              "f": "icmp.unused == 00:00:00:00",
+              "fn": "icmp.unused"
+            },
+            {
+              "l": "Internet Protocol Version 4, Src: 127.0.0.1, Dst: 127.0.0.1",
+              "h": [
+                42,
+                20
+              ],
+              "t": "proto",
+              "f": "ip",
+              "fn": "ip",
+              "e": 21005,
+              "n": [
+                {
+                  "l": "0100 .... = Version: 4",
+                  "h": [
+                    42,
+                    1
+                  ],
+                  "f": "ip.version == 4",
+                  "fn": "ip.version"
+                },
+                {
+                  "l": ".... 0101 = Header Length: 20 bytes (5)",
+                  "h": [
+                    42,
+                    1
+                  ],
+                  "f": "ip.hdr_len == 20",
+                  "fn": "ip.hdr_len"
+                },
+                {
+                  "l": "Differentiated Services Field: 0x00 (DSCP: CS0, ECN: Not-ECT)",
+                  "h": [
+                    43,
+                    1
+                  ],
+                  "f": "ip.dsfield == 0x00",
+                  "fn": "ip.dsfield",
+                  "e": 21006,
+                  "n": [
+                    {
+                      "l": "0000 00.. = Differentiated Services Codepoint: Default (0)",
+                      "h": [
+                        43,
+                        1
+                      ],
+                      "f": "ip.dsfield.dscp == 0",
+                      "fn": "ip.dsfield.dscp"
+                    },
+                    {
+                      "l": ".... ..00 = Explicit Congestion Notification: Not ECN-Capable Transport (0)",
+                      "h": [
+                        43,
+                        1
+                      ],
+                      "f": "ip.dsfield.ecn == 0",
+                      "fn": "ip.dsfield.ecn"
+                    }
+                  ]
+                },
+                {
+                  "l": "Total Length: 44",
+                  "h": [
+                    44,
+                    2
+                  ],
+                  "f": "ip.len == 44",
+                  "fn": "ip.len"
+                },
+                {
+                  "l": "Identification: 0x2d22 (11554)",
+                  "h": [
+                    46,
+                    2
+                  ],
+                  "f": "ip.id == 0x2d22",
+                  "fn": "ip.id"
+                },
+                {
+                  "l": "010. .... = Flags: 0x2, Don't fragment",
+                  "h": [
+                    48,
+                    1
+                  ],
+                  "f": "ip.flags == 0x02",
+                  "fn": "ip.flags",
+                  "e": 21008,
+                  "n": [
+                    {
+                      "l": "0... .... = Reserved bit: Not set",
+                      "h": [
+                        48,
+                        1
+                      ],
+                      "f": "ip.flags.rb == False",
+                      "fn": "ip.flags.rb"
+                    },
+                    {
+                      "l": ".1.. .... = Don't fragment: Set",
+                      "h": [
+                        48,
+                        1
+                      ],
+                      "f": "ip.flags.df == True",
+                      "fn": "ip.flags.df"
+                    },
+                    {
+                      "l": "..0. .... = More fragments: Not set",
+                      "h": [
+                        48,
+                        1
+                      ],
+                      "f": "ip.flags.mf == False",
+                      "fn": "ip.flags.mf"
+                    }
+                  ]
+                },
+                {
+                  "l": "...0 0000 0000 0000 = Fragment Offset: 0",
+                  "h": [
+                    48,
+                    2
+                  ],
+                  "f": "ip.frag_offset == 0",
+                  "fn": "ip.frag_offset"
+                },
+                {
+                  "l": "Time to Live: 64",
+                  "h": [
+                    50,
+                    1
+                  ],
+                  "f": "ip.ttl == 64",
+                  "fn": "ip.ttl"
+                },
+                {
+                  "l": "Protocol: UDP (17)",
+                  "h": [
+                    51,
+                    1
+                  ],
+                  "f": "ip.proto == 17",
+                  "fn": "ip.proto"
+                },
+                {
+                  "l": "Header Checksum: 0x0f9d [validation disabled]",
+                  "h": [
+                    52,
+                    2
+                  ],
+                  "f": "ip.checksum == 0x0f9d",
+                  "fn": "ip.checksum"
+                },
+                {
+                  "l": "Header checksum status: Unverified",
+                  "f": "ip.checksum.status == \"Unverified\"",
+                  "fn": "ip.checksum.status",
+                  "g": true
+                },
+                {
+                  "l": "Source Address: 127.0.0.1",
+                  "h": [
+                    54,
+                    4
+                  ],
+                  "f": "ip.src == 127.0.0.1",
+                  "fn": "ip.src"
+                },
+                {
+                  "l": "Destination Address: 127.0.0.1",
+                  "h": [
+                    58,
+                    4
+                  ],
+                  "f": "ip.dst == 127.0.0.1",
+                  "fn": "ip.dst"
+                }
+              ]
+            },
+            {
+              "l": "User Datagram Protocol, Src Port: 44168, Dst Port: 12001",
+              "h": [
+                62,
+                8
+              ],
+              "t": "proto",
+              "f": "udp",
+              "fn": "udp",
+              "e": 56133,
+              "n": [
+                {
+                  "l": "Source Port: 44168",
+                  "h": [
+                    62,
+                    2
+                  ],
+                  "f": "udp.srcport == 44168",
+                  "fn": "udp.srcport"
+                },
+                {
+                  "l": "Destination Port: 12001",
+                  "h": [
+                    64,
+                    2
+                  ],
+                  "f": "udp.dstport == 12001",
+                  "fn": "udp.dstport"
+                },
+                {
+                  "l": "Length: 24",
+                  "h": [
+                    66,
+                    2
+                  ],
+                  "f": "udp.length == 24",
+                  "fn": "udp.length"
+                },
+                {
+                  "l": "Checksum: 0xfe2b [unverified]",
+                  "h": [
+                    68,
+                    2
+                  ],
+                  "f": "udp.checksum == 0xfe2b",
+                  "fn": "udp.checksum"
+                },
+                {
+                  "l": "Checksum Status: Unverified",
+                  "f": "udp.checksum.status == \"Unverified\"",
+                  "fn": "udp.checksum.status",
+                  "g": true
+                },
+                {
+                  "l": "Stream index: 0",
+                  "f": "udp.stream == 0",
+                  "fn": "udp.stream",
+                  "g": true
+                },
+                {
+                  "l": "UDP payload (16 bytes)",
+                  "h": [
+                    70,
+                    16
+                  ],
+                  "f": "udp.payload == 48:6f:6c:61:20:64:65:73:64:65:20:4e:63:61:74:0a",
+                  "fn": "udp.payload"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "l": "Logical-Link Control",
+          "h": [
+            70,
+            4
+          ],
+          "t": "proto",
+          "f": "llc",
+          "fn": "llc",
+          "e": 23675,
+          "n": [
+            {
+              "l": "DSAP: Unknown (0x48)",
+              "h": [
+                70,
+                1
+              ],
+              "f": "llc.dsap == 0x48",
+              "fn": "llc.dsap",
+              "e": 23676,
+              "n": [
+                {
+                  "l": "0100 100. = SAP: Unknown",
+                  "h": [
+                    70,
+                    1
+                  ],
+                  "f": "llc.dsap.sap == 36",
+                  "fn": "llc.dsap.sap"
+                },
+                {
+                  "l": ".... ...0 = IG Bit: Individual",
+                  "h": [
+                    70,
+                    1
+                  ],
+                  "f": "llc.dsap.ig == False",
+                  "fn": "llc.dsap.ig"
+                }
+              ]
+            },
+            {
+              "l": "SSAP: Unknown (0x6f)",
+              "h": [
+                71,
+                1
+              ],
+              "f": "llc.ssap == 0x6f",
+              "fn": "llc.ssap",
+              "e": 23677,
+              "n": [
+                {
+                  "l": "0110 111. = SAP: Unknown",
+                  "h": [
+                    71,
+                    1
+                  ],
+                  "f": "llc.ssap.sap == 55",
+                  "fn": "llc.ssap.sap"
+                },
+                {
+                  "l": ".... ...1 = CR Bit: Response",
+                  "h": [
+                    71,
+                    1
+                  ],
+                  "f": "llc.ssap.cr == True",
+                  "fn": "llc.ssap.cr"
+                }
+              ]
+            },
+            {
+              "l": "Control field: I P, N(R)=48, N(S)=54 (0x616C)",
+              "h": [
+                72,
+                2
+              ],
+              "f": "llc.control == 0x616c",
+              "fn": "llc.control",
+              "e": 23678,
+              "n": [
+                {
+                  "l": "0110 000. .... .... = N(R): 48",
+                  "h": [
+                    72,
+                    2
+                  ],
+                  "f": "llc.control.n_r == 48",
+                  "fn": "llc.control.n_r"
+                },
+                {
+                  "l": ".... .... 0110 110. = N(S): 54",
+                  "h": [
+                    72,
+                    2
+                  ],
+                  "f": "llc.control.n_s == 54",
+                  "fn": "llc.control.n_s"
+                },
+                {
+                  "l": ".... ...1 .... .... = Poll: Set",
+                  "h": [
+                    72,
+                    2
+                  ],
+                  "f": "llc.control.p == True",
+                  "fn": "llc.control.p"
+                },
+                {
+                  "l": ".... .... .... ...0 = Frame type: Information frame (0x0)",
+                  "h": [
+                    72,
+                    2
+                  ],
+                  "f": "llc.control.ftype == 0x0000",
+                  "fn": "llc.control.ftype"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "l": "Data (12 bytes)",
+          "h": [
+            74,
+            12
+          ],
+          "t": "proto",
+          "f": "data",
+          "fn": "data",
+          "e": 4280,
+          "n": [
+            {
+              "l": "Data: 206465736465204e6361740a",
+              "h": [
+                74,
+                12
+              ],
+              "f": "data.data == 20:64:65:73:64:65:20:4e:63:61:74:0a",
+              "fn": "data.data"
+            },
+            {
+              "l": "Length: 12",
+              "f": "data.len == 12",
+              "fn": "data.len",
+              "g": true
+            }
+          ]
+        }
+      ],
+      "bg": "12272e",
+      "fg": "b7f774",
+      "bytes": "AAAAAAAAAAAAAAAACABFwABIkOwAAEAB6wZ/AAABfwAAAQMDjIcAAAAARQAALC0iQABAEQ+dfwAAAX8AAAGsiC7hABj+K0hvbGEgZGVzZGUgTmNhdAo=",
+      "fol": [
+        [
+          "UDP",
+          "udp.stream eq 0"
+        ]
+      ]
+    }
+  }
+]
