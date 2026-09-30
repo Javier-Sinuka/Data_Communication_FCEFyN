@@ -69,4 +69,66 @@
 
 \section{Ítem 4: Servidor TCP mínimo - TP5 Redes de Computadoras}
 
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{img/capturaWireshark.png}
+    \caption{Captura de Wireshark de la conexión TCP entre cliente y servidor.}
+    \label{fig:wireshark_tcp}
+\end{figure}
+
+La captura corresponde a una conexión TCP local sobre la interfaz de loopback: ambos extremos utilizan \texttt{127.0.0.1}. El cliente emplea el puerto efímero \texttt{35636} y el servidor escucha en el puerto \texttt{12000}. La tabla relaciona las llamadas del programa con los segmentos numerados en Wireshark. Los ACK y el establecimiento de la conexión son gestionados por la pila TCP del sistema operativo.
+
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{img/consola.png}
+    \caption{Captura de la consola con la ejecución de los scripts.}
+    \label{fig:wireshark_tcp}
+\end{figure}
+
+La captura muestra la ejecución del servidor y del cliente TCP.
+Primero se inicia el servidor, que queda a la espera de una conexión
+en el puerto 12000. Luego, el cliente establece la conexión y envía
+un mensaje de texto. El servidor recibe los datos y responde
+anteponiendo \texttt{Recibido:} al mensaje recibido.
+
+El cliente muestra la respuesta y cierra la conexión. El servidor
+detecta este cierre cuando \texttt{recv()} devuelve una secuencia
+de bytes vacía, cierra sus sockets y finaliza. Este intercambio
+permite verificar el establecimiento de la conexión, la transmisión
+de datos en ambos sentidos y el cierre de la comunicación.
+
+\begin{table}[H]
+\centering
+\small
+\setlength{\tabcolsep}{4pt}
+\renewcommand{\arraystretch}{1.3}
+\begin{tabular}{|>{\raggedright\arraybackslash}p{1.9cm}|>{\raggedright\arraybackslash}p{2.55cm}|>{\raggedright\arraybackslash}p{3.15cm}|>{\raggedright\arraybackslash}p{6.75cm}|}
+\hline
+\textbf{Llamada} & \textbf{\textquestiondown Dónde se ejecuta?} & \textbf{\textquestiondown Genera tráfico?} & \textbf{Segmentos que se observan} \\
+\hline
+\texttt{socket()} & Servidor y cliente & No; operación local. & Ninguno. Crea el socket, sin establecer una conexión. \\
+\hline
+\texttt{bind()} & Servidor & No; operación local. & Ninguno. Asocia el socket a una IP y un puerto locales. \\
+\hline
+\texttt{listen()} & Servidor & No por sí misma. & Ninguno al ejecutarse. Deja el socket en escucha; al llegar el SYN, la pila TCP responde con SYN, ACK (segmento 2). \\
+\hline
+\texttt{connect()} & Cliente & Sí; inicia la conexión. & Three-way handshake: 1 [SYN], cliente a servidor; 2 [SYN, ACK], servidor a cliente; 3 [ACK], cliente a servidor. \\
+\hline
+\texttt{accept()} & Servidor & No por sí misma. & Ninguno propio. Devuelve un nuevo socket para una conexión establecida; no genera el SYN, ACK. \\
+\hline
+\texttt{sendall()} & Servidor y cliente & Sí; envía datos. & Cliente: 4 [PSH, ACK], 16 bytes, confirmado por 5 [ACK]. Servidor: 6 [PSH, ACK], 26 bytes, confirmado por 7 [ACK]. \\
+\hline
+\texttt{recv()} & Servidor y cliente & No envía datos por sí misma. & Lee los datos de 4 y 6. Los ACK 5 y 7 los genera TCP, no la llamada. En el servidor, la recepción del FIN de 8 hace que la lectura devuelva bytes vacíos una vez agotados los datos. \\
+\hline
+\texttt{close()} & Ambos & Sí, al cerrar los sockets conectados. & 8 [FIN, ACK], cliente a servidor; 9 [FIN, ACK], servidor a cliente, confirma además el FIN anterior; 10 [ACK], cliente a servidor. Cerrar el socket de escucha no agrega segmentos a esta conexión. \\
+\hline
+\end{tabular}
+\caption{Relación entre las llamadas de sockets y los segmentos de la captura TCP.}
+\label{tab:llamadas-tcp}
+\end{table}
+
+El cierre observado utiliza tres segmentos porque el servidor combina en el segmento 9 la confirmación del FIN del cliente con su propio FIN. Los 16 bytes enviados por el cliente explican el ACK 17; los 26 bytes enviados por el servidor explican el ACK 27. Cada FIN consume además un número de secuencia, por lo que los valores finales avanzan a 18 y 28, respectivamente.
+
+
 \end{document}
