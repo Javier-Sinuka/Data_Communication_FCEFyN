@@ -1,0 +1,8 @@
+Verificación de la captura ICMP
+
+Filtros: icmp=16; icmp.type == 8=8; icmp.type == 0=8; icmp && ip.addr == 8.8.8.8=8.
+8 pares request/reply, con 56 bytes de payload idénticos por par.
+Todas las tramas: 98 bytes, Ethernet 14 + IPv4 20 + ICMP Echo 8 + payload 56.
+Checksums IPv4 e ICMP verificados matemáticamente para las 16 tramas.
+TTL de las tramas 9/10: 64/117. MAC destino de las tramas 1/9: 74:24:9f:b1:e1:cd.
+SHA256 del pcapng: 672c48715054d26ae7c7eb995cb44ae8ad139a4d587ee31ba6807248bf69cd6c
