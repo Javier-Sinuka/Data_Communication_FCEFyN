@@ -1,0 +1,2 @@
+Ncat: Version 7.94SVN ( https://nmap.org/ncat )
+Ncat: Connected to 127.0.0.1:12000.

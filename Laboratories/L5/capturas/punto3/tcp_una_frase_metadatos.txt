@@ -1,0 +1,33 @@
+File name:           /home/javier/Documents/University/4to/Data_Communication/Data_Communication_FCEFyN/Laboratories/L5/capturas/punto3/tcp_una_frase.pcapng
+File type:           Wireshark/... - pcapng
+File encapsulation:  Ethernet
+File timestamp precision:  nanoseconds (9)
+Packet size limit:   file hdr: (not set)
+Number of packets:   8
+File size:           1220 bytes
+Data size:           560 bytes
+Capture duration:    2.312065490 seconds
+First packet time:   2026-09-30 18:00:50.739404078
+Last packet time:    2026-09-30 18:00:53.051469568
+Data byte rate:      242 bytes/s
+Data bit rate:       1937 bits/s
+Average packet size: 70.00 bytes
+Average packet rate: 3 packets/s
+SHA256:              2ceff5d00d8da6e7b5e0a695cb8f17c048786bff68a778090943723629d9659d
+SHA1:                3c7d7b4bec2a802560a491bb6270b8226760d2a7
+Strict time order:   True
+Capture hardware:    Intel(R) Core(TM) i7-10510U CPU @ 1.80GHz (with SSE4.2)
+Capture oper-sys:    Linux 7.0.0-31-generic
+Capture application: Dumpcap (Wireshark) 4.2.2 (Git v4.2.2 packaged as 4.2.2-1.1build3)
+Number of interfaces in file: 1
+Interface #0 info:
+                     Name = lo
+                     Encapsulation = Ethernet (1 - ether)
+                     Capture length = 262144
+                     Time precision = nanoseconds (9)
+                     Time ticks per second = 1000000000
+                     Time resolution = 0x09
+                     Filter string = tcp port 12000
+                     Operating system = Linux 7.0.0-31-generic
+                     Number of stat entries = 1
+                     Number of packets = 8
