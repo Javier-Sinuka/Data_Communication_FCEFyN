@@ -531,6 +531,183 @@ de Wireshark, capítulo 6}. Los resultados del ensayo proceden de la captura adj
 
 \section{Ítem 2: ARP: de una IP a una dirección MAC}
 
+\subsection{Fundamentos de ARP y resolución de direcciones}
+
+\textbf{a) Problema que resuelve ARP y ubicación en el modelo en capas.}
+El protocolo ARP (\emph{Address Resolution Protocol}, formalizado en el RFC 826) resuelve el problema del mapeo dinámico entre direcciones lógicas de capa de red (direcciones IPv4 de 32 bits) y direcciones físicas de capa de enlace (direcciones MAC IEEE 802 de 48 bits) dentro de un mismo segmento de red local o dominio de difusión. Cuando un equipo emisor necesita transmitir un datagrama IPv4 hacia otro nodo situado en su misma subred (o hacia su gateway por defecto si el destino es externo), la capa de aplicación y el subsistema IP solo conocen la dirección IP del destinatario. Sin embargo, las interfaces de red Ethernet y Wi-Fi en el medio físico únicamente pueden conmutar y entregar tramas utilizando direcciones MAC de capa de enlace. ARP proporciona el mecanismo estandarizado para descubrir qué dirección física corresponde a una dirección IP determinada.
+
+Determinar en qué capa se ubica ARP es un tema clásicamente discutible:
+\begin{itemize}
+    \item Por un lado, no pertenece estrictamente a la capa de enlace (Capa 2 del modelo OSI) porque maneja conceptos propios de la capa de red (conoce y transporta direcciones IPv4 de 32 bits y tipos de protocolo de capa superior).
+    \item Por otro lado, tampoco encaja estrictamente en la capa de red (Capa 3) debido a que no proporciona funciones de enrutamiento ni viaja encapsulado dentro de un datagrama IP; sus paquetes se colocan directamente en la carga útil de la trama Ethernet (con valor de \emph{EtherType} \texttt{0x0806}).
+\end{itemize}
+Por estas razones, se lo clasifica habitualmente como un protocolo de ``capa 2.5'' o una función auxiliar de enlace y red que opera como intermediario o interfaz entre ambas capas.
+
+\textbf{b) Mensajes ARP Request y ARP Reply.}
+\begin{itemize}
+    \item \emph{ARP Request} (Solicitud ARP): Es un mensaje de consulta emitido por el host que requiere conocer la MAC asociada a una IP específica (``\textquestiondown Quién tiene la dirección IP $X$? Respóndale a $Y$''). Debido a que el emisor desconoce qué máquina física de la red posee dicha dirección IP, la trama Ethernet se envía a la dirección física de difusión (\emph{broadcast}, \texttt{ff:ff:ff:ff:ff:ff}). De este modo, todas las estaciones del segmento local reciben y procesan la solicitud. En el encabezado ARP, el campo \emph{Opcode} vale \texttt{1} (Request) y el campo \emph{Target MAC address} se inicializa con ceros (\texttt{00:00:00:00:00:00}), ya que constituye precisamente la incógnita a resolver.
+    \item \emph{ARP Reply} (Respuesta ARP): Es el mensaje generado exclusivamente por el nodo que posee la dirección IP solicitada (``Yo tengo la dirección IP $X$, y mi dirección MAC es $Z$''). A diferencia de la solicitud, la respuesta se envía de forma directa y unívoca (\emph{unicast}) hacia la dirección MAC del equipo que originó la consulta, la cual fue aprendida a partir de los campos \emph{Sender MAC} y \emph{Sender IP} de la solicitud recibida. En el encabezado ARP, el campo \emph{Opcode} vale \texttt{2} (Reply), \emph{Sender MAC} contiene la dirección física del nodo que responde y \emph{Target MAC} contiene la dirección física del solicitante.
+\end{itemize}
+
+\textbf{c) La caché ARP y su función.}
+La caché ARP es una tabla en memoria administrada por el núcleo del sistema operativo donde se almacenan las asociaciones dinámicas (y eventualmente estáticas) aprendidas recientemente entre direcciones IPv4 y sus correspondientes direcciones MAC. Su existencia responde a dos necesidades fundamentales de ingeniería de redes:
+\begin{enumerate}
+    \item \emph{Rendimiento y reducción de latencia:} Evita que el emisor deba ejecutar un ciclo completo de consulta y espera ARP cada vez que envía un paquete IP a un mismo destino. Al disponer de la entrada en la memoria local, el encapsulado de la trama Ethernet se produce de forma inmediata.
+    \item \emph{Eficiencia y reducción del tráfico de difusión:} Cada solicitud ARP por broadcast obliga a todos los hosts del enlace a interrumpir sus procesadores para analizar el contenido del paquete. Almacenar temporalmente las resoluciones reduce drásticamente el consumo de ancho de banda y la saturación del medio físico.
+\end{enumerate}
+Las entradas dinámicas poseen un tiempo de vida finito (\emph{aging time} o TTL de caché, típicamente de unos pocos minutos según el sistema operativo), garantizando que las asociaciones obsoletas expiren para adaptarse a cambios en la topología (tales como reemplazos de adaptadores de red, movilidad de dispositivos o reasignación de direcciones por DHCP).
+
+\textbf{d) Proceso de resolución expresado en términos prácticos.}
+Si dispongo de la dirección IP de una máquina perteneciente a mi red local, el procedimiento que sigue mi sistema operativo para determinar la dirección MAC a la cual enviar la trama Ethernet es el siguiente:
+\begin{enumerate}
+    \item Primero consulta su tabla o caché ARP local para verificar si ya existe una correspondencia válida entre esa dirección IP y una dirección física.
+    \item Si la entrada existe (\emph{cache hit}), extrae la dirección MAC asociada de forma instantánea y construye la trama Ethernet colocando dicha dirección en el campo de destino.
+    \item Si la entrada no existe (\emph{cache miss}), el sistema operativo retiene temporalmente el datagrama IP en una cola de espera y emite un mensaje \emph{ARP Request} enviado en difusión (\emph{broadcast}, \texttt{ff:ff:ff:ff:ff:ff}) a toda la red local preguntando quién posee esa IP.
+    \item Todos los nodos de la red reciben la trama, pero únicamente el equipo con la IP buscada contesta mediante un mensaje \emph{ARP Reply} enviado por \emph{unicast} directamente a mi máquina, adjuntando su dirección MAC física.
+    \item Al recibir esta respuesta, mi sistema operativo guarda la nueva asociación en su caché ARP para usos posteriores, desencola el datagrama IP pendiente y lo encapsula en la trama Ethernet dirigida a la MAC recién descubierta.
+\end{enumerate}
+
+\subsection{Inspección de la caché ARP local}
+
+Para verificar el contenido de la caché de resolución de direcciones en el entorno de trabajo, se ejecutó el comando \texttt{arp -a} en una terminal del sistema Windows. La figura~\ref{fig:arp-consola} reproduce la salida obtenida.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.88\linewidth]{capturas/punto2/comado-(arp-a).png}
+\caption{Visualización de la tabla de vecinos y caché ARP mediante \texttt{arp -a} en el sistema operativo Windows.}
+\label{fig:arp-consola}
+\end{figure}
+
+\begin{table}[H]
+\centering\footnotesize
+\setlength{\tabcolsep}{4pt}
+\begin{tabular}{@{}lllr@{}}
+\toprule
+\textbf{Interfaz local} & \textbf{Dirección de Internet (IPv4)} & \textbf{Dirección física (MAC)} & \textbf{Tipo} \\
+\midrule
+\texttt{192.168.0.219} & \texttt{192.168.0.1} (Gateway) & \texttt{34-53-d2-98-26-47} & Dinámico \\
+\texttt{192.168.0.219} & \texttt{192.168.0.255} (Broadcast subred) & \texttt{ff-ff-ff-ff-ff-ff} & Estático \\
+\texttt{192.168.0.219} & \texttt{224.0.0.22} (Multicast IGMP) & \texttt{01-00-5e-00-00-16} & Estático \\
+\texttt{192.168.0.219} & \texttt{224.0.0.251} (mDNS) & \texttt{01-00-5e-00-00-fb} & Estático \\
+\texttt{192.168.0.219} & \texttt{224.0.0.252} (LLMNR) & \texttt{01-00-5e-00-00-fc} & Estático \\
+\texttt{192.168.0.219} & \texttt{239.255.255.250} (SSDP) & \texttt{01-00-5e-7f-ff-fa} & Estático \\
+\texttt{192.168.0.219} & \texttt{255.255.255.255} (Broadcast general) & \texttt{ff-ff-ff-ff-ff-ff} & Estático \\
+\midrule
+\texttt{192.168.56.1} & \texttt{192.168.56.255} (Broadcast host) & \texttt{ff-ff-ff-ff-ff-ff} & Estático \\
+\bottomrule
+\end{tabular}
+\caption{Entradas registradas en la caché ARP de las interfaces de red del equipo de ensayo.}
+\label{tab:arp-cache-local}
+\end{table}
+
+\textbf{Coincidencia de la MAC del gateway.}
+Al consultar la interfaz activa principal (\texttt{192.168.0.219}), se identifica la entrada correspondiente a la dirección IPv4 del router/gateway por defecto (\texttt{192.168.0.1}), asociada a la dirección física \texttt{34-53-d2-98-26-47} como entrada de tipo \emph{dinámico}.
+
+Esta dirección física coincide exactamente con la dirección MAC de destino utilizada por la tarjeta de red en el encabezado de enlace Ethernet cada vez que el equipo transmite un paquete hacia el gateway o hacia cualquier destino externo fuera de la subred local (como redes de Internet). En el ensayo del Ítem~1 llevado a cabo sobre una estación Linux del grupo de trabajo, la dirección IP del gateway fue \texttt{192.168.1.1} y su dirección MAC registrada fue \texttt{74:24:9f:b1:e1:cd}. En ambos casos se confirma la misma regla operativa fundamental de las redes TCP/IP: la dirección MAC de destino de la trama Ethernet de enlace local es invariablemente la MAC del gateway por defecto obtenida mediante resolución ARP.
+
+Adicionalmente, la tabla evidencia el mapeo de direcciones IP de difusión (\emph{broadcast}) a la dirección física \texttt{ff-ff-ff-ff-ff-ff}, y de direcciones IP de multidifusión (\emph{multicast}, rango \texttt{224.0.0.0/4}) al prefijo Ethernet asignado por IANA \texttt{01-00-5e-xx-xx-xx}. La segunda interfaz observada (\texttt{192.168.56.1}) corresponde a un adaptador virtual de máquina local (VirtualBox).
+
+\subsection{Generación de tráfico ARP y captura con Wireshark}
+
+Debido a que el sistema operativo almacena las asociaciones en su caché durante varios minutos, un comando \texttt{ping} dirigido a un nodo con el que ya se mantuvo comunicación previa no generará tráfico ARP visible en la red. Para provocar y estudiar el intercambio ARP de forma controlada, se contemplan los métodos descritos en la guía de trabajos prácticos:
+
+\begin{itemize}
+    \item \textbf{Opción A (Sondeo a IP inexistente en la subred local):} Se envía un \texttt{ping} a una dirección IP perteneciente al mismo bloque de red pero que no esté asignada a ningún equipo en funcionamiento (por ejemplo, \texttt{ping -4 -n 2 192.168.0.253} en una subred \texttt{192.168.0.0/24}). Como la IP no figura en la caché, el equipo genera múltiples mensajes \emph{ARP Request} en difusión para intentar localizarla. Al no haber ningún host que responda, no se produce ningún \emph{ARP Reply} y el comando finaliza indicando ``Host de destino inaccesible''. Este método tiene la ventaja de no requerir privilegios de administrador.
+    \item \textbf{Opción B (Invalidación temporal de la entrada del gateway):} Se elimina la asociación correspondiente al router mediante permisos de administrador (\texttt{arp -d 192.168.0.1} en Windows o \texttt{sudo ip neigh del 192.168.1.1 dev wlan0} en Linux) y de inmediato se efectúa un \texttt{ping} a dicha dirección. Esto fuerza al sistema a emitir un \emph{ARP Request} en difusión, al cual el gateway responde inmediatamente con un \emph{ARP Reply} unicast, permitiendo capturar el par completo solicitud--respuesta antes de enviar el tráfico ICMP.
+    \item \textbf{Opción C (Comunicación con otro host de la LAN):} Se realiza un \texttt{ping} hacia otra estación de trabajo presente en la red local con la cual no se haya interactuado recientemente.
+\end{itemize}
+
+Para aislar y examinar los paquetes capturados en Wireshark se emplean los siguientes filtros de visualización:
+\begin{itemize}
+    \item \texttt{arp}: Visualiza todos los paquetes del protocolo ARP.
+    \item \texttt{arp.opcode == 1}: Filtra exclusivamente los mensajes de solicitud (\emph{ARP Request}).
+    \item \texttt{arp.opcode == 2}: Filtra exclusivamente los mensajes de respuesta (\emph{ARP Reply}).
+    \item \texttt{arp.dst.proto\_ipv4 == 192.168.0.1}: Filtra consultas dirigidas a conocer la MAC del gateway.
+    \item \texttt{arp || icmp}: Muestra conjuntamente las consultas ARP y los mensajes ICMP generados por la herramienta de diagnóstico.
+    \item \texttt{eth.dst == ff:ff:ff:ff:ff:ff}: Aísla todas las tramas enviadas a nivel de enlace a la dirección de difusión.
+\end{itemize}
+
+\subsection{Análisis comparativo de ARP Request y ARP Reply}
+
+En la práctica se ejecutó el procedimiento de la Opción~A enviando un \texttt{ping} a la dirección no asignada \texttt{192.168.0.253}. La figura~\ref{fig:arp-captura} presenta el paquete capturado en Wireshark (trama 5833), correspondiente a la solicitud \emph{ARP Request} generada por el equipo local.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=\linewidth]{capturas/punto2/CapturaTraficoARP.png}
+\caption{Detalle en Wireshark de la solicitud ARP (trama 5833): consulta en difusión (\emph{broadcast}) enviada por la interfaz local (\texttt{192.168.0.219}) solicitando la dirección física de la IP inexistente \texttt{192.168.0.253}.}
+\label{fig:arp-captura}
+\end{figure}
+
+Como se aprecia en la captura, la trama capturada tiene una longitud total de 42 bytes (14 bytes del encabezado Ethernet II y 28 bytes del mensaje ARP). El volcado hexadecimal inferior resalta la estructura completa: los primeros 6 bytes corresponden a la MAC de difusión \texttt{ff ff ff ff ff ff}, seguidos por la MAC de origen del adaptador ASUS (\texttt{a0 ad 9f 13 dd 5b}) y el identificador de protocolo \texttt{08 06}. A continuación, el cuerpo ARP especifica \emph{Hardware type}=1 (Ethernet), \emph{Protocol type}=\texttt{0x0800} (IPv4), longitudes 6 y 4 bytes, y \emph{Opcode}=\texttt{00 01} (\emph{request}).
+
+A partir de la trama obtenida, la tabla~\ref{tab:arp-campos} detalla los campos de nivel de enlace y de protocolo para la solicitud capturada, comparándolos con los valores que adopta una respuesta \emph{ARP Reply} cuando el destino responde de forma efectiva en la red local.
+
+\begin{table}[H]
+\centering\small
+\setlength{\tabcolsep}{5pt}
+\begin{tabular}{@{}>{\raggedright\arraybackslash}p{4.8cm}>{\raggedright\arraybackslash}p{4.8cm}>{\raggedright\arraybackslash}p{4.8cm}@{}}
+\toprule
+\textbf{Campo analizado} & \textbf{ARP Request (Trama 5833)} & \textbf{ARP Reply (Caso con respuesta)} \\
+\midrule
+\textbf{MAC destino} (encabezado Ethernet) & \texttt{ff:ff:ff:ff:ff:ff} (Broadcast) & \texttt{a0:ad:9f:13:dd:5b} (Unicast al solicitante) \\
+\textbf{MAC origen} (encabezado Ethernet) & \texttt{a0:ad:9f:13:dd:5b} (MAC del emisor) & MAC física del respondedor \\
+\textbf{EtherType} (encabezado Ethernet) & \texttt{0x0806} (ARP) & \texttt{0x0806} (ARP) \\
+\textbf{Hardware Type / Protocol Type} & 1 (Ethernet) / \texttt{0x0800} (IPv4) & 1 (Ethernet) / \texttt{0x0800} (IPv4) \\
+\textbf{Hardware Size / Protocol Size} & 6 bytes / 4 bytes & 6 bytes / 4 bytes \\
+\textbf{Opcode} & \texttt{1} (\emph{request}) & \texttt{2} (\emph{reply}) \\
+\textbf{Sender MAC address} & \texttt{a0:ad:9f:13:dd:5b} & MAC física del respondedor \\
+\textbf{Sender IP address} & \texttt{192.168.0.219} & IP del respondedor (ej. \texttt{192.168.0.1}) \\
+\textbf{Target MAC address} & \texttt{00:00:00:00:00:00} (Desconocida) & \texttt{a0:ad:9f:13:dd:5b} (MAC del solicitante) \\
+\textbf{Target IP address} & \texttt{192.168.0.253} & \texttt{192.168.0.219} (IP del solicitante) \\
+\bottomrule
+\end{tabular}
+\caption{Comparación detallada de campos entre la solicitud capturada y la estructura de una respuesta ARP.}
+\label{tab:arp-campos}
+\end{table}
+
+\textbf{Nota sobre el ensayo:} Al haberse empleado la Opción~A (sondeo a la dirección libre \texttt{192.168.0.253}), \textbf{no se produjo ningún mensaje \emph{ARP Reply}} en la red debido a que ningún nodo físico posee asignada dicha IP. La columna de \emph{ARP Reply} de la tabla~\ref{tab:arp-campos} presenta la estructura canónica esperada para una resolución exitosa dentro de la misma subred (tal como se verificó previamente con la entrada del gateway en la caché).
+
+\textbf{a) Justificación de difusión vs.\ entrega unívoca y valor de \emph{Target MAC address}.}
+\begin{itemize}
+    \item El mensaje \emph{ARP Request} debe enviarse forzosamente a una dirección de difusión (\emph{broadcast}, \texttt{ff:ff:ff:ff:ff:ff}) debido a que el host emisor desconoce totalmente qué placa física posee la IP consultada. La difusión garantiza que los conmutadores (\emph{switches}) inunden la trama hacia todos los puertos del dominio de colisión y que todas las tarjetas de red la acepten y la eleven a sus pilas de protocolos para su verificación.
+    \item Por el contrario, el mensaje \emph{ARP Reply} se transmite de forma unívoca (\emph{unicast}) directamente a la dirección MAC del solicitante, dado que dicha dirección ya fue aprendida de los campos \emph{Sender MAC} y \emph{Sender IP} incluidos en el Request. No existe necesidad de molestar al resto de los integrantes de la red con una respuesta que concierne a un único receptor.
+    \item En el paquete \emph{ARP Request}, el campo \emph{Target MAC address} posee el valor en ceros \texttt{00:00:00:00:00:00} (visible en el desplazamiento \texttt{0x0020} del panel hexadecimal como \texttt{00 00 00 00 00 00}). Esto se debe a que la dirección física del destino es el dato desconocido que se busca determinar; al no conocerla, la especificación del protocolo estipula completarla con ceros como marcador de posición.
+\end{itemize}
+
+\textbf{b) Encabezado Ethernet, campo \emph{Type} y ausencia de encabezado IP.}
+En el encabezado de la trama Ethernet que transporta un mensaje ARP, el campo \emph{Type} (\emph{EtherType}) tiene asignado el valor hexadecimal \texttt{0x0806}, correspondiente a ARP, a diferencia del valor \texttt{0x0800} reservado para IPv4.
+Dentro de la trama capturada \textbf{no existe ningún encabezado IP}. El paquete ARP se coloca directamente en el campo de carga útil (\emph{payload}) de la trama Ethernet II. Esto demuestra empíricamente que ARP no es un protocolo de capa de aplicación ni viaja sobre la capa de red: ``vive'' como un protocolo auxiliar directamente sobre la capa de enlace de datos, cumpliendo una función de traducción que enlaza ambas capas.
+
+\textbf{c) Comportamiento observado ante una IP inexistente (Opción A).}
+En la práctica realizada con la IP inexistente \texttt{192.168.0.253}:
+\begin{enumerate}
+    \item En la captura de Wireshark se observan solicitudes \emph{ARP Request} sucesivas (como la trama 5833), generadas por el sistema operativo que reintenta resolver la dirección tras vencer sus temporizadores de espera (\emph{timeouts}).
+    \item \textbf{No se produjo ningún \emph{ARP Reply}}, puesto que ninguna máquina conectada al medio posee asignada dicha dirección IP.
+    \item \textbf{No apareció ningún paquete \emph{ICMP Echo Request} en la captura.} Esta observación es sumamente reveladora: la capa de red genera el datagrama ICMP internamente, pero al solicitar a la capa de enlace que lo encapsule y lo transmita, esta no puede construir una trama Ethernet válida al carecer de una dirección MAC de destino. El datagrama queda retenido en los búferes del sistema operativo a la espera de la resolución física; al vencer el tiempo sin obtener respuesta ARP, el paquete es finalmente descartado por el kernel y la consola informa ``Host de destino inaccesible'' (\emph{Destination host unreachable}). El datagrama ICMP jamás llega a transmitirse por el medio físico.
+\end{enumerate}
+
+\textbf{d) Reintento de comunicación, vigencia de la caché y análisis de fallos.}
+Al repetir el comando \texttt{ping} a un destino operativo transcurrido un lapso breve (por ejemplo, un minuto después de una resolución exitosa con el gateway), \textbf{no se observa tráfico ARP en la captura}. El sistema operativo consulta su caché ARP local, detecta que la entrada sigue vigente y procede de inmediato a transmitir los datagramas ICMP sobre tramas Ethernet sin generar ningún intercambio de resolución previo. En cambio, para una dirección fallida que no respondió, el sistema operativo no retiene una correspondencia MAC válida, por lo que un nuevo intento volverá a gatillar solicitudes ARP por difusión.
+
+\begin{itemize}
+    \item \emph{Ventajas de la caché ARP:} Otorga una respuesta inmediata eliminando las demoras de resolución (\emph{latency}), optimiza el uso de CPU de las estaciones de trabajo y suprime el tráfico de difusión en la infraestructura de conmutación.
+    \item \emph{Problemas asociados a entradas desactualizadas u obsoletas:} Si una entrada permanece en caché más tiempo del debido y las condiciones de la red cambian (por ejemplo, una máquina cambia de placa de red física, se renueva una concesión DHCP asignando la IP a otro equipo, o un servidor se reemplaza por otro), el emisor continuará enviando las tramas hacia una dirección MAC errónea o inexistente. Las tramas serán ignoradas por el nuevo host o descartadas por la placa receptora, provocando una pérdida total de comunicación hasta que la entrada expire o se purgue manualmente. Además, la ausencia de autenticación intrínseca en ARP expone a la red a ataques de envenenamiento de caché (\emph{ARP spoofing} o \emph{ARP cache poisoning}), donde un host malicioso emite respuestas no solicitadas para asociar fraudulentamente su propia MAC con la IP del gateway o de otros nodos, facilitando ataques de intermediario (\emph{Man-in-the-Middle}).
+\end{itemize}
+
+\subsection{Síntesis y evidencias de la práctica}
+
+El desarrollo del ensayo permitió comprobar de manera práctica el ciclo completo de resolución de direcciones en redes de área local Ethernet:
+\begin{itemize}
+    \item Se inspeccionó la tabla de vecinos en la estación de trabajo Windows, localizando la dirección física del gateway (\texttt{34-53-d2-98-26-47} para \texttt{192.168.0.1}) y comprendiendo su función en el encaminamiento de tramas hacia destinos externos.
+    \item Se examinó la estructura del paquete ARP, verificando su encapsulado directo en Ethernet con \emph{EtherType} \texttt{0x0806} y la dinámica de solicitud por difusión con \emph{Target MAC} nula frente a respuesta unívoca.
+    \item Se demostró que la transmisión de paquetes de capa de red requiere indispensablemente la previa resolución física en el enlace, explicando por qué una consulta a una IP inexistente genera solicitudes ARP reiteradas pero ningún eco ICMP sobre el medio.
+\end{itemize}
+
+{\small\textbf{Fuentes técnicas:}
+RFC \href{https://www.rfc-editor.org/rfc/rfc826}{826} (\emph{An Ethernet Address Resolution Protocol});
+RFC \href{https://www.rfc-editor.org/rfc/rfc1122#section-2.3.2}{1122, sección 2.3.2} (\emph{Requirements for Internet Hosts -- Communication Layers, Link Layer: ARP});
+\href{https://www.wireshark.org/docs/wsug_html_chunked/}{Manual de usuario de Wireshark}.\par}
+
 \section{Ítem 3: TCP y UDP ``a mano'' con ncat}
 
 \subsection{Fundamentos de TCP, UDP y puertos}
@@ -1035,7 +1212,7 @@ La captura corresponde a una conexión TCP local sobre la interfaz de loopback: 
     \centering
     \includegraphics[width=\textwidth]{img/consola.png}
     \caption{Captura de la consola con la ejecución de los scripts.}
-    \label{fig:wireshark_tcp}
+    \label{fig:consola_tcp}
 \end{figure}
 
 La captura muestra la ejecución del servidor y del cliente TCP.
