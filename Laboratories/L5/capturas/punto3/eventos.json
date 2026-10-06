@@ -1,0 +1,604 @@
+[
+  {
+    "time": "2026-09-30T17:59:54.210834-03:00",
+    "epoch": 1790801994.210862,
+    "event": "environment",
+    "ncat_version": "",
+    "kernel": "Linux 7.0.0-31-generic x86_64 GNU/Linux"
+  },
+  {
+    "time": "2026-09-30T17:59:54.258840-03:00",
+    "epoch": 1790801994.2588983,
+    "event": "capture_start",
+    "name": "tcp_intercambio",
+    "command": [
+      "wireshark",
+      "-n",
+      "-k",
+      "-i",
+      "lo",
+      "-p",
+      "-f",
+      "tcp port 12000",
+      "-a",
+      "duration:12",
+      "-w",
+      "/home/javier/Documents/University/4to/Data_Communication/Data_Communication_FCEFyN/Laboratories/L5/capturas/punto3/tcp_intercambio.pcapng",
+      "-Y",
+      "tcp.port == 12000"
+    ],
+    "pid": 580472
+  },
+  {
+    "time": "2026-09-30T18:00:00.473339-03:00",
+    "epoch": 1790802000.4733675,
+    "event": "process_start",
+    "name": "tcp_intercambio",
+    "role": "servidor",
+    "command": [
+      "/tmp/tp5-ncat/unpack/usr/bin/ncat",
+      "-4",
+      "-n",
+      "-v",
+      "-l",
+      "127.0.0.1",
+      "12000"
+    ],
+    "pid": 580716
+  },
+  {
+    "time": "2026-09-30T18:00:00.824357-03:00",
+    "epoch": 1790802000.8243866,
+    "event": "process_start",
+    "name": "tcp_intercambio",
+    "role": "cliente",
+    "command": [
+      "/tmp/tp5-ncat/unpack/usr/bin/ncat",
+      "-4",
+      "-n",
+      "-v",
+      "127.0.0.1",
+      "12000"
+    ],
+    "pid": 580717
+  },
+  {
+    "time": "2026-09-30T18:00:02.024842-03:00",
+    "epoch": 1790802002.0248716,
+    "event": "idle_before_data_end",
+    "name": "tcp_intercambio"
+  },
+  {
+    "time": "2026-09-30T18:00:02.025161-03:00",
+    "epoch": 1790802002.0251868,
+    "event": "send_line",
+    "name": "tcp_intercambio",
+    "role": "cliente",
+    "payload": "Hola desde Ncat\n",
+    "length": 16
+  },
+  {
+    "time": "2026-09-30T18:00:02.425503-03:00",
+    "epoch": 1790802002.4255342,
+    "event": "send_line",
+    "name": "tcp_intercambio",
+    "role": "servidor",
+    "payload": "Recibido en el servidor\n",
+    "length": 24
+  },
+  {
+    "time": "2026-09-30T18:00:02.825971-03:00",
+    "epoch": 1790802002.8260057,
+    "event": "send_line",
+    "name": "tcp_intercambio",
+    "role": "cliente",
+    "payload": "Segundo mensaje\n",
+    "length": 16
+  },
+  {
+    "time": "2026-09-30T18:00:03.226389-03:00",
+    "epoch": 1790802003.2264483,
+    "event": "send_line",
+    "name": "tcp_intercambio",
+    "role": "servidor",
+    "payload": "Segunda respuesta\n",
+    "length": 18
+  },
+  {
+    "time": "2026-09-30T18:00:03.626934-03:00",
+    "epoch": 1790802003.626968,
+    "event": "send_line",
+    "name": "tcp_intercambio",
+    "role": "cliente",
+    "payload": "Fin de la prueba\n",
+    "length": 17
+  },
+  {
+    "time": "2026-09-30T18:00:04.027572-03:00",
+    "epoch": 1790802004.027598,
+    "event": "send_line",
+    "name": "tcp_intercambio",
+    "role": "servidor",
+    "payload": "Prueba completada\n",
+    "length": 18
+  },
+  {
+    "time": "2026-09-30T18:00:05.228173-03:00",
+    "epoch": 1790802005.2281976,
+    "event": "SIGINT",
+    "name": "tcp_intercambio",
+    "role": "cliente"
+  },
+  {
+    "time": "2026-09-30T18:00:05.229617-03:00",
+    "epoch": 1790802005.2296371,
+    "event": "process_exit",
+    "name": "tcp_intercambio",
+    "role": "cliente",
+    "returncode": -2
+  },
+  {
+    "time": "2026-09-30T18:00:06.430092-03:00",
+    "epoch": 1790802006.4301217,
+    "event": "process_exit",
+    "name": "tcp_intercambio",
+    "role": "servidor",
+    "returncode": 0
+  },
+  {
+    "time": "2026-09-30T18:00:12.243760-03:00",
+    "epoch": 1790802012.2438395,
+    "event": "capture_stopped",
+    "name": "tcp_intercambio"
+  },
+  {
+    "time": "2026-09-30T18:00:12.246708-03:00",
+    "epoch": 1790802012.2467413,
+    "event": "capture_start",
+    "name": "udp_intercambio",
+    "command": [
+      "wireshark",
+      "-n",
+      "-k",
+      "-i",
+      "lo",
+      "-p",
+      "-f",
+      "udp port 12001",
+      "-a",
+      "duration:12",
+      "-w",
+      "/home/javier/Documents/University/4to/Data_Communication/Data_Communication_FCEFyN/Laboratories/L5/capturas/punto3/udp_intercambio.pcapng",
+      "-Y",
+      "udp.port == 12001"
+    ],
+    "pid": 580777
+  },
+  {
+    "time": "2026-09-30T18:00:17.060122-03:00",
+    "epoch": 1790802017.060151,
+    "event": "process_start",
+    "name": "udp_intercambio",
+    "role": "servidor",
+    "command": [
+      "/tmp/tp5-ncat/unpack/usr/bin/ncat",
+      "-4",
+      "-n",
+      "-v",
+      "-u",
+      "-l",
+      "127.0.0.1",
+      "12001"
+    ],
+    "pid": 580949
+  },
+  {
+    "time": "2026-09-30T18:00:17.411446-03:00",
+    "epoch": 1790802017.4114978,
+    "event": "process_start",
+    "name": "udp_intercambio",
+    "role": "cliente",
+    "command": [
+      "/tmp/tp5-ncat/unpack/usr/bin/ncat",
+      "-4",
+      "-n",
+      "-v",
+      "-u",
+      "127.0.0.1",
+      "12001"
+    ],
+    "pid": 580950
+  },
+  {
+    "time": "2026-09-30T18:00:18.612314-03:00",
+    "epoch": 1790802018.612349,
+    "event": "idle_before_data_end",
+    "name": "udp_intercambio"
+  },
+  {
+    "time": "2026-09-30T18:00:18.612830-03:00",
+    "epoch": 1790802018.6128488,
+    "event": "send_line",
+    "name": "udp_intercambio",
+    "role": "cliente",
+    "payload": "Hola desde Ncat\n",
+    "length": 16
+  },
+  {
+    "time": "2026-09-30T18:00:19.013306-03:00",
+    "epoch": 1790802019.013353,
+    "event": "send_line",
+    "name": "udp_intercambio",
+    "role": "servidor",
+    "payload": "Recibido en el servidor\n",
+    "length": 24
+  },
+  {
+    "time": "2026-09-30T18:00:19.414373-03:00",
+    "epoch": 1790802019.4144213,
+    "event": "send_line",
+    "name": "udp_intercambio",
+    "role": "cliente",
+    "payload": "Segundo mensaje\n",
+    "length": 16
+  },
+  {
+    "time": "2026-09-30T18:00:19.815385-03:00",
+    "epoch": 1790802019.8154562,
+    "event": "send_line",
+    "name": "udp_intercambio",
+    "role": "servidor",
+    "payload": "Segunda respuesta\n",
+    "length": 18
+  },
+  {
+    "time": "2026-09-30T18:00:20.216090-03:00",
+    "epoch": 1790802020.2161298,
+    "event": "send_line",
+    "name": "udp_intercambio",
+    "role": "cliente",
+    "payload": "Fin de la prueba\n",
+    "length": 17
+  },
+  {
+    "time": "2026-09-30T18:00:20.616673-03:00",
+    "epoch": 1790802020.6167035,
+    "event": "send_line",
+    "name": "udp_intercambio",
+    "role": "servidor",
+    "payload": "Prueba completada\n",
+    "length": 18
+  },
+  {
+    "time": "2026-09-30T18:00:21.817418-03:00",
+    "epoch": 1790802021.817446,
+    "event": "SIGINT",
+    "name": "udp_intercambio",
+    "role": "cliente"
+  },
+  {
+    "time": "2026-09-30T18:00:21.818999-03:00",
+    "epoch": 1790802021.8190198,
+    "event": "process_exit",
+    "name": "udp_intercambio",
+    "role": "cliente",
+    "returncode": -2
+  },
+  {
+    "time": "2026-09-30T18:00:23.019587-03:00",
+    "epoch": 1790802023.0196214,
+    "event": "SIGINT",
+    "name": "udp_intercambio",
+    "role": "servidor"
+  },
+  {
+    "time": "2026-09-30T18:00:23.021212-03:00",
+    "epoch": 1790802023.0212276,
+    "event": "process_exit",
+    "name": "udp_intercambio",
+    "role": "servidor",
+    "returncode": -2
+  },
+  {
+    "time": "2026-09-30T18:00:29.033264-03:00",
+    "epoch": 1790802029.0332909,
+    "event": "capture_stopped",
+    "name": "udp_intercambio"
+  },
+  {
+    "time": "2026-09-30T18:00:29.034568-03:00",
+    "epoch": 1790802029.034592,
+    "event": "capture_start",
+    "name": "puertos_cerrados",
+    "command": [
+      "wireshark",
+      "-n",
+      "-k",
+      "-i",
+      "lo",
+      "-p",
+      "-f",
+      "tcp port 12000 or udp port 12001 or (icmp and host 127.0.0.1)",
+      "-a",
+      "duration:12",
+      "-w",
+      "/home/javier/Documents/University/4to/Data_Communication/Data_Communication_FCEFyN/Laboratories/L5/capturas/punto3/puertos_cerrados.pcapng",
+      "-Y",
+      "tcp.port == 12000 || udp.port == 12001 || icmp"
+    ],
+    "pid": 581086
+  },
+  {
+    "time": "2026-09-30T18:00:33.743893-03:00",
+    "epoch": 1790802033.7439294,
+    "event": "process_start",
+    "name": "puertos_cerrados",
+    "role": "cliente_tcp",
+    "command": [
+      "/tmp/tp5-ncat/unpack/usr/bin/ncat",
+      "-4",
+      "-n",
+      "-v",
+      "127.0.0.1",
+      "12000"
+    ],
+    "pid": 581318
+  },
+  {
+    "time": "2026-09-30T18:00:33.858558-03:00",
+    "epoch": 1790802033.8585901,
+    "event": "process_exit",
+    "name": "puertos_cerrados",
+    "role": "cliente_tcp",
+    "returncode": 1
+  },
+  {
+    "time": "2026-09-30T18:00:34.360514-03:00",
+    "epoch": 1790802034.3605506,
+    "event": "process_start",
+    "name": "puertos_cerrados",
+    "role": "cliente_udp",
+    "command": [
+      "/tmp/tp5-ncat/unpack/usr/bin/ncat",
+      "-4",
+      "-n",
+      "-v",
+      "-u",
+      "127.0.0.1",
+      "12001"
+    ],
+    "pid": 581320
+  },
+  {
+    "time": "2026-09-30T18:00:35.561287-03:00",
+    "epoch": 1790802035.5613296,
+    "event": "send_line",
+    "name": "puertos_cerrados",
+    "role": "cliente_udp",
+    "payload": "Hola desde Ncat\n",
+    "length": 16
+  },
+  {
+    "time": "2026-09-30T18:00:37.161994-03:00",
+    "epoch": 1790802037.162019,
+    "event": "process_exit",
+    "name": "puertos_cerrados",
+    "role": "cliente_udp",
+    "returncode": 1
+  },
+  {
+    "time": "2026-09-30T18:00:45.483200-03:00",
+    "epoch": 1790802045.4832368,
+    "event": "capture_stopped",
+    "name": "puertos_cerrados"
+  },
+  {
+    "time": "2026-09-30T18:00:45.485626-03:00",
+    "epoch": 1790802045.4856634,
+    "event": "capture_start",
+    "name": "tcp_una_frase",
+    "command": [
+      "wireshark",
+      "-n",
+      "-k",
+      "-i",
+      "lo",
+      "-p",
+      "-f",
+      "tcp port 12000",
+      "-a",
+      "duration:12",
+      "-w",
+      "/home/javier/Documents/University/4to/Data_Communication/Data_Communication_FCEFyN/Laboratories/L5/capturas/punto3/tcp_una_frase.pcapng",
+      "-Y",
+      "tcp.port == 12000"
+    ],
+    "pid": 581398
+  },
+  {
+    "time": "2026-09-30T18:00:50.297065-03:00",
+    "epoch": 1790802050.2970886,
+    "event": "process_start",
+    "name": "tcp_una_frase",
+    "role": "servidor",
+    "command": [
+      "/tmp/tp5-ncat/unpack/usr/bin/ncat",
+      "-4",
+      "-n",
+      "-v",
+      "-l",
+      "127.0.0.1",
+      "12000"
+    ],
+    "pid": 581587
+  },
+  {
+    "time": "2026-09-30T18:00:50.648343-03:00",
+    "epoch": 1790802050.6483665,
+    "event": "process_start",
+    "name": "tcp_una_frase",
+    "role": "cliente",
+    "command": [
+      "/tmp/tp5-ncat/unpack/usr/bin/ncat",
+      "-4",
+      "-n",
+      "-v",
+      "127.0.0.1",
+      "12000"
+    ],
+    "pid": 581588
+  },
+  {
+    "time": "2026-09-30T18:00:51.848949-03:00",
+    "epoch": 1790802051.8489797,
+    "event": "idle_before_data_end",
+    "name": "tcp_una_frase"
+  },
+  {
+    "time": "2026-09-30T18:00:51.849521-03:00",
+    "epoch": 1790802051.8495362,
+    "event": "send_line",
+    "name": "tcp_una_frase",
+    "role": "cliente",
+    "payload": "Hola desde Ncat\n",
+    "length": 16
+  },
+  {
+    "time": "2026-09-30T18:00:53.050256-03:00",
+    "epoch": 1790802053.0502925,
+    "event": "SIGINT",
+    "name": "tcp_una_frase",
+    "role": "cliente"
+  },
+  {
+    "time": "2026-09-30T18:00:53.051945-03:00",
+    "epoch": 1790802053.051968,
+    "event": "process_exit",
+    "name": "tcp_una_frase",
+    "role": "cliente",
+    "returncode": -2
+  },
+  {
+    "time": "2026-09-30T18:00:54.257715-03:00",
+    "epoch": 1790802054.2578204,
+    "event": "process_exit",
+    "name": "tcp_una_frase",
+    "role": "servidor",
+    "returncode": 0
+  },
+  {
+    "time": "2026-09-30T18:01:01.975124-03:00",
+    "epoch": 1790802061.9751542,
+    "event": "capture_stopped",
+    "name": "tcp_una_frase"
+  },
+  {
+    "time": "2026-09-30T18:01:01.977220-03:00",
+    "epoch": 1790802061.9772499,
+    "event": "capture_start",
+    "name": "udp_una_frase",
+    "command": [
+      "wireshark",
+      "-n",
+      "-k",
+      "-i",
+      "lo",
+      "-p",
+      "-f",
+      "udp port 12001",
+      "-a",
+      "duration:12",
+      "-w",
+      "/home/javier/Documents/University/4to/Data_Communication/Data_Communication_FCEFyN/Laboratories/L5/capturas/punto3/udp_una_frase.pcapng",
+      "-Y",
+      "udp.port == 12001"
+    ],
+    "pid": 581679
+  },
+  {
+    "time": "2026-09-30T18:01:06.485300-03:00",
+    "epoch": 1790802066.4853313,
+    "event": "process_start",
+    "name": "udp_una_frase",
+    "role": "servidor",
+    "command": [
+      "/tmp/tp5-ncat/unpack/usr/bin/ncat",
+      "-4",
+      "-n",
+      "-v",
+      "-u",
+      "-l",
+      "127.0.0.1",
+      "12001"
+    ],
+    "pid": 581850
+  },
+  {
+    "time": "2026-09-30T18:01:06.836605-03:00",
+    "epoch": 1790802066.8366334,
+    "event": "process_start",
+    "name": "udp_una_frase",
+    "role": "cliente",
+    "command": [
+      "/tmp/tp5-ncat/unpack/usr/bin/ncat",
+      "-4",
+      "-n",
+      "-v",
+      "-u",
+      "127.0.0.1",
+      "12001"
+    ],
+    "pid": 581851
+  },
+  {
+    "time": "2026-09-30T18:01:08.037657-03:00",
+    "epoch": 1790802068.0376878,
+    "event": "idle_before_data_end",
+    "name": "udp_una_frase"
+  },
+  {
+    "time": "2026-09-30T18:01:08.038326-03:00",
+    "epoch": 1790802068.038341,
+    "event": "send_line",
+    "name": "udp_una_frase",
+    "role": "cliente",
+    "payload": "Hola desde Ncat\n",
+    "length": 16
+  },
+  {
+    "time": "2026-09-30T18:01:09.239576-03:00",
+    "epoch": 1790802069.2396188,
+    "event": "SIGINT",
+    "name": "udp_una_frase",
+    "role": "cliente"
+  },
+  {
+    "time": "2026-09-30T18:01:09.244090-03:00",
+    "epoch": 1790802069.2441459,
+    "event": "process_exit",
+    "name": "udp_una_frase",
+    "role": "cliente",
+    "returncode": -2
+  },
+  {
+    "time": "2026-09-30T18:01:10.445576-03:00",
+    "epoch": 1790802070.4456027,
+    "event": "SIGINT",
+    "name": "udp_una_frase",
+    "role": "servidor"
+  },
+  {
+    "time": "2026-09-30T18:01:10.447332-03:00",
+    "epoch": 1790802070.4473467,
+    "event": "process_exit",
+    "name": "udp_una_frase",
+    "role": "servidor",
+    "returncode": -2
+  },
+  {
+    "time": "2026-09-30T18:01:18.263113-03:00",
+    "epoch": 1790802078.2631376,
+    "event": "capture_stopped",
+    "name": "udp_una_frase"
+  }
+]

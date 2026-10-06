@@ -533,6 +533,492 @@ de Wireshark, capítulo 6}. Los resultados del ensayo proceden de la captura adj
 
 \section{Ítem 3: TCP y UDP ``a mano'' con ncat}
 
+\subsection{Fundamentos de TCP, UDP y puertos}
+
+\textbf{a) Establecimiento de una conexión.} En TCP, establecer una conexión
+significa que ambos extremos crean y coordinan el estado necesario para
+intercambiar un flujo de bytes: números de secuencia, confirmaciones,
+ventanas y opciones. Ese estado reside en las implementaciones TCP de los
+extremos, normalmente en el núcleo del sistema operativo; no constituye un
+circuito reservado en los cables. Los routers encaminan datagramas sin
+necesitar mantener ese estado TCP, aunque dispositivos como cortafuegos o
+NAT pueden registrar información adicional de los flujos. El intercambio
+inicial de SYN, SYN/ACK y ACK sincroniza ambos extremos.
+
+\textbf{b) Significado de un puerto.} Un puerto es un identificador de
+16 bits utilizado por un protocolo de transporte para entregar datos al
+extremo de comunicación correspondiente. El par (IP, puerto) identifica un
+extremo dentro de un protocolo dado: TCP y UDP tienen espacios de puertos
+independientes. Una conexión TCP queda identificada por las direcciones y
+los puertos de ambos extremos, además del protocolo. Por ello, en loopback
+las IP pueden ser iguales y los puertos permiten distinguir cliente y servidor.
+
+\textbf{c) Proceso en escucha.} Un servidor TCP en escucha posee un socket
+asociado a una dirección y un puerto, preparado para aceptar conexiones;
+aún no intercambia datos de aplicación con un cliente concreto. En UDP,
+``escuchar'' significa disponer de un socket asociado a un puerto para
+recibir datagramas: no existe un establecimiento de conexión equivalente
+al de TCP. La especificación de TCP se encuentra en el
+\href{https://www.rfc-editor.org/rfc/rfc9293.html}{RFC 9293}; el formato y
+servicio de UDP, en el
+\href{https://www.rfc-editor.org/rfc/rfc768.html}{RFC 768}.
+
+\subsection{Configuración y procedimiento experimental}
+
+Se realizaron cinco capturas independientes el 30 de septiembre de 2026,
+entre las 18:00 y las 18:01 h (UTC$-3$), con Wireshark 4.2.2 y Ncat
+7.94SVN sobre Linux. Ncat se ejecutó desde una extracción temporal del
+paquete oficial de Ubuntu. La interfaz seleccionada fue \texttt{lo}, pues
+cliente y servidor utilizaron \texttt{127.0.0.1}. Este tráfico permaneció
+en el equipo y no circuló por la placa Wi-Fi.
+
+Se comprobó con \texttt{ss} que no hubiera servidores escuchando en los
+puertos 12000 y 12001 antes de iniciar los ensayos. Los comandos del
+intercambio TCP fueron:
+\par\noindent\begin{minipage}{\linewidth}
+\begin{verbatim}
+# Servidor
+ncat -4 -n -v -l 127.0.0.1 12000
+# Cliente
+ncat -4 -n -v 127.0.0.1 12000
+\end{verbatim}
+\end{minipage}\par
+Para UDP se emplearon:
+\par\noindent\begin{minipage}{\linewidth}
+\begin{verbatim}
+# Servidor
+ncat -4 -n -v -u -l 127.0.0.1 12001
+# Cliente
+ncat -4 -n -v -u 127.0.0.1 12001
+\end{verbatim}
+\end{minipage}\par
+La opción \texttt{-4} fuerza IPv4 y \texttt{-n} evita la resolución de
+nombres. La dirección del servidor se limitó explícitamente a loopback.
+En cada protocolo se iniciaron dos procesos Ncat independientes. Sus
+entradas estándar se alimentaron con tres líneas en cada sentido, separadas
+aproximadamente 0,4 s, conservando las salidas de ambos procesos. Esta
+automatización reemplazó la escritura manual de las líneas, pero los
+sockets y el tráfico fueron generados por Ncat. Se esperó 1,2 s después
+de iniciar el cliente antes de enviar la primera línea.
+
+Para reproducir \texttt{Ctrl+C} se envió \texttt{SIGINT} al cliente, con
+su entrada estándar todavía abierta. Se continuó capturando después de
+su terminación. El servidor TCP terminó al cerrarse la conexión; el
+servidor UDP se detuvo posteriormente con la misma señal. Cada captura
+se inició desde Wireshark y se detuvo automáticamente a los 12 s.
+Las acciones y sus tiempos quedaron registrados en
+\texttt{capturas/punto3/eventos.json}.
+
+\begin{table}[H]
+\centering\small
+\begin{tabular}{@{}p{5.1cm}p{6.6cm}r@{}}
+\toprule
+\textbf{Archivo de captura} & \textbf{Filtro de visualización} & \textbf{Paquetes} \\
+\midrule
+\texttt{tcp\_intercambio.pcapng} & \texttt{tcp.port == 12000} & 18 \\
+\texttt{udp\_intercambio.pcapng} & \texttt{udp.port == 12001} & 6 \\
+\texttt{tcp\_una\_frase.pcapng} & \texttt{tcp.port == 12000} & 8 \\
+\texttt{udp\_una\_frase.pcapng} & \texttt{udp.port == 12001} & 1 \\
+\texttt{puertos\_cerrados.pcapng} &
+\texttt{tcp.port == 12000 ||}\newline
+\texttt{udp.port == 12001 || icmp} & 4 \\
+\bottomrule
+\end{tabular}
+\caption{Capturas conservadas en \texttt{capturas/punto3/}. La numeración de
+tramas comienza en 1 en cada archivo.}
+\label{tab:p3-capturas}
+\end{table}
+
+Antes de capturar se aplicaron los filtros de captura
+\texttt{tcp port 12000} o \texttt{udp port 12001}. Para puertos cerrados
+se utilizó \texttt{tcp port 12000 or udp port 12001 or (icmp and host 127.0.0.1)}.
+Estos filtros libpcap limitan la adquisición; los de la tabla se aplican
+sobre los paquetes ya capturados y utilizan una sintaxis diferente.
+
+En loopback, las dos MAC observadas fueron \texttt{00:00:00:00:00:00}.
+Wireshark utilizó una representación Ethernet II; esas direcciones no
+corresponden a placas físicas de los extremos. Para visualizar el contenido de Ncat en UDP se
+seleccionó \emph{Data} mediante \emph{Decode As} para el puerto 12001
+(opción \texttt{-d} \texttt{udp.port==12001,data}). La decodificación automática por
+puerto lo interpretaba como LLC; cambiar el decodificador solo corrige su
+presentación y no modifica los bytes del archivo.
+
+\subsection{Mensajes transmitidos y resultados generales}
+
+En ambos protocolos se enviaron exactamente las mismas seis líneas.
+Cada una finalizó con un byte LF (\texttt{0x0a}), incluido en las longitudes
+de la tabla. No se utilizó la conversión a CRLF.
+
+\begin{table}[H]
+\centering\small
+\setlength{\tabcolsep}{4pt}
+\begin{tabular}{@{}llrrr@{}}
+\toprule
+\textbf{Sentido} & \textbf{Texto, seguido de LF} & \textbf{Bytes} &
+\textbf{Trama TCP} & \textbf{Trama UDP} \\
+\midrule
+Cliente $\to$ servidor & \texttt{Hola desde Ncat} & 16 & 4 & 1 \\
+Servidor $\to$ cliente & \texttt{Recibido en el servidor} & 24 & 6 & 2 \\
+Cliente $\to$ servidor & \texttt{Segundo mensaje} & 16 & 8 & 3 \\
+Servidor $\to$ cliente & \texttt{Segunda respuesta} & 18 & 10 & 4 \\
+Cliente $\to$ servidor & \texttt{Fin de la prueba} & 17 & 12 & 5 \\
+Servidor $\to$ cliente & \texttt{Prueba completada} & 18 & 14 & 6 \\
+\bottomrule
+\end{tabular}
+\caption{Correspondencia entre las líneas de Ncat y las tramas de los dos intercambios principales: TCP y UDP.}
+\label{tab:p3-mensajes}
+\end{table}
+
+Las salidas de Ncat confirmaron la recepción de las tres líneas en cada
+extremo. Se transfirieron 49 bytes desde el cliente y 60 desde el servidor,
+109 bytes de aplicación en total. En TCP, el puerto efímero del cliente
+fue 47154 y el del servidor, 12000; en UDP fueron 51767 y 12001,
+respectivamente. En ambos sentidos la IP fue \texttt{127.0.0.1}.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=\linewidth,trim=0 650 0 45,clip]{img/punto3/tcp_01_general.png}
+\medskip
+\includegraphics[width=\linewidth,trim=0 820 0 45,clip]{img/punto3/udp_01_intercambio_encabezado.png}
+\caption{Intercambios TCP (arriba) y UDP (abajo). En TCP aparecen segmentos
+de control además de los datos; en UDP se observan las seis líneas como
+seis datagramas. Los puertos indican el sentido de cada transferencia.}
+\label{fig:p3-general}
+\end{figure}
+
+\subsection{a) Tráfico anterior al primer mensaje}
+
+En TCP, el arranque del cliente produjo el establecimiento de conexión
+antes de escribir datos de aplicación. Las primeras tres tramas de
+\texttt{tcp\_intercambio.pcapng} fueron:
+
+\begin{table}[H]
+\centering\small
+\begin{tabular}{@{}rllrrr@{}}
+\toprule
+\textbf{Trama} & \textbf{Sentido} & \textbf{Flags} & \textbf{Seq} &
+\textbf{Ack} & \textbf{Datos} \\
+\midrule
+1 & Cliente $\to$ servidor & SYN & 0 & No válido & 0 bytes \\
+2 & Servidor $\to$ cliente & SYN, ACK & 0 & 1 & 0 bytes \\
+3 & Cliente $\to$ servidor & ACK & 1 & 1 & 0 bytes \\
+\bottomrule
+\end{tabular}
+\caption{Establecimiento TCP; Seq y Ack son los valores relativos mostrados
+por Wireshark. El ACK de la trama 1 no es válido porque el flag ACK vale 0.}
+\label{tab:p3-handshake}
+\end{table}
+
+El intervalo capturado entre SYN y ACK final fue 43,377 $\mu$s. El primer
+segmento con datos, trama 4, apareció a los 1,022640260 s respecto del SYN.
+Así se distingue el establecimiento de transporte del envío del texto.
+Los SYN también negociaron opciones: MSS=65495, SACK permitido, marcas
+temporales y escalado de ventana con desplazamiento 10.
+
+En UDP no se capturó ningún paquete de establecimiento. La primera trama
+contiene directamente \texttt{Hola desde Ncat} y LF. El estado local que
+Ncat configura para recordar el destinatario no implica un intercambio
+previo con el servidor. Este último pudo responder después del primer
+datagrama, cuando ya conocía la dirección y el puerto del cliente.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=\linewidth,trim=0 875 0 45,clip]{img/punto3/tcp_03_establecimiento.png}
+\caption{Las tres tramas de establecimiento TCP, aisladas con un filtro
+adicional por número de trama. Todavía no contienen bytes de aplicación.}
+\label{fig:p3-handshake}
+\end{figure}
+
+\subsection{b) Datagramas por mensaje y confirmaciones}
+
+En el ensayo UDP, cada línea introducida produjo un datagrama: tres del
+cliente y tres del servidor, sin paquetes adicionales de confirmación.
+Las respuestas textuales del servidor son mensajes de aplicación, no
+ACK del protocolo UDP. En particular, \texttt{Recibido en el servidor}
+es una línea elegida para el ensayo y no un mecanismo automático de UDP.
+
+En TCP, cada línea produjo en esta ejecución un segmento con datos
+(PSH, ACK), seguido de un ACK independiente. Por ejemplo, la trama 4
+transportó 16 bytes con Seq=1; la trama 5 confirmó Ack=17, es decir, el
+siguiente byte esperado. Las seis confirmaciones sin datos fueron las
+tramas 5, 7, 9, 11, 13 y 15. Que aquí exista una correspondencia de una
+línea por segmento no implica que TCP conserve fronteras de mensajes:
+la agrupación y segmentación pueden cambiar con el tamaño, el ritmo de
+escritura y el comportamiento de la pila de red. Tampoco PSH representa
+un delimitador universal de mensajes.
+
+La comparación del payload capturado y las salidas de Ncat verificó que
+los textos llegaron completos. En esta prueba no se observaron pérdidas
+ni retransmisiones TCP. La recepción satisfactoria de seis datagramas
+locales no demuestra que UDP garantice entrega u orden en otras condiciones.
+
+\subsection{c) Comparación de los encabezados}
+
+Se comparó la trama TCP 4 con la trama UDP 1 de los intercambios
+principales. Ambas transportan los mismos 16 bytes:
+\par\noindent\begin{minipage}{\linewidth}
+\begin{verbatim}
+48 6f 6c 61 20 64 65 73 64 65 20 4e 63 61 74 0a
+\end{verbatim}
+\end{minipage}\par
+En ASCII corresponden a \texttt{Hola desde Ncat} seguido de LF.
+
+\begin{table}[H]
+\centering\small
+\setlength{\tabcolsep}{4pt}
+\begin{tabular}{@{}>{\raggedright\arraybackslash}p{4.0cm}>{\raggedright\arraybackslash}p{5.2cm}>{\raggedright\arraybackslash}p{5.5cm}@{}}
+\toprule
+\textbf{Campo / propiedad} & \textbf{TCP, trama 4} & \textbf{UDP, trama 1} \\
+\midrule
+Puerto origen (2 bytes) & 47154 & 51767 \\
+Puerto destino (2 bytes) & 12000 & 12001 \\
+Secuencia y confirmación & 4 bytes cada uno; Seq=1, Ack=1 & No existen \\
+Longitud del encabezado & \emph{Data Offset}=8 palabras: 32 bytes & Fija: 8 bytes \\
+Reservados y flags & Incluidos en el encabezado; PSH y ACK activos & No existen \\
+Ventana (2 bytes) & 64; valor escalado 65536 bytes & No existe \\
+Checksum (2 bytes) & \texttt{0xfe38}, \emph{unverified} & \texttt{0xfe2b}, \emph{unverified} \\
+Puntero urgente (2 bytes) & 0 & No existe \\
+Opciones & 12 bytes: dos NOP y Timestamp & No existen \\
+Campo \emph{Length} (2 bytes) & No existe como campo equivalente al de UDP & 24 bytes: encabezado y payload \\
+Datos de aplicación & 16 bytes & 16 bytes \\
+\bottomrule
+\end{tabular}
+\caption{Campos observados de transporte. Los tamaños de campos comunes se
+indican entre paréntesis; Seq/Ack son relativos.}
+\label{tab:p3-encabezados}
+\end{table}
+
+El encabezado TCP mínimo ocupa 20 bytes, pero el segmento analizado ocupa
+32 por las opciones. Los SYN de las tramas 1 y 2 tienen encabezados de
+40 bytes. Por tanto, no corresponde usar 20 como tamaño de todos los
+encabezados TCP de esta captura. UDP tiene cuatro campos de 16 bits:
+puerto origen, puerto destino, longitud y checksum, que suman 8 bytes.
+El valor \emph{TCP Segment Len}=16 mostrado por Wireshark representa el
+payload calculado; no es un campo de longitud transmitido en el encabezado TCP.
+
+Los tamaños completos observados fueron:
+\[
+\begin{aligned}
+\text{TCP:}\quad &14\;\text{(Ethernet)}+20\;\text{(IPv4)}
+                 +32\;\text{(TCP)}+16\;\text{(datos)}=82\;\text{bytes},\\
+\text{UDP:}\quad &14\;\text{(Ethernet)}+20\;\text{(IPv4)}
+                 +8\;\text{(UDP)}+16\;\text{(datos)}=58\;\text{bytes}.
+\end{aligned}
+\]
+Estas son longitudes de captura en loopback, no cantidades transmitidas
+por un cable. IPv4 identifica TCP mediante \emph{Protocol}=6 y UDP
+mediante \emph{Protocol}=17.
+
+Los checksums de transporte se mostraron como \emph{unverified}; ese
+estado indica ausencia de validación, no corrupción demostrada. En las
+capturas locales también pueden aparecer checksums parciales por
+\emph{offloading}, como explica el
+\href{https://www.wireshark.org/docs/wsug_html_chunked/ChAdvChecksums.html}{manual de Wireshark, sección 7.10}.
+No se modificaron los bytes ni la configuración de red para alterar esa presentación.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.94\linewidth,trim=0 130 630 508,clip]{img/punto3/tcp_02_encabezado_datos.png}
+\medskip
+\includegraphics[width=0.94\linewidth,trim=0 390 630 508,clip]{img/punto3/udp_01_intercambio_encabezado.png}
+\caption{Detalle de los encabezados: TCP de 32 bytes (arriba), con
+\emph{Header Length} resaltado; UDP de 8 bytes (abajo), cuyo campo
+\emph{Length}=24 incluye los 16 bytes de datos.}
+\label{fig:p3-encabezados}
+\end{figure}
+
+\subsection{d) Cierre del cliente}
+
+Al terminar el cliente UDP con \texttt{SIGINT}, no apareció un datagrama
+de cierre ni una confirmación. La captura conservó únicamente los seis
+mensajes de aplicación. El servidor no recibió una notificación de fin de
+sesión del protocolo y permaneció activo hasta su detención explícita.
+
+En TCP, la misma acción produjo un cierre ordenado, no un RST, después
+de que los datos hubieran sido entregados. Las tramas 16--18 fueron:
+\begin{table}[H]
+\centering\small
+\begin{tabular}{@{}rllrr@{}}
+\toprule
+\textbf{Trama} & \textbf{Sentido} & \textbf{Flags} & \textbf{Seq} & \textbf{Ack} \\
+\midrule
+16 & Cliente $\to$ servidor & FIN, ACK & 50 & 61 \\
+17 & Servidor $\to$ cliente & FIN, ACK & 61 & 51 \\
+18 & Cliente $\to$ servidor & ACK & 51 & 62 \\
+\bottomrule
+\end{tabular}
+\caption{Cierre observado en \texttt{tcp\_intercambio.pcapng}.}
+\label{tab:p3-cierre}
+\end{table}
+
+El cliente había transmitido 49 bytes, por lo que su siguiente secuencia
+relativa era 50. El FIN consume una posición y el servidor lo confirma
+con Ack=51. De manera análoga, los 60 bytes del servidor dejan su FIN en
+Seq=61, confirmado con Ack=62. El servidor combinó la confirmación del
+FIN recibido con su propio FIN en la trama 17: por ello se observaron
+\emph{tres} segmentos de cierre, no cuatro segmentos separados. No es una
+cantidad universal; depende del intercambio y del momento en que cada
+extremo cierra su sentido de comunicación.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=\linewidth,trim=0 875 0 45,clip]{img/punto3/tcp_04_cierre.png}
+\caption{Las tres tramas del cierre TCP. La trama 17 incorpora simultáneamente
+FIN y ACK; la 18 confirma el FIN del servidor.}
+\label{fig:p3-cierre}
+\end{figure}
+
+\subsection{e) Cantidad de paquetes para enviar la misma frase}
+
+Para fijar un criterio de conteo reproducible se realizó un ensayo
+adicional por protocolo: servidor y cliente nuevos, una única línea
+\texttt{Hola desde Ncat} con LF, ninguna respuesta textual del servidor y
+cierre posterior del cliente. Se conservaron ambos archivos
+\texttt{tcp\_una\_frase.pcapng} y \texttt{udp\_una\_frase.pcapng}.
+El servidor recibió los mismos 16 bytes en los dos casos.
+
+\begin{table}[H]
+\centering\small
+\begin{tabular}{@{}lrr@{}}
+\toprule
+\textbf{Etapa} & \textbf{TCP} & \textbf{UDP} \\
+\midrule
+Establecimiento & 3 (tramas 1--3) & 0 \\
+Envío de la frase & 1 (trama 4) & 1 (trama 1) \\
+Confirmación sin datos & 1 (trama 5) & 0 \\
+Cierre & 3 (tramas 6--8) & 0 \\
+\midrule
+\textbf{Total del ensayo} & \textbf{8 paquetes} & \textbf{1 paquete} \\
+\bottomrule
+\end{tabular}
+\caption{Conteo para una única frase, incluyendo inicio y finalización.}
+\label{tab:p3-una-frase}
+\end{table}
+
+Si solo se cuenta la transferencia sobre una conexión TCP ya establecida,
+el costo observado fue de dos paquetes (datos y ACK), frente a uno en UDP.
+El conteo completo de ocho frente a uno incluye el costo de crear y cerrar
+la conexión. En los intercambios principales de seis líneas, TCP utilizó
+$3+6+6+3=18$ paquetes y UDP, 6. No se registraron duplicados de loopback
+ni retransmisiones que debieran descontarse.
+
+Los paquetes adicionales de TCP sostienen la entrega ordenada del flujo,
+las confirmaciones, la recuperación mediante retransmisiones ante pérdidas
+y el cierre coordinado; junto con el estado de los extremos y los campos
+del encabezado, también posibilitan control de flujo y de congestión.
+Un ACK confirma recepción por TCP, no que la aplicación haya procesado
+semánticamente el mensaje. UDP deja las funciones adicionales de fiabilidad
+que se necesiten a la aplicación. Esta práctica observa los ACK y la
+secuencia de control, pero no provoca pérdidas para medir retransmisiones
+ni congestión.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=\linewidth,trim=0 790 0 45,clip]{img/punto3/tcp_05_una_frase.png}
+\medskip
+\includegraphics[width=\linewidth,trim=0 905 0 45,clip]{img/punto3/udp_03_una_frase.png}
+\caption{Capturas de la frase única: ocho paquetes TCP y un datagrama UDP.
+El payload de aplicación es idéntico; los paquetes restantes de TCP son
+de establecimiento, confirmación y cierre.}
+\label{fig:p3-una-frase}
+\end{figure}
+
+\subsection{f) Comportamiento ante puertos cerrados}
+
+Con ambos servidores detenidos se ejecutaron, sucesivamente:
+\par\noindent\begin{minipage}{\linewidth}
+\begin{verbatim}
+ncat -4 -n -v 127.0.0.1 12000
+ncat -4 -n -v -u 127.0.0.1 12001
+\end{verbatim}
+\end{minipage}\par
+En el segundo proceso se introdujo la línea \texttt{Hola desde Ncat}
+seguida de LF. El archivo \texttt{puertos\_cerrados.pcapng} registró:
+
+\begin{table}[H]
+\centering\small
+\begin{tabular}{@{}rll>{\raggedright\arraybackslash}p{6.2cm}@{}}
+\toprule
+\textbf{Trama} & \textbf{Protocolo} & \textbf{Puertos / tipo} & \textbf{Interpretación} \\
+\midrule
+1 & TCP & $58404\to12000$ & SYN: intento de conexión del cliente. \\
+2 & TCP & $12000\to58404$ & RST, ACK: rechazo del intento; Ack=1 reconoce el SYN. \\
+3 & UDP & $44168\to12001$ & Datagrama con los 16 bytes de la línea. \\
+4 & ICMP & Tipo 3, código 3 & \emph{Destination unreachable / Port unreachable}. \\
+\bottomrule
+\end{tabular}
+\caption{Resultados de los intentos sin procesos escuchando. Todas las IP
+origen y destino son \texttt{127.0.0.1}.}
+\label{tab:p3-cerrados}
+\end{table}
+
+TCP recibió el RST/ACK aproximadamente 12,435 $\mu$s después del SYN.
+Ncat informó \texttt{Connection refused} y terminó sin establecer la
+conexión ni enviar texto. El segmento de rechazo tuvo un encabezado TCP
+de 20 bytes, sin las opciones negociadas de una conexión establecida.
+
+En UDP, iniciar el cliente no permitió detectar por sí solo el puerto
+cerrado. Ncat imprimió primero
+\texttt{Connected to 127.0.0.1:12001}; esa indicación describe la asociación
+local del socket con su destinatario y no acredita respuesta del servidor.
+Después de enviar el datagrama, el núcleo devolvió el ICMP tipo 3,
+código 3, unos 16,233 $\mu$s después de la trama 3. Ncat entonces informó
+\texttt{Connection refused}. Este ICMP es un informe de error de la capa
+de red, no un ACK de UDP.
+
+La trama ICMP incluyó una copia del datagrama IPv4 que causó el error:
+en su interior se identifican los puertos UDP 44168 y 12001 y el payload.
+Así se puede asociar el error con el envío original. Su longitud capturada
+fue $14+20+8+44=86$ bytes: representación Ethernet, IPv4 exterior,
+encabezado ICMP y datagrama IPv4 original. La interpretación de tipo y
+código corresponde al
+\href{https://www.rfc-editor.org/rfc/rfc792.html}{RFC 792}.
+El rechazo explícito observado localmente debe distinguirse de un silencio
+causado por filtrado o pérdida en una red remota.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=\linewidth,trim=0 855 0 45,clip]{img/punto3/cerrados_01_general.png}
+\caption{Ensayos a puertos cerrados: SYN seguido de RST/ACK en TCP,
+y datagrama seguido de ICMP \emph{Port unreachable} en UDP.}
+\label{fig:p3-cerrados}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.85\linewidth,trim=0 330 630 456,clip]{img/punto3/cerrados_02_rst.png}
+\medskip
+\includegraphics[width=0.85\linewidth,trim=0 435 630 456,clip]{img/punto3/cerrados_03_icmp.png}
+\caption{Campos que justifican el rechazo: flags RST y ACK del segmento
+TCP (arriba) y tipo 3/código 3 del mensaje ICMP (abajo).}
+\label{fig:p3-errores}
+\end{figure}
+
+\subsection{Síntesis y evidencias de la práctica}
+
+Los ensayos permitieron distinguir el estado de conexión de TCP del envío
+de datagramas UDP, comparar sus encabezados y vincular el comportamiento
+de Ncat con los paquetes capturados. La evidencia muestra tanto el costo
+de control de TCP como la ausencia de establecimiento y cierre de UDP.
+Las pruebas sin servidor diferenciaron el rechazo TCP de la notificación
+ICMP asociada a un envío UDP.
+
+Las cinco capturas y los registros de Ncat se adjuntan en
+\texttt{capturas/punto3/}, junto con los metadatos y las verificaciones.
+\texttt{reproducir.py} permite repetir el ensayo en otra carpeta.
+Las imágenes originales de Wireshark están en \texttt{img/punto3/}; los
+recortes del informe no alteran sus valores.
+
+{\small\textbf{Fuentes técnicas:}
+\href{https://www.rfc-editor.org/rfc/rfc9293.html}{RFC 9293, TCP};
+\href{https://www.rfc-editor.org/rfc/rfc768.html}{RFC 768, UDP};
+\href{https://www.rfc-editor.org/rfc/rfc792.html}{RFC 792, ICMP};
+\href{https://nmap.org/ncat/guide/ncat-usage.html}{Ncat Users' Guide, Basic usage};
+\href{https://www.wireshark.org/docs/wsug_html_chunked/ChAdvChecksums.html}{manual de Wireshark, Checksums}.
+Los números de trama, tamaños y conteos corresponden a las mediciones
+adjuntas, no a cantidades supuestas a partir de la teoría.\par}
+
+
 \section{Ítem 4: Servidor TCP mínimo - TP5 Redes de Computadoras}
 
 \end{document}
