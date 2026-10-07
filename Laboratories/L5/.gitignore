@@ -35,13 +35,13 @@
 *~
 *.pdf
 
-# Ignorar PDFs generados a partir del .tex
+# Ignorar PDFs generados a partir del .tex en la raíz
 Informe_TP5_Comunicaciones.pdf
 
 # Publicar el informe compilado dentro de output
 !output/
 !output/*.pdf
 
-# Mantener solo los fuentes
+# Mantener solo los fuentes y la consigna
 !*.tex
 !RC-TP-N5.pdf
